@@ -1,11 +1,10 @@
 ---
 title: "Teste Técnico" # Título do relatório
-subtitle: "**EPosição de Data Analyst Jr - Buraco Jogatina**"
+subtitle: "**Posição de Data Analyst Jr - Buraco Jogatina**"
 author: "Fernanda Kelly R. Silva" # Autor(a)
 jupyter: python3
 lang: pt 
-#date: "`r format(Sys.Date())`"
-date: "`24/03/2024`"
+date: "`r format(Sys.Date())`"
 date-format: short  
 toc: true 
 format: 
@@ -28,7 +27,7 @@ params:
 
 # Tarefa 01: SQL
 
-Um sistema de pagamentos, registra as transações dos seus usuários em em duas tabelas:
+Um sistema de pagamentos, registra as transações dos seus usuários em duas tabelas:
 
 Users: Contém o registro de usuários do sistema. Os seus atributos são:
 
@@ -39,17 +38,30 @@ Users: Contém o registro de usuários do sistema. Os seus atributos são:
 Transactions: Que contém o registro de todas as transações que os usuários realizam através do sistema.
 
 -   transaction_id: Identificador único da transação
--   transaction_date: Data na qual a transação foi realizada. O tipo é timestamp, ou seja, é um tipo de data que contém o ano, mês, dia, - hora, minuto e segundos.
+-   transaction_date: Data na qual a transação foi realizada. O tipo é timestamp, ou seja, é um tipo de data que contém o ano, mês, dia, hora, minuto e segundos.
 -   user_id: Identificador do usuário que realizou a transação (é uma chave externa à tabela users)
--   transaction_state: Campo que indica o estado da transação que pode ser INITIATED, SUCCESS, FRAUD or CANCELLED.
+-   transaction_state: Campo que indica o estado da transação que pode ser *INITIATED*, *SUCCESS*, *FRAUD* or *CANCELLED*.
 -   transaction_amount: Valor da transação em USD
 
 Com estes dados disponíveis, precisamos gerar queries SQL para responder às seguintes perguntas:
 
 ::: panel-tabset
+
 # A
 
-Qual é a idade média de usuários do sistema por país
+Qual é a idade média de usuários do sistema por país?
+
+```{r}
+library(dbplyr)
+library(dplyr)
+tabela_user %>% 
+  dplyr::mutate(media_idade = mean(age)) %>% 
+  dplyr::group_by(pais_de_residencia)
+
+
+  
+```
+
 
 # B
 
