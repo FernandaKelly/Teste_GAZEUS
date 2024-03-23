@@ -338,14 +338,11 @@ Esse é um claro problema de análise combinatória com reposição/reposição.
 :::
 
 ```{python}
-from itertools import combinations_with_replacement
+from itertools import combinations_with_replacement,chain
 
 # Obtem todas as combinações de [1, 2, 3] e tamanho 2
-comb = combinations_with_replacement([1, 2, 3], 2)
-
-# Imprime as combinações
-for i in list(comb):
-    print(i)
+comb_A = combinations_with_replacement([1, 2, 3], 2)
+print(len(list(comb_A)))
 ```
 
 # B
@@ -361,11 +358,9 @@ Esse também é um claro problema de análise combinatória, mas, nesse caso, é
 from itertools import combinations
 
 # Obtem todas as permutações de {@,d,2,b}  
-comb = combinations([1, 2, 3], 2)
+comb_B = combinations([1, 2, 3], 2)
 
-# imprime todas as combinações
-for i in list(comb):
-    print (i)
+print(len(list(comb_B)))
 ```
 
 :::
