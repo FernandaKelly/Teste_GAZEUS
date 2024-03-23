@@ -50,6 +50,7 @@ Com estes dados disponíveis, precisamos gerar queries SQL para responder às se
 ## tabela_transactions
 
 ```{r}
+#| echo: false
 tabela_transactions <- tibble::tribble(
                          ~user_id, ~transaction_date, ~transaction_id, ~transaction_state, ~transaction_amount,
                          "1", "2024-03-12 15:08:49 UTC", "255", "sucesso", "119.65",
@@ -64,13 +65,16 @@ tabela_transactions <- tibble::tribble(
                          ) %>% 
                       dplyr::mutate(transaction_amount = as.numeric(transaction_amount),
                                     data_curta = as.Date(transaction_date)) 
+```
 
+```{r}
 knitr::kable(tabela_transactions)
 ```
 
 ## tabela_user
 
 ```{r}
+#| echo: false
 tabela_user <- tibble::tribble(
                          ~id, ~age, ~pais, 
                          "1", "18", "Brasil",
@@ -81,6 +85,9 @@ tabela_user <- tibble::tribble(
                          "6", "42", "Brasil",
                          "7", "38", "África do Sul",
                          ) 
+```
+
+```{r}
 knitr::kable(tabela_user)
 ```
 
@@ -106,7 +113,6 @@ tabela_transactions <- tbl(con, "tabela_transactions") # <2>
 
 Qual é a idade média de usuários do sistema por país?
 
-
 ```{r}
 tabela_A <- tabela_user %>%
                      dplyr::group_by(pais) %>% 
@@ -118,12 +124,14 @@ tabela_A <- tabela_user %>%
 
 ::: callout-tip
 # Resposta
-
-<SQL> SELECT `pais`, ROUND(AVG(`age`), 2) AS `media_idade` 
-FROM `tabela_user` 
-GROUP BY `pais`
 :::
 
+``` SQL
+<SQL>
+SELECT `pais`, ROUND(AVG(`age`), 2) AS `media_idade`
+FROM `tabela_user`
+GROUP BY `pais`
+```
 # B
 
 Qual é o país com a maior quantidade de dinheiro transacionado (considere só transações finalizadas com sucesso ou "SUCCESS")?
@@ -135,48 +143,49 @@ tabela_merge <- tabela_transactions %>%
                  dplyr::left_join(tabela_user, by = c("user_id" = "id")) 
 ```
 
-
 ```{r}
+#| echo: false
 tabela_B <- tabela_merge %>% 
                   dplyr::filter(transaction_state == "SUCCESS" | transaction_state == "sucesso") %>% 
                   dplyr::slice_max(transaction_amount)
 
-# tabela_B %>% 
+# tabela_B %>%
 #   show_query()
 ```
 
 ::: callout-tip
 # Resposta
+:::
 
+``` SQL
+<SQL>
 SELECT
   `user_id`,
   `transaction_date`,
   `transaction_id`,
   `transaction_state`,
   `transaction_amount`,
+  `data_curta`,
   `age`,
   `pais`
 FROM (
   SELECT `q01`.*, RANK() OVER (ORDER BY `transaction_amount` DESC) AS `col01`
   FROM (
-    SELECT `LHS`.*, `age`, `pais`
-    FROM (
-      SELECT `tabela_transactions`.*
-      FROM `tabela_transactions`
-      WHERE (`transaction_state` = 'SUCCESS' OR `transaction_state` = 'sucesso')
-    ) AS `LHS`
+    SELECT `tabela_transactions`.*, `age`, `pais`
+    FROM `tabela_transactions`
     LEFT JOIN `tabela_user`
-      ON (`LHS`.`user_id` = `tabela_user`.`id`)
+      ON (`tabela_transactions`.`user_id` = `tabela_user`.`id`)
   ) AS `q01`
+  WHERE (`transaction_state` = 'SUCCESS' OR `transaction_state` = 'sucesso')
 ) AS `q01`
 WHERE (`col01` <= 1)
-:::
-
+```
 # C
 
 Qual é o país com maior taxa de fraude em porcentagem respeito ao número de transações totais no país?
 
 ```{r}
+#| echo: false
 library(janitor)
 tabela_C <- tabela_merge %>% 
               dplyr::group_by(transaction_state) %>% 
@@ -190,7 +199,9 @@ tabela_C <- tabela_merge %>%
 
 ::: callout-tip
 # Resposta
+:::
 
+``` SQL
 <SQL>
 SELECT
   `user_id`,
@@ -198,6 +209,7 @@ SELECT
   `transaction_id`,
   `transaction_state`,
   `transaction_amount`,
+  `data_curta`,
   `age`,
   `pais`,
   `taxa`
@@ -217,13 +229,15 @@ FROM (
   WHERE (`transaction_state` = 'FRAUD')
 ) AS `q01`
 WHERE (`col01` <= 1)
-:::
+
+```
 
 # D
 
-Na mesma linha da pergunta anterior, responda qual é a faixa de idade de usuários que mais cometem fraude (em percentagem). Separe as faixas etárias em: (<18 anos, 18-30 anos, 30 - 45 anos, 45 - 60 anos, 60 > anos) e considere que para responder essa pergunta, você deverá considerar o fato que um usuário pode ter executado várias transações, das quais poucas (ou muitas) podem ter sido fraude entre as demais.
+Na mesma linha da pergunta anterior, responda qual é a faixa de idade de usuários que mais cometem fraude (em percentagem). Separe as faixas etárias em: (\<18 anos, 18-30 anos, 30 - 45 anos, 45 - 60 anos, 60 \> anos) e considere que para responder essa pergunta, você deverá considerar o fato que um usuário pode ter executado várias transações, das quais poucas (ou muitas) podem ter sido fraude entre as demais.
 
 ```{r}
+#| echo: false
 tabela_D <- tabela_merge %>% 
              dplyr::mutate(age_cat = dplyr::case_when(age < 18 ~ "menor que 18 anos",
                                                       age >= 18 & age < 30 ~ "18-29 anos",
@@ -240,15 +254,14 @@ tabela_D <- tabela_merge %>%
 # Resposta
 :::
 
-
-
-
-
+``` SQL
+```
 # E
 
 Imagine que a camada executiva da empresa dona do sistema, precisa criar um Dashboard para monitorar o estado das transações nos últimos 3 dias. Para isso você precisa criar uma query SQL que calcule o número e dinheiro das transações não finalizadas, número e dinheiro de transações finalizadas com sucesso (SUCCESS), o número e dinheiro de transações canceladas (CANCELLED), o número e dinheiro de fraudes (FRAUD), agrupado por país, nos 3 dias anteriores de quando o executivo da empresa consulte seu Dashboard.
 
 ```{r}
+#| echo: false
 tabela_E <- tabela_merge %>% 
               dplyr::mutate(tres_n = dplyr::if_else((lubridate::today() - 1) == data_curta, 1,
                                                     dplyr::if_else((lubridate::today() - 2) == data_curta, 1,
@@ -265,7 +278,9 @@ tabela_E <- tabela_merge %>%
 
 ::: callout-tip
 # Resposta
+:::
 
+``` SQL
 <SQL>
 SELECT
   `q01`.*,
@@ -296,10 +311,7 @@ FROM (
   WHERE (`tres_n` = 1.0)
 ) AS `q01`
 WINDOW `win1` AS (PARTITION BY `pais`, `transaction_state`)
-:::
-
-
-
+```
 :::
 
 # Tarefa 02: Python
