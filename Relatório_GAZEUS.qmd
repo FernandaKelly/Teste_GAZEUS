@@ -52,15 +52,18 @@ Com estes dados disponíveis, precisamos gerar queries SQL para responder às se
 ```{r}
 tabela_transactions <- tibble::tribble(
                          ~user_id, ~transaction_date, ~transaction_id, ~transaction_state, ~transaction_amount,
-                         "1", "2022-01-12", "255", "sucesso", "119.65",
-                         "2", "2022-02-23", "585", "INITIATED", "22.63",
-                         "3", "2022-04-14", "178", "CANCELLED", "225.87",
-                         "4", "2022-01-12", "887", "SUCCESS", "16.58",
-                         "5", "2022-08-30", "569", "FRAUD", "1225.89",
-                         "6", "2022-05-25", "789", "SUCCESS", "59.90",
-                         "7", "2022-05-10", "236", "FRAUD", "256.98",
+                         "1", "2024-03-12 15:08:49 UTC", "255", "sucesso", "119.65",
+                         "2", "2024-03-23 20:08:03 UTC", "585", "INITIATED", "22.63",
+                         "3", "2024-03-18 10:56:25 UTC", "178", "CANCELLED", "225.87",
+                         "4", "2024-03-12 08:21:32 UTC", "887", "SUCCESS", "16.58",
+                         "5", "2024-03-30 05:24:49 UTC", "569", "FRAUD", "1225.89",
+                         "6", "2024-03-21 12:32:51 UTC", "789", "SUCCESS", "59.90",
+                         "7", "2024-03-10 08:25:49 UTC", "236", "FRAUD", "256.98",
+                         "7", "2024-03-10 05:21:49 UTC", "458", "FRAUD", "986.69",
+                         "7", "2024-03-09 01:08:49 UTC", "125", "FRAUD", "1256.89",
                          ) %>% 
-                      dplyr::mutate(transaction_amount = as.numeric(transaction_amount)) 
+                      dplyr::mutate(transaction_amount = as.numeric(transaction_amount),
+                                    data_curta = as.Date(transaction_date)) 
 
 knitr::kable(tabela_transactions)
 ```
@@ -70,11 +73,11 @@ knitr::kable(tabela_transactions)
 ```{r}
 tabela_user <- tibble::tribble(
                          ~id, ~age, ~pais, 
-                         "1", "22", "Brasil",
+                         "1", "18", "Brasil",
                          "2", "29", "Estados Unidos",
-                         "3", "24", "África do Sul",
+                         "3", "55", "África do Sul",
                          "4", "32", "Bolívia",
-                         "5", "28", "Brasil",
+                         "5", "60", "Brasil",
                          "6", "42", "Brasil",
                          "7", "38", "África do Sul",
                          ) 
@@ -215,13 +218,88 @@ FROM (
 ) AS `q01`
 WHERE (`col01` <= 1)
 :::
+
 # D
 
-Na mesma linha da pergunta anterior, responda qual é a faixa de idade de usuários que mais cometem fraude (em percentagem). Separe as faixas etárias em: (\<18 anos, 18-30 anos, 30 - 45 anos, 45 - 60 anos, 60 \> anos) e considere que para responder essa pergunta, você deverá considerar o fato que um usuário pode ter executado várias transações, das quais poucas (ou muitas) podem ter sido fraude entre as demais.
+Na mesma linha da pergunta anterior, responda qual é a faixa de idade de usuários que mais cometem fraude (em percentagem). Separe as faixas etárias em: (<18 anos, 18-30 anos, 30 - 45 anos, 45 - 60 anos, 60 > anos) e considere que para responder essa pergunta, você deverá considerar o fato que um usuário pode ter executado várias transações, das quais poucas (ou muitas) podem ter sido fraude entre as demais.
+
+```{r}
+tabela_D <- tabela_merge %>% 
+             dplyr::mutate(age_cat = dplyr::case_when(age < 18 ~ "menor que 18 anos",
+                                                      age >= 18 & age < 30 ~ "18-29 anos",
+                                                      age >= 30 & age < 45 ~ "30-44 anos",
+                                                      age >= 45 & age < 60 ~ "45-59 anos",
+                                                      age >= 60  ~ "maior igual a 60 anos"),
+                           taxa_idade = dplyr::if_else(transaction_state == "FRAUD", transaction_amount/sum(transaction_amount), 0))  
+          
+# tabela_C %>%
+#   show_query()
+```
+
+::: callout-tip
+# Resposta
+:::
+
+
+
+
 
 # E
 
 Imagine que a camada executiva da empresa dona do sistema, precisa criar um Dashboard para monitorar o estado das transações nos últimos 3 dias. Para isso você precisa criar uma query SQL que calcule o número e dinheiro das transações não finalizadas, número e dinheiro de transações finalizadas com sucesso (SUCCESS), o número e dinheiro de transações canceladas (CANCELLED), o número e dinheiro de fraudes (FRAUD), agrupado por país, nos 3 dias anteriores de quando o executivo da empresa consulte seu Dashboard.
+
+```{r}
+tabela_E <- tabela_merge %>% 
+              dplyr::mutate(tres_n = dplyr::if_else((lubridate::today() - 1) == data_curta, 1,
+                                                    dplyr::if_else((lubridate::today() - 2) == data_curta, 1,
+                                                                   dplyr::if_else((lubridate::today() - 2) == data_curta,1,0)))) %>% 
+              dplyr::filter(tres_n == 1) %>% 
+              dplyr::mutate(transaction_state = dplyr::if_else(transaction_state == "sucesso", "SUCCESS", transaction_state)) %>% 
+              dplyr::group_by(pais, transaction_state) %>% 
+              dplyr::mutate(n_transacoes =  n(),
+                            dinheiro = sum(transaction_amount))
+
+# tabela_E %>%
+#   show_query()
+```
+
+::: callout-tip
+# Resposta
+
+<SQL>
+SELECT
+  `q01`.*,
+  COUNT(*) OVER `win1` AS `n_transacoes`,
+  SUM(`transaction_amount`) OVER `win1` AS `dinheiro`
+FROM (
+  SELECT
+    `user_id`,
+    `transaction_date`,
+    `transaction_id`,
+    CASE WHEN (`transaction_state` = 'sucesso') THEN 'SUCCESS' WHEN NOT (`transaction_state` = 'sucesso') THEN `transaction_state` END AS `transaction_state`,
+    `transaction_amount`,
+    `data_curta`,
+    `age`,
+    `pais`,
+    `tres_n`
+  FROM (
+    SELECT
+      `q01`.*,
+      CASE WHEN ((DATE('now') - 1.0) = `data_curta`) THEN 1.0 WHEN NOT ((DATE('now') - 1.0) = `data_curta`) THEN (CASE WHEN ((DATE('now') - 2.0) = `data_curta`) THEN 1.0 WHEN NOT ((DATE('now') - 2.0) = `data_curta`) THEN (CASE WHEN ((DATE('now') - 2.0) = `data_curta`) THEN 1.0 WHEN NOT ((DATE('now') - 2.0) = `data_curta`) THEN 0.0 END) END) END AS `tres_n`
+    FROM (
+      SELECT `tabela_transactions`.*, `age`, `pais`
+      FROM `tabela_transactions`
+      LEFT JOIN `tabela_user`
+        ON (`tabela_transactions`.`user_id` = `tabela_user`.`id`)
+    ) AS `q01`
+  ) AS `q01`
+  WHERE (`tres_n` = 1.0)
+) AS `q01`
+WINDOW `win1` AS (PARTITION BY `pais`, `transaction_state`)
+:::
+
+
+
 :::
 
 # Tarefa 02: Python
