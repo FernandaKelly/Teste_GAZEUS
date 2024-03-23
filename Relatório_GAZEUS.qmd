@@ -45,6 +45,27 @@ Transactions: Que contém o registro de todas as transações que os usuários r
 
 Com estes dados disponíveis, precisamos gerar queries SQL para responder às seguintes perguntas:
 
+*Para fins didáticos, criei esses bancos de dados para simular a resolução das questões.*
+
+```{r}
+
+tabela_transactions <- tibble::tribble(
+                         ~user_id, ~transaction_date, ~transaction_id, ~transaction_state, ~transaction_amount,
+                         "1", "2022-01-12", "255", "SUCCESS", "119.65",
+                         "2", "2022-02-23", "585", "INITIATED", "22.63",
+                         "3", "2022-04-14", "178", "CANCELLED", "225.87",
+                         "4", "2022-01-12", "887", "SUCCESS", "16.58",
+                         )
+
+tabela_user <- tibble::tribble(
+                         ~id, ~age, ~pais, 
+                         "1", "22", "Brasil",
+                         "2", "29", "Estados Unidos",
+                         "3", "24", "África do Sul",
+                         "4", "32", "Bolívia",
+                         )
+```
+
 ::: panel-tabset
 
 # A
@@ -52,20 +73,84 @@ Com estes dados disponíveis, precisamos gerar queries SQL para responder às se
 Qual é a idade média de usuários do sistema por país?
 
 ```{r}
+
 library(dbplyr)
 library(dplyr)
-tabela_user %>% 
-  dplyr::mutate(media_idade = mean(age)) %>% 
-  dplyr::group_by(pais_de_residencia)
+
+con <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+copy_to(con, tabela_user)
+copy_to(con, tabela_transactions)
+
+tabela_user <- tbl(con, "tabela_user")
+tabela_transactions <- tbl(con, "tabela_transactions")
 
 
+
+
+
+
+
+
+
+tabela_user <- datasets::mtcars
+
+mean_tabela_use <- tabela_user %>%
+                     dplyr::group_by(cyl) %>% 
+                     dplyr::summarise(media_idade = mean(wt, na.rm = TRUE)) 
+
+dplyr::show_query(mean_tabela_use)
+
+summary <- mtcars %>% 
+  group_by(cyl) %>% 
+  summarise(mpg = mean(mpg, na.rm = TRUE)) %>% 
+  arrange(desc(mpg))
+
+# see query
+summary %>% show_query()
   
 ```
 
 
 # B
 
-Qual é o país com a maior quantidade de dinheiro transacionado (considere só transações finalizadas com sucesso ou "SUCCESS")
+Qual é o país com a maior quantidade de dinheiro transacionado (considere só transações finalizadas com sucesso ou "SUCCESS")?
+
+```{r}
+install.packages("tidyverse")
+library(tidyverse)
+summary <- mtcars %>% 
+  dplyr::group_by(cyl) %>% 
+  dplyr::summarise(mpg = mean(mpg, na.rm = TRUE)) %>% 
+  dplyr::arrange(desc(mpg))  %>% 
+  as_tibble()
+
+mtcars <- mtcars %>% 
+            tibble::rowid_to_column(var = "id")
+
+mtcars1 <-  c(1:32, rep(5,32)) 
+  
+con <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+copy_to(con, mtcars)
+
+mtcars2 <- tbl(con, "mtcars")
+mtcars2
+
+
+
+mtcars2 %>% 
+  group_by(cyl) %>% 
+  summarise(mpg_mean = mean(mpg, na.rm = TRUE)) %>% 
+  show_query()
+
+
+mtcars2 %>% 
+  dplyr::left_join(mtcars1, by = "id")
+  group_by(cyl) %>% 
+  summarise(mpg_mean = mean(mpg, na.rm = TRUE)) %>% 
+  show_query()
+
+```
+
 
 # C
 
@@ -151,3 +236,29 @@ Considere o seguinte modelo de regressão:
 Interprete o efeito da Idade na variável salário. Que acontece com as pessoas que não tem faculdade? Considere agora que o desvio padrão do coeficiente da variável "Têm Linkedin" é de 47, por tanto o seu p-valor é ~0.92 (como visto na equação abaixo).  O que isso implica para o modelo em questão? Essa variável é relevante?
 
 :::
+
+
+
+```{r}
+#| warning: false
+#| message: false
+
+library(dados)
+library(reactable)
+library(dplyr)
+
+dados_gapminder |>                                  # <1> 
+  select(continente, pais, ano, pib_per_capita) |>  # <2> 
+  reactable(
+    groupBy = "continente",                         # <3>
+    searchable = TRUE,                              # <4>
+    outlined = TRUE,                                # <5>
+    columns = list(ano = colDef(sortable = TRUE)))   # <6>
+```
+
+1.  Base do pacote {dados}
+2.  Selecionando algumas colunas
+3.  Agrupando pela coluna 'continente'
+4.  Inserindo uma busca na tabela
+5.  Linhas na tabela
+6.  Ordem crescente na coluna 'ano'
