@@ -2,28 +2,30 @@
 title: "Teste Técnico" # Título do relatório
 subtitle: "**Posição de Data Analyst Jr - Buraco Jogatina**"
 author: "Fernanda Kelly R. Silva" # Autor(a)
-jupyter: python3
 lang: pt 
-date: "`r format(Sys.Date())`"
-date-format: short  
+date: "`r format(Sys.Date())`" 
+date-format: short 
 toc: true 
 format: 
     html: 
-      #css: ["custom.css"] # Customização com css
-      code-fold: true # code-fold: true para "ocultar" o bloco de códigos
-      code-tools: true  #code-tools: true para ativar ferramentas de interação com os códigos
-  #number-sections: true # Número de seções/subseções
+      #css: ["custom.css"] 
+      code-fold: false 
+      code-tools: true  
       theme: 
         light: cosmo
-        dark: superhero # Sugestão: superhero/vapor Mudar o tema do relatório aqui
-title-block-banner: "true" # "#874a9c" Pode ser 'true', uma cor ou imagem
-code-annotations: hover # Para anotações em códigos
+        dark: superhero 
+title-block-banner: "#874a9c" 
+code-annotations: hover 
 execute:
   warning: false
   message: false
-params:
-  dataset: "iris" # Parâmetros aplicável em todo o documento
 ---
+
+```{r}
+#| echo: false
+
+library(tidyverse)
+```
 
 # Tarefa 01: SQL
 
@@ -83,7 +85,7 @@ con <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
 copy_to(con, tabela_user)
 copy_to(con, tabela_transactions)
 
-tabela_user <- tbl(con, "tabela_user") # <1>
+tabela_user <- tbl(con, "tabela_user")                 # <1>
 tabela_transactions <- tbl(con, "tabela_transactions") # <2>
 ```
 
