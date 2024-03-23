@@ -48,14 +48,16 @@ Com estes dados disponíveis, precisamos gerar queries SQL para responder às se
 *Para fins didáticos, criei esses bancos de dados para simular a resolução das questões.*
 
 ```{r}
-
 tabela_transactions <- tibble::tribble(
                          ~user_id, ~transaction_date, ~transaction_id, ~transaction_state, ~transaction_amount,
-                         "1", "2022-01-12", "255", "SUCCESS", "119.65",
+                         "1", "2022-01-12", "255", "sucesso", "119.65",
                          "2", "2022-02-23", "585", "INITIATED", "22.63",
                          "3", "2022-04-14", "178", "CANCELLED", "225.87",
                          "4", "2022-01-12", "887", "SUCCESS", "16.58",
-                         )
+                         "5", "2022-08-30", "569", "FRAUD", "1225.89",
+                         "6", "2022-05-25", "789", "SUCCESS", "59.90",
+                         ) %>% 
+                      dplyr::mutate(transaction_amount = as.numeric(transaction_amount))
 
 tabela_user <- tibble::tribble(
                          ~id, ~age, ~pais, 
@@ -63,6 +65,8 @@ tabela_user <- tibble::tribble(
                          "2", "29", "Estados Unidos",
                          "3", "24", "África do Sul",
                          "4", "32", "Bolívia",
+                         "5", "28", "Brasil",
+                         "6", "42", "Brasil",
                          )
 ```
 
@@ -73,7 +77,6 @@ tabela_user <- tibble::tribble(
 Qual é a idade média de usuários do sistema por país?
 
 ```{r}
-
 library(dbplyr)
 library(dplyr)
 
@@ -81,77 +84,74 @@ con <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
 copy_to(con, tabela_user)
 copy_to(con, tabela_transactions)
 
-tabela_user <- tbl(con, "tabela_user")
-tabela_transactions <- tbl(con, "tabela_transactions")
-
-
-
-
-
-
-
-
-
-tabela_user <- datasets::mtcars
-
-mean_tabela_use <- tabela_user %>%
-                     dplyr::group_by(cyl) %>% 
-                     dplyr::summarise(media_idade = mean(wt, na.rm = TRUE)) 
-
-dplyr::show_query(mean_tabela_use)
-
-summary <- mtcars %>% 
-  group_by(cyl) %>% 
-  summarise(mpg = mean(mpg, na.rm = TRUE)) %>% 
-  arrange(desc(mpg))
-
-# see query
-summary %>% show_query()
-  
+tabela_user <- tbl(con, "tabela_user") # <1>
+tabela_transactions <- tbl(con, "tabela_transactions") # <2>
 ```
 
+1.  Conectando a base de dados {tabela_user} com o SQLite
+2.  Conectando a base de dados {tabela_transactions} com o SQLite
+
+```{r}
+mean_tabela_user <- tabela_user %>%
+                     dplyr::group_by(pais) %>% 
+                     dplyr::summarise(media_idade = round(mean(age, na.rm = TRUE),2))
+
+mean_tabela_user %>% 
+  show_query()
+```
+
+::: callout-tip
+# Resposta
+
+<SQL>
+SELECT `pais`, ROUND(AVG(`age`), 2) AS `media_idade`
+FROM `tabela_user`
+GROUP BY `pais`
+
+:::
 
 # B
 
 Qual é o país com a maior quantidade de dinheiro transacionado (considere só transações finalizadas com sucesso ou "SUCCESS")?
 
 ```{r}
-install.packages("tidyverse")
-library(tidyverse)
-summary <- mtcars %>% 
-  dplyr::group_by(cyl) %>% 
-  dplyr::summarise(mpg = mean(mpg, na.rm = TRUE)) %>% 
-  dplyr::arrange(desc(mpg))  %>% 
-  as_tibble()
+tabela_merge <- tabela_transactions %>% 
+                  dplyr::filter(transaction_state == "SUCCESS" | transaction_state == "sucesso") %>% 
+                  dplyr::left_join(tabela_user, by = c("user_id" = "id")) %>% 
+                  dplyr::slice_max(transaction_amount)
 
-mtcars <- mtcars %>% 
-            tibble::rowid_to_column(var = "id")
-
-mtcars1 <-  c(1:32, rep(5,32)) 
-  
-con <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-copy_to(con, mtcars)
-
-mtcars2 <- tbl(con, "mtcars")
-mtcars2
-
-
-
-mtcars2 %>% 
-  group_by(cyl) %>% 
-  summarise(mpg_mean = mean(mpg, na.rm = TRUE)) %>% 
+tabela_merge %>% 
   show_query()
-
-
-mtcars2 %>% 
-  dplyr::left_join(mtcars1, by = "id")
-  group_by(cyl) %>% 
-  summarise(mpg_mean = mean(mpg, na.rm = TRUE)) %>% 
-  show_query()
-
 ```
 
+::: callout-tip
+# Resposta
 
+<SQL>
+SELECT
+  `user_id`,
+  `transaction_date`,
+  `transaction_id`,
+  `transaction_state`,
+  `transaction_amount`,
+  `age`,
+  `pais`
+FROM (
+  SELECT `q01`.*, RANK() OVER (ORDER BY `transaction_amount` DESC) AS `col01`
+  FROM (
+    SELECT `LHS`.*, `age`, `pais`
+    FROM (
+      SELECT `tabela_transactions`.*
+      FROM `tabela_transactions`
+      WHERE (`transaction_state` = 'SUCCESS' OR `transaction_state` = 'sucesso')
+    ) AS `LHS`
+    LEFT JOIN `tabela_user`
+      ON (`LHS`.`user_id` = `tabela_user`.`id`)
+  ) AS `q01`
+) AS `q01`
+WHERE (`col01` <= 1)
+
+:::
 # C
 
 Qual é o país com maior taxa de fraude em porcentagem respeito ao número de transações totais no país
