@@ -71,7 +71,6 @@ tabela_user <- tibble::tribble(
 ```
 
 ::: panel-tabset
-
 # A
 
 Qual é a idade média de usuários do sistema por país?
@@ -103,11 +102,7 @@ mean_tabela_user %>%
 ::: callout-tip
 # Resposta
 
-<SQL>
-SELECT `pais`, ROUND(AVG(`age`), 2) AS `media_idade`
-FROM `tabela_user`
-GROUP BY `pais`
-
+<SQL> SELECT `pais`, ROUND(AVG(`age`), 2) AS `media_idade` FROM `tabela_user` GROUP BY `pais`
 :::
 
 # B
@@ -127,31 +122,9 @@ tabela_merge %>%
 ::: callout-tip
 # Resposta
 
-<SQL>
-SELECT
-  `user_id`,
-  `transaction_date`,
-  `transaction_id`,
-  `transaction_state`,
-  `transaction_amount`,
-  `age`,
-  `pais`
-FROM (
-  SELECT `q01`.*, RANK() OVER (ORDER BY `transaction_amount` DESC) AS `col01`
-  FROM (
-    SELECT `LHS`.*, `age`, `pais`
-    FROM (
-      SELECT `tabela_transactions`.*
-      FROM `tabela_transactions`
-      WHERE (`transaction_state` = 'SUCCESS' OR `transaction_state` = 'sucesso')
-    ) AS `LHS`
-    LEFT JOIN `tabela_user`
-      ON (`LHS`.`user_id` = `tabela_user`.`id`)
-  ) AS `q01`
-) AS `q01`
-WHERE (`col01` <= 1)
-
+<SQL> SELECT `user_id`, `transaction_date`, `transaction_id`, `transaction_state`, `transaction_amount`, `age`, `pais` FROM ( SELECT `q01`.*, RANK() OVER (ORDER BY `transaction_amount` DESC) AS `col01` FROM ( SELECT `LHS`.*, `age`, `pais` FROM ( SELECT `tabela_transactions`.\* FROM `tabela_transactions` WHERE (`transaction_state` = 'SUCCESS' OR `transaction_state` = 'sucesso') ) AS `LHS` LEFT JOIN `tabela_user` ON (`LHS`.`user_id` = `tabela_user`.`id`) ) AS `q01` ) AS `q01` WHERE (`col01` \<= 1)
 :::
+
 # C
 
 Qual é o país com maior taxa de fraude em porcentagem respeito ao número de transações totais no país
@@ -174,7 +147,6 @@ Durante seus estudos, estes perceberam que as linguagens dessas outras civiliza�
 Na tentativa da tribo de avançar nos seus estudos, estes desejam saber qual seria o número de palavras possíveis a serem criadas em função do tamanho da palavra e o conjunto de símbolos (alfabeto) da civilização em estudo, independentemente se essas "palavras" representam algum significado ou não.
 
 ::: panel-tabset
-
 # A
 
 Você, que compartilha os atributos da tribo enquanto as capacidades analíticas e lógicas, precisa ajudá-la escrevendo um algoritmo para fazer o cálculo descrito acima, considerando que tribo oferecerá para você o alfabeto da civilização e o tamanho da palavra/combinação. Seu algoritmo deveria ser capaz de calcular que o número total de palavras possíveis (independente se tem significado ou não) é de 16.
@@ -189,41 +161,39 @@ Para ajudar a tribo ainda mais! Você deverá modificar seu algoritmo (ou talvez
 # Tarefa 03: Estatística e Machine Learning
 
 ::: panel-tabset
-
 # 1
 
-Dado um dataset das estaturas (em centímetros) de 13 indivíduos: 
+Dado um dataset das estaturas (em centímetros) de 13 indivíduos:
 
 Dataset = {175, 166, 183, 193, 155, 177, 173, 171, 162, 185, 176, 161, 188}
 
-Calcule a média, a mediana, 20 percentil,  80 percentil e desvio padrão. Considerando os dados, responda a que distribuição (paramétrica) os dados se aproximam.
+Calcule a média, a mediana, 20 percentil, 80 percentil e desvio padrão. Considerando os dados, responda a que distribuição (paramétrica) os dados se aproximam.
 
 # 2
 
 Com suas próprias palavras, explique em que consiste o teorema central do limite, e se possível, mencione a sua importância no campo da inferência estatística.
 
-# 3 
+# 3
 
-Suponha que numa escola, 2 grupos diferentes de estudantes (Grupo A e Grupo B) fazem o mesmo teste de matemáticas. As pontuações  para cada grupo são dados pelos seguintes datasets:
+Suponha que numa escola, 2 grupos diferentes de estudantes (Grupo A e Grupo B) fazem o mesmo teste de matemáticas. As pontuações para cada grupo são dados pelos seguintes datasets:
 
-Grupo A: {80, 85, 88, 90, 92, 75, 78}
-Grupo B: {75, 78, 82, 85, 87, 93, 99}
+Grupo A: {80, 85, 88, 90, 92, 75, 78} Grupo B: {75, 78, 82, 85, 87, 93, 99}
 
 Elabore um teste de hipótese para determinar se existe uma diferença estatisticamente significativa entre a média das pontuações dos dois grupos com uma confiança de 95%.
 
-# 4 
+# 4
 
-Determine a hipótese nula (Ho) e hipótese alternativa (Ha) do seguinte cenário:  Uma empresa afirma que o tempo médio dos seus produtos é menos de 4 dias. Você, conta com uma amostra dessas entregas para validar estadísticamente essa afirmação.
+Determine a hipótese nula (Ho) e hipótese alternativa (Ha) do seguinte cenário: Uma empresa afirma que o tempo médio dos seus produtos é menos de 4 dias. Você, conta com uma amostra dessas entregas para validar estadísticamente essa afirmação.
 
-# 5 
+# 5
 
 Calcule o coeficiente de correlação de pearson das variáveis "Número de aparições Zendaya em filmes por ano" e "Número de pessoas afogadas em piscinas no Brasil ao ano". Em base nos seus resultados, considera que a variável "Número de aparições Zendaya em filmes por ano" é um bom preditor do número de pessoas afogadas no Brasil?Justifique a sua resposta.
 
-# 6 
+# 6
 
-Explique a diferença entre amostragem estratificada e amostragem randômica ou aleatória.  Discuta quais são as vantagens e desvantagens de cada uma e de exemplos de casos onde uma abordagem é mais adequada que a outra.
+Explique a diferença entre amostragem estratificada e amostragem randômica ou aleatória. Discuta quais são as vantagens e desvantagens de cada uma e de exemplos de casos onde uma abordagem é mais adequada que a outra.
 
-# 7 
+# 7
 
 Se você treina um modelo de Machine Learning (ou estadístico), como você identificaria se seu modelo tem uma alta variância (overfitting) ou um alto viés (bias, ou underfitting). Caso seu modelo apresenta alta variância, como você resolveria esse problema?
 
@@ -231,13 +201,10 @@ Se você treina um modelo de Machine Learning (ou estadístico), como você iden
 
 Considere o seguinte modelo de regressão:
 
-- Salário = 1200+ 500.Idade  + 600. Têm Faculdade + 50.Têm Linkedin
+-   Salário = 1200+ 500.Idade + 600. Têm Faculdade + 50.Têm Linkedin
 
-Interprete o efeito da Idade na variável salário. Que acontece com as pessoas que não tem faculdade? Considere agora que o desvio padrão do coeficiente da variável "Têm Linkedin" é de 47, por tanto o seu p-valor é ~0.92 (como visto na equação abaixo).  O que isso implica para o modelo em questão? Essa variável é relevante?
-
+Interprete o efeito da Idade na variável salário. Que acontece com as pessoas que não tem faculdade? Considere agora que o desvio padrão do coeficiente da variável "Têm Linkedin" é de 47, por tanto o seu p-valor é \~0.92 (como visto na equação abaixo). O que isso implica para o modelo em questão? Essa variável é relevante?
 :::
-
-
 
 ```{r}
 #| warning: false
