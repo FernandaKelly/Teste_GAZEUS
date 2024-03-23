@@ -179,14 +179,42 @@ tabela_C <- tabela_merge %>%
               dplyr::group_by(transaction_state) %>% 
               dplyr::mutate(taxa = transaction_amount/sum(transaction_amount)) %>% 
               dplyr::ungroup() %>%
+              dplyr::filter(transaction_state == "FRAUD") %>% 
               dplyr::slice_max(taxa)
-  
-
-
-  
+# tabela_C %>%
+#   show_query()
 ```
 
+::: callout-tip
+# Resposta
 
+<SQL>
+SELECT
+  `user_id`,
+  `transaction_date`,
+  `transaction_id`,
+  `transaction_state`,
+  `transaction_amount`,
+  `age`,
+  `pais`,
+  `taxa`
+FROM (
+  SELECT `q01`.*, RANK() OVER (ORDER BY `taxa` DESC) AS `col01`
+  FROM (
+    SELECT
+      `q01`.*,
+      `transaction_amount` / SUM(`transaction_amount`) OVER (PARTITION BY `transaction_state`) AS `taxa`
+    FROM (
+      SELECT `tabela_transactions`.*, `age`, `pais`
+      FROM `tabela_transactions`
+      LEFT JOIN `tabela_user`
+        ON (`tabela_transactions`.`user_id` = `tabela_user`.`id`)
+    ) AS `q01`
+  ) AS `q01`
+  WHERE (`transaction_state` = 'FRAUD')
+) AS `q01`
+WHERE (`col01` <= 1)
+:::
 # D
 
 Na mesma linha da pergunta anterior, responda qual é a faixa de idade de usuários que mais cometem fraude (em percentagem). Separe as faixas etárias em: (\<18 anos, 18-30 anos, 30 - 45 anos, 45 - 60 anos, 60 \> anos) e considere que para responder essa pergunta, você deverá considerar o fato que um usuário pode ter executado várias transações, das quais poucas (ou muitas) podem ter sido fraude entre as demais.
