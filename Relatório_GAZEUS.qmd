@@ -114,6 +114,7 @@ tabela_transactions <- tbl(con, "tabela_transactions") # <2>
 Qual é a idade média de usuários do sistema por país?
 
 ```{r}
+#| echo: false
 tabela_A <- tabela_user %>%
                      dplyr::group_by(pais) %>% 
                      dplyr::summarise(media_idade = round(mean(age, na.rm = TRUE),2))
@@ -126,12 +127,13 @@ tabela_A <- tabela_user %>%
 # Resposta
 :::
 
-``` SQL
+``` sql
 <SQL>
 SELECT `pais`, ROUND(AVG(`age`), 2) AS `media_idade`
 FROM `tabela_user`
 GROUP BY `pais`
 ```
+
 # B
 
 Qual é o país com a maior quantidade de dinheiro transacionado (considere só transações finalizadas com sucesso ou "SUCCESS")?
@@ -157,7 +159,7 @@ tabela_B <- tabela_merge %>%
 # Resposta
 :::
 
-``` SQL
+``` sql
 <SQL>
 SELECT
   `user_id`,
@@ -180,6 +182,7 @@ FROM (
 ) AS `q01`
 WHERE (`col01` <= 1)
 ```
+
 # C
 
 Qual é o país com maior taxa de fraude em porcentagem respeito ao número de transações totais no país?
@@ -201,7 +204,7 @@ tabela_C <- tabela_merge %>%
 # Resposta
 :::
 
-``` SQL
+``` sql
 <SQL>
 SELECT
   `user_id`,
@@ -229,7 +232,6 @@ FROM (
   WHERE (`transaction_state` = 'FRAUD')
 ) AS `q01`
 WHERE (`col01` <= 1)
-
 ```
 
 # D
@@ -254,8 +256,9 @@ tabela_D <- tabela_merge %>%
 # Resposta
 :::
 
-``` SQL
+``` sql
 ```
+
 # E
 
 Imagine que a camada executiva da empresa dona do sistema, precisa criar um Dashboard para monitorar o estado das transações nos últimos 3 dias. Para isso você precisa criar uma query SQL que calcule o número e dinheiro das transações não finalizadas, número e dinheiro de transações finalizadas com sucesso (SUCCESS), o número e dinheiro de transações canceladas (CANCELLED), o número e dinheiro de fraudes (FRAUD), agrupado por país, nos 3 dias anteriores de quando o executivo da empresa consulte seu Dashboard.
@@ -280,7 +283,7 @@ tabela_E <- tabela_merge %>%
 # Resposta
 :::
 
-``` SQL
+``` sql
 <SQL>
 SELECT
   `q01`.*,
@@ -329,9 +332,21 @@ Você, que compartilha os atributos da tribo enquanto as capacidades analíticas
 
 OBS: NÃO PRECISA ESCREVER A LISTA DAS PALAVRAS, A TRIBO SÓ PRECISA DO NÚMERO!
 
+::: callout-tip
+# Resposta
+Esse é um claro problema de análise combinatória.
+:::
+
+``` python
+
+```
 # B
 
 Para ajudar a tribo ainda mais! Você deverá modificar seu algoritmo (ou talvez escrever um novo) para fazer o mesmo cálculo, só que agora, as palavras não podem ter símbolos repetidos.
+
+::: callout-tip
+# Resposta
+:::
 :::
 
 # Tarefa 03: Estatística e Machine Learning
@@ -345,9 +360,17 @@ Dataset = {175, 166, 183, 193, 155, 177, 173, 171, 162, 185, 176, 161, 188}
 
 Calcule a média, a mediana, 20 percentil, 80 percentil e desvio padrão. Considerando os dados, responda a que distribuição (paramétrica) os dados se aproximam.
 
+::: callout-tip
+# Resposta
+:::
+
 # 2
 
 Com suas próprias palavras, explique em que consiste o teorema central do limite, e se possível, mencione a sua importância no campo da inferência estatística.
+
+::: callout-tip
+# Resposta
+:::
 
 # 3
 
@@ -357,21 +380,41 @@ Grupo A: {80, 85, 88, 90, 92, 75, 78} Grupo B: {75, 78, 82, 85, 87, 93, 99}
 
 Elabore um teste de hipótese para determinar se existe uma diferença estatisticamente significativa entre a média das pontuações dos dois grupos com uma confiança de 95%.
 
+::: callout-tip
+# Resposta
+:::
+
 # 4
 
 Determine a hipótese nula (Ho) e hipótese alternativa (Ha) do seguinte cenário: Uma empresa afirma que o tempo médio dos seus produtos é menos de 4 dias. Você, conta com uma amostra dessas entregas para validar estadísticamente essa afirmação.
+
+::: callout-tip
+# Resposta
+:::
 
 # 5
 
 Calcule o coeficiente de correlação de pearson das variáveis "Número de aparições Zendaya em filmes por ano" e "Número de pessoas afogadas em piscinas no Brasil ao ano". Em base nos seus resultados, considera que a variável "Número de aparições Zendaya em filmes por ano" é um bom preditor do número de pessoas afogadas no Brasil?Justifique a sua resposta.
 
+::: callout-tip
+# Resposta
+:::
+
 # 6
 
 Explique a diferença entre amostragem estratificada e amostragem randômica ou aleatória. Discuta quais são as vantagens e desvantagens de cada uma e de exemplos de casos onde uma abordagem é mais adequada que a outra.
 
+::: callout-tip
+# Resposta
+:::
+
 # 7
 
 Se você treina um modelo de Machine Learning (ou estadístico), como você identificaria se seu modelo tem uma alta variância (overfitting) ou um alto viés (bias, ou underfitting). Caso seu modelo apresenta alta variância, como você resolveria esse problema?
+
+::: callout-tip
+# Resposta
+:::
 
 # 8
 
@@ -380,28 +423,8 @@ Considere o seguinte modelo de regressão:
 -   Salário = 1200+ 500.Idade + 600. Têm Faculdade + 50.Têm Linkedin
 
 Interprete o efeito da Idade na variável salário. Que acontece com as pessoas que não tem faculdade? Considere agora que o desvio padrão do coeficiente da variável "Têm Linkedin" é de 47, por tanto o seu p-valor é \~0.92 (como visto na equação abaixo). O que isso implica para o modelo em questão? Essa variável é relevante?
+
+::: callout-tip
+# Resposta
 :::
-
-```{r}
-#| warning: false
-#| message: false
-
-library(dados)
-library(reactable)
-library(dplyr)
-
-dados_gapminder |>                                  # <1> 
-  select(continente, pais, ano, pib_per_capita) |>  # <2> 
-  reactable(
-    groupBy = "continente",                         # <3>
-    searchable = TRUE,                              # <4>
-    outlined = TRUE,                                # <5>
-    columns = list(ano = colDef(sortable = TRUE)))   # <6>
-```
-
-1.  Base do pacote {dados}
-2.  Selecionando algumas colunas
-3.  Agrupando pela coluna 'continente'
-4.  Inserindo uma busca na tabela
-5.  Linhas na tabela
-6.  Ordem crescente na coluna 'ano'
+:::
