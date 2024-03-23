@@ -328,13 +328,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <p>Qual é a idade média de usuários do sistema por país?</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Resposta
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>SQL<span class="op">&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> `pais`, <span class="fu">ROUND</span>(<span class="fu">AVG</span>(`age`), <span class="dv">2</span>) <span class="kw">AS</span> `media_idade`</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> `tabela_user`</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> `pais`</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p>Qual é o país com a maior quantidade de dinheiro transacionado (considere só transações finalizadas com sucesso ou “SUCCESS”)?</p>
+<p>Como vamos precisar do merge das duas tabelas, vou criar a <strong>tabela_merge</strong> sem algum filtro para facilitar as consultas e não alocar memória desnecessária.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>tabela_A <span class="ot">&lt;-</span> tabela_user <span class="sc">%&gt;%</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                     dplyr<span class="sc">::</span><span class="fu">group_by</span>(pais) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                     dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">media_idade =</span> <span class="fu">round</span>(<span class="fu">mean</span>(age, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),<span class="dv">2</span>))</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># tabela_A %&gt;%</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   show_query()</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>tabela_merge <span class="ot">&lt;-</span> tabela_transactions <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                 dplyr<span class="sc">::</span><span class="fu">left_join</span>(tabela_user, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"user_id"</span> <span class="ot">=</span> <span class="st">"id"</span>)) </span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -349,18 +366,30 @@ Resposta
 
 </div>
 </div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>SQL<span class="op">&gt;</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> `pais`, <span class="fu">ROUND</span>(<span class="fu">AVG</span>(`age`), <span class="dv">2</span>) <span class="kw">AS</span> `media_idade`</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> `tabela_user`</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> `pais`</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>SQL<span class="op">&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  `user_id`,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  `transaction_date`,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  `transaction_id`,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  `transaction_state`,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  `transaction_amount`,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  `data_curta`,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  `age`,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  `pais`</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> (</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">SELECT</span> `q01`.<span class="op">*</span>, <span class="fu">RANK</span>() <span class="kw">OVER</span> (<span class="kw">ORDER</span> <span class="kw">BY</span> `transaction_amount` <span class="kw">DESC</span>) <span class="kw">AS</span> `col01`</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> (</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span> `tabela_transactions`.<span class="op">*</span>, `age`, `pais`</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> `tabela_transactions`</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">LEFT</span> <span class="kw">JOIN</span> `tabela_user`</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>      <span class="kw">ON</span> (`tabela_transactions`.`user_id` <span class="op">=</span> `tabela_user`.`id`)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="kw">AS</span> `q01`</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">WHERE</span> (`transaction_state` <span class="op">=</span> <span class="st">'SUCCESS'</span> <span class="kw">OR</span> `transaction_state` <span class="op">=</span> <span class="st">'sucesso'</span>)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>) <span class="kw">AS</span> `q01`</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> (`col01` <span class="op">&lt;=</span> <span class="dv">1</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<p>Qual é o país com a maior quantidade de dinheiro transacionado (considere só transações finalizadas com sucesso ou “SUCCESS”)?</p>
-<p>Como vamos precisar do merge das duas tabelas, vou criar a <strong>tabela_merge</strong> sem algum filtro para facilitar as consultas e não alocar memória desnecessária.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>tabela_merge <span class="ot">&lt;-</span> tabela_transactions <span class="sc">%&gt;%</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                 dplyr<span class="sc">::</span><span class="fu">left_join</span>(tabela_user, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"user_id"</span> <span class="ot">=</span> <span class="st">"id"</span>)) </span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<p>Qual é o país com maior taxa de fraude em porcentagem respeito ao número de transações totais no país?</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -383,61 +412,24 @@ Resposta
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  `transaction_amount`,</span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  `data_curta`,</span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  `age`,</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  `pais`</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> (</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">SELECT</span> `q01`.<span class="op">*</span>, <span class="fu">RANK</span>() <span class="kw">OVER</span> (<span class="kw">ORDER</span> <span class="kw">BY</span> `transaction_amount` <span class="kw">DESC</span>) <span class="kw">AS</span> `col01`</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> (</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span> `tabela_transactions`.<span class="op">*</span>, `age`, `pais`</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> `tabela_transactions`</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">LEFT</span> <span class="kw">JOIN</span> `tabela_user`</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>      <span class="kw">ON</span> (`tabela_transactions`.`user_id` <span class="op">=</span> `tabela_user`.`id`)</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="kw">AS</span> `q01`</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  <span class="kw">WHERE</span> (`transaction_state` <span class="op">=</span> <span class="st">'SUCCESS'</span> <span class="kw">OR</span> `transaction_state` <span class="op">=</span> <span class="st">'sucesso'</span>)</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>) <span class="kw">AS</span> `q01`</span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> (`col01` <span class="op">&lt;=</span> <span class="dv">1</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
-<p>Qual é o país com maior taxa de fraude em porcentagem respeito ao número de transações totais no país?</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Resposta
-</div>
-</div>
-<div class="callout-body-container callout-body">
-
-</div>
-</div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>SQL<span class="op">&gt;</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  `user_id`,</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  `transaction_date`,</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  `transaction_id`,</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  `transaction_state`,</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  `transaction_amount`,</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  `data_curta`,</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  `age`,</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  `pais`,</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  `taxa`</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> (</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">SELECT</span> `q01`.<span class="op">*</span>, <span class="fu">RANK</span>() <span class="kw">OVER</span> (<span class="kw">ORDER</span> <span class="kw">BY</span> `taxa` <span class="kw">DESC</span>) <span class="kw">AS</span> `col01`</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> (</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>      `q01`.<span class="op">*</span>,</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>      `transaction_amount` <span class="op">/</span> <span class="fu">SUM</span>(`transaction_amount`) <span class="kw">OVER</span> (<span class="kw">PARTITION</span> <span class="kw">BY</span> `transaction_state`) <span class="kw">AS</span> `taxa`</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> (</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>      <span class="kw">SELECT</span> `tabela_transactions`.<span class="op">*</span>, `age`, `pais`</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>      <span class="kw">FROM</span> `tabela_transactions`</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>      <span class="kw">LEFT</span> <span class="kw">JOIN</span> `tabela_user`</span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>        <span class="kw">ON</span> (`tabela_transactions`.`user_id` <span class="op">=</span> `tabela_user`.`id`)</span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    ) <span class="kw">AS</span> `q01`</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  ) <span class="kw">AS</span> `q01`</span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">WHERE</span> (`transaction_state` <span class="op">=</span> <span class="st">'FRAUD'</span>)</span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>) <span class="kw">AS</span> `q01`</span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> (`col01` <span class="op">&lt;=</span> <span class="dv">1</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  `pais`,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  `taxa`</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> (</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">SELECT</span> `q01`.<span class="op">*</span>, <span class="fu">RANK</span>() <span class="kw">OVER</span> (<span class="kw">ORDER</span> <span class="kw">BY</span> `taxa` <span class="kw">DESC</span>) <span class="kw">AS</span> `col01`</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> (</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>      `q01`.<span class="op">*</span>,</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>      `transaction_amount` <span class="op">/</span> <span class="fu">SUM</span>(`transaction_amount`) <span class="kw">OVER</span> (<span class="kw">PARTITION</span> <span class="kw">BY</span> `transaction_state`) <span class="kw">AS</span> `taxa`</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> (</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>      <span class="kw">SELECT</span> `tabela_transactions`.<span class="op">*</span>, `age`, `pais`</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>      <span class="kw">FROM</span> `tabela_transactions`</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>      <span class="kw">LEFT</span> <span class="kw">JOIN</span> `tabela_user`</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>        <span class="kw">ON</span> (`tabela_transactions`.`user_id` <span class="op">=</span> `tabela_user`.`id`)</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    ) <span class="kw">AS</span> `q01`</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>  ) <span class="kw">AS</span> `q01`</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">WHERE</span> (`transaction_state` <span class="op">=</span> <span class="st">'FRAUD'</span>)</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>) <span class="kw">AS</span> `q01`</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> (`col01` <span class="op">&lt;=</span> <span class="dv">1</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
 <p>Na mesma linha da pergunta anterior, responda qual é a faixa de idade de usuários que mais cometem fraude (em percentagem). Separe as faixas etárias em: (&lt;18 anos, 18-30 anos, 30 - 45 anos, 45 - 60 anos, 60 &gt; anos) e considere que para responder essa pergunta, você deverá considerar o fato que um usuário pode ter executado várias transações, das quais poucas (ou muitas) podem ter sido fraude entre as demais.</p>
@@ -454,7 +446,7 @@ Resposta
 
 </div>
 </div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="tabset-1-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-5-tab">
 <p>Imagine que a camada executiva da empresa dona do sistema, precisa criar um Dashboard para monitorar o estado das transações nos últimos 3 dias. Para isso você precisa criar uma query SQL que calcule o número e dinheiro das transações não finalizadas, número e dinheiro de transações finalizadas com sucesso (SUCCESS), o número e dinheiro de transações canceladas (CANCELLED), o número e dinheiro de fraudes (FRAUD), agrupado por país, nos 3 dias anteriores de quando o executivo da empresa consulte seu Dashboard.</p>
@@ -471,36 +463,36 @@ Resposta
 
 </div>
 </div>
-<div class="sourceCode" id="cb9"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>SQL<span class="op">&gt;</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  `q01`.<span class="op">*</span>,</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">OVER</span> `win1` <span class="kw">AS</span> `n_transacoes`,</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">SUM</span>(`transaction_amount`) <span class="kw">OVER</span> `win1` <span class="kw">AS</span> `dinheiro`</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> (</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">SELECT</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    `user_id`,</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    `transaction_date`,</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    `transaction_id`,</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">CASE</span> <span class="cf">WHEN</span> (`transaction_state` <span class="op">=</span> <span class="st">'sucesso'</span>) <span class="cf">THEN</span> <span class="st">'SUCCESS'</span> <span class="cf">WHEN</span> <span class="kw">NOT</span> (`transaction_state` <span class="op">=</span> <span class="st">'sucesso'</span>) <span class="cf">THEN</span> `transaction_state` <span class="cf">END</span> <span class="kw">AS</span> `transaction_state`,</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    `transaction_amount`,</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    `data_curta`,</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    `age`,</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    `pais`,</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    `tres_n`</span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> (</span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>      `q01`.<span class="op">*</span>,</span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>      <span class="cf">CASE</span> <span class="cf">WHEN</span> ((<span class="dt">DATE</span>(<span class="st">'now'</span>) <span class="op">-</span> <span class="fl">1.0</span>) <span class="op">=</span> `data_curta`) <span class="cf">THEN</span> <span class="fl">1.0</span> <span class="cf">WHEN</span> <span class="kw">NOT</span> ((<span class="dt">DATE</span>(<span class="st">'now'</span>) <span class="op">-</span> <span class="fl">1.0</span>) <span class="op">=</span> `data_curta`) <span class="cf">THEN</span> (<span class="cf">CASE</span> <span class="cf">WHEN</span> ((<span class="dt">DATE</span>(<span class="st">'now'</span>) <span class="op">-</span> <span class="fl">2.0</span>) <span class="op">=</span> `data_curta`) <span class="cf">THEN</span> <span class="fl">1.0</span> <span class="cf">WHEN</span> <span class="kw">NOT</span> ((<span class="dt">DATE</span>(<span class="st">'now'</span>) <span class="op">-</span> <span class="fl">2.0</span>) <span class="op">=</span> `data_curta`) <span class="cf">THEN</span> (<span class="cf">CASE</span> <span class="cf">WHEN</span> ((<span class="dt">DATE</span>(<span class="st">'now'</span>) <span class="op">-</span> <span class="fl">2.0</span>) <span class="op">=</span> `data_curta`) <span class="cf">THEN</span> <span class="fl">1.0</span> <span class="cf">WHEN</span> <span class="kw">NOT</span> ((<span class="dt">DATE</span>(<span class="st">'now'</span>) <span class="op">-</span> <span class="fl">2.0</span>) <span class="op">=</span> `data_curta`) <span class="cf">THEN</span> <span class="fl">0.0</span> <span class="cf">END</span>) <span class="cf">END</span>) <span class="cf">END</span> <span class="kw">AS</span> `tres_n`</span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> (</span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>      <span class="kw">SELECT</span> `tabela_transactions`.<span class="op">*</span>, `age`, `pais`</span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>      <span class="kw">FROM</span> `tabela_transactions`</span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>      <span class="kw">LEFT</span> <span class="kw">JOIN</span> `tabela_user`</span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>        <span class="kw">ON</span> (`tabela_transactions`.`user_id` <span class="op">=</span> `tabela_user`.`id`)</span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    ) <span class="kw">AS</span> `q01`</span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>  ) <span class="kw">AS</span> `q01`</span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>  <span class="kw">WHERE</span> (`tres_n` <span class="op">=</span> <span class="fl">1.0</span>)</span>
-<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>) <span class="kw">AS</span> `q01`</span>
-<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>WINDOW `win1` <span class="kw">AS</span> (<span class="kw">PARTITION</span> <span class="kw">BY</span> `pais`, `transaction_state`)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>SQL<span class="op">&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  `q01`.<span class="op">*</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">OVER</span> `win1` <span class="kw">AS</span> `n_transacoes`,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">SUM</span>(`transaction_amount`) <span class="kw">OVER</span> `win1` <span class="kw">AS</span> `dinheiro`</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> (</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">SELECT</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    `user_id`,</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    `transaction_date`,</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    `transaction_id`,</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">CASE</span> <span class="cf">WHEN</span> (`transaction_state` <span class="op">=</span> <span class="st">'sucesso'</span>) <span class="cf">THEN</span> <span class="st">'SUCCESS'</span> <span class="cf">WHEN</span> <span class="kw">NOT</span> (`transaction_state` <span class="op">=</span> <span class="st">'sucesso'</span>) <span class="cf">THEN</span> `transaction_state` <span class="cf">END</span> <span class="kw">AS</span> `transaction_state`,</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    `transaction_amount`,</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    `data_curta`,</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    `age`,</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    `pais`,</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    `tres_n`</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> (</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>      `q01`.<span class="op">*</span>,</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>      <span class="cf">CASE</span> <span class="cf">WHEN</span> ((<span class="dt">DATE</span>(<span class="st">'now'</span>) <span class="op">-</span> <span class="fl">1.0</span>) <span class="op">=</span> `data_curta`) <span class="cf">THEN</span> <span class="fl">1.0</span> <span class="cf">WHEN</span> <span class="kw">NOT</span> ((<span class="dt">DATE</span>(<span class="st">'now'</span>) <span class="op">-</span> <span class="fl">1.0</span>) <span class="op">=</span> `data_curta`) <span class="cf">THEN</span> (<span class="cf">CASE</span> <span class="cf">WHEN</span> ((<span class="dt">DATE</span>(<span class="st">'now'</span>) <span class="op">-</span> <span class="fl">2.0</span>) <span class="op">=</span> `data_curta`) <span class="cf">THEN</span> <span class="fl">1.0</span> <span class="cf">WHEN</span> <span class="kw">NOT</span> ((<span class="dt">DATE</span>(<span class="st">'now'</span>) <span class="op">-</span> <span class="fl">2.0</span>) <span class="op">=</span> `data_curta`) <span class="cf">THEN</span> (<span class="cf">CASE</span> <span class="cf">WHEN</span> ((<span class="dt">DATE</span>(<span class="st">'now'</span>) <span class="op">-</span> <span class="fl">2.0</span>) <span class="op">=</span> `data_curta`) <span class="cf">THEN</span> <span class="fl">1.0</span> <span class="cf">WHEN</span> <span class="kw">NOT</span> ((<span class="dt">DATE</span>(<span class="st">'now'</span>) <span class="op">-</span> <span class="fl">2.0</span>) <span class="op">=</span> `data_curta`) <span class="cf">THEN</span> <span class="fl">0.0</span> <span class="cf">END</span>) <span class="cf">END</span>) <span class="cf">END</span> <span class="kw">AS</span> `tres_n`</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> (</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>      <span class="kw">SELECT</span> `tabela_transactions`.<span class="op">*</span>, `age`, `pais`</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>      <span class="kw">FROM</span> `tabela_transactions`</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>      <span class="kw">LEFT</span> <span class="kw">JOIN</span> `tabela_user`</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>        <span class="kw">ON</span> (`tabela_transactions`.`user_id` <span class="op">=</span> `tabela_user`.`id`)</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    ) <span class="kw">AS</span> `q01`</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>  ) <span class="kw">AS</span> `q01`</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>  <span class="kw">WHERE</span> (`tres_n` <span class="op">=</span> <span class="fl">1.0</span>)</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>) <span class="kw">AS</span> `q01`</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>WINDOW `win1` <span class="kw">AS</span> (<span class="kw">PARTITION</span> <span class="kw">BY</span> `pais`, `transaction_state`)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
@@ -527,7 +519,25 @@ Resposta
 </div>
 </div>
 <div class="callout-body-container callout-body">
-
+<p>Esse é um claro problema de análise combinatória com reposição/reposição.</p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itertools <span class="im">import</span> combinations_with_replacement</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtem todas as combinações de [1, 2, 3] e tamanho 2</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>comb <span class="op">=</span> combinations_with_replacement([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>], <span class="dv">2</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Imprime as combinações</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">list</span>(comb):</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(i)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(1, 1)
+(1, 2)
+(1, 3)
+(2, 2)
+(2, 3)
+(3, 3)</code></pre>
 </div>
 </div>
 </div>
@@ -543,7 +553,22 @@ Resposta
 </div>
 </div>
 <div class="callout-body-container callout-body">
-
+<p>Esse também é um claro problema de análise combinatória, mas, nesse caso, é um problema em que <strong>não há reposição</strong>.</p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itertools <span class="im">import</span> combinations</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtem todas as permutações de {@,d,2,b}  </span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>comb <span class="op">=</span> combinations([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>], <span class="dv">2</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># imprime todas as combinações</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">list</span>(comb):</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span> (i)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(1, 2)
+(1, 3)
+(2, 3)</code></pre>
 </div>
 </div>
 </div>
@@ -1353,431 +1378,457 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Código fonte</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb10" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Teste Técnico" # Título do relatório</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "**Posição de Data Analyst Jr - Buraco Jogatina**"</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "Fernanda Kelly R. Silva" # Autor(a)</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="an">lang:</span><span class="co"> pt </span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "`r format(Sys.Date())`" </span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="an">date-format:</span><span class="co"> short </span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="an">toc:</span><span class="co"> true </span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span><span class="co"> </span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">    html: </span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">      #css: ["custom.css"] </span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co">      code-fold: false </span></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co">      code-tools: true  </span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co">      theme: </span></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="co">        light: cosmo</span></span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co">        dark: superhero </span></span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="co">#title-block-banner: "#874a9c" </span></span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="an">code-annotations:</span><span class="co"> hover </span></span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span></span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="co">  warning: false</span></span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="co">  message: false</span></span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a><span class="fu"># Tarefa 01: SQL</span></span>
-<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>Um sistema de pagamentos, registra as transações dos seus usuários em duas tabelas:</span>
-<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>Users: Contém o registro de usuários do sistema. Os seus atributos são:</span>
-<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>id: Identificador único de usuário</span>
-<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>age (idade): em anos</span>
-<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>país de residência: país onde o usuários indicou que reside</span>
-<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>Transactions: Que contém o registro de todas as transações que os usuários realizam através do sistema.</span>
-<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>transaction_id: Identificador único da transação</span>
-<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>transaction_date: Data na qual a transação foi realizada. O tipo é timestamp, ou seja, é um tipo de data que contém o ano, mês, dia, hora, minuto e segundos.</span>
-<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>user_id: Identificador do usuário que realizou a transação (é uma chave externa à tabela users)</span>
-<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>transaction_state: Campo que indica o estado da transação que pode ser *INITIATED*, *SUCCESS*, *FRAUD* or *CANCELLED*.</span>
-<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>transaction_amount: Valor da transação em USD</span>
-<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>Com estes dados disponíveis, precisamos gerar queries SQL para responder às seguintes perguntas. **Para fins didáticos, criei esses bancos de dados para simular a resolução das questões.**</span>
-<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a><span class="fu">## tabela_transactions</span></span>
-<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb10-57"><a href="#cb10-57" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb10-58"><a href="#cb10-58" aria-hidden="true" tabindex="-1"></a>tabela_transactions <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
-<span id="cb10-59"><a href="#cb10-59" aria-hidden="true" tabindex="-1"></a>                         <span class="sc">~</span>user_id, <span class="sc">~</span>transaction_date, <span class="sc">~</span>transaction_id, <span class="sc">~</span>transaction_state, <span class="sc">~</span>transaction_amount,</span>
-<span id="cb10-60"><a href="#cb10-60" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"1"</span>, <span class="st">"2024-03-12 15:08:49 UTC"</span>, <span class="st">"255"</span>, <span class="st">"sucesso"</span>, <span class="st">"119.65"</span>,</span>
-<span id="cb10-61"><a href="#cb10-61" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"2"</span>, <span class="st">"2024-03-23 20:08:03 UTC"</span>, <span class="st">"585"</span>, <span class="st">"INITIATED"</span>, <span class="st">"22.63"</span>,</span>
-<span id="cb10-62"><a href="#cb10-62" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"3"</span>, <span class="st">"2024-03-18 10:56:25 UTC"</span>, <span class="st">"178"</span>, <span class="st">"CANCELLED"</span>, <span class="st">"225.87"</span>,</span>
-<span id="cb10-63"><a href="#cb10-63" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"4"</span>, <span class="st">"2024-03-12 08:21:32 UTC"</span>, <span class="st">"887"</span>, <span class="st">"SUCCESS"</span>, <span class="st">"16.58"</span>,</span>
-<span id="cb10-64"><a href="#cb10-64" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"5"</span>, <span class="st">"2024-03-30 05:24:49 UTC"</span>, <span class="st">"569"</span>, <span class="st">"FRAUD"</span>, <span class="st">"1225.89"</span>,</span>
-<span id="cb10-65"><a href="#cb10-65" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"6"</span>, <span class="st">"2024-03-21 12:32:51 UTC"</span>, <span class="st">"789"</span>, <span class="st">"SUCCESS"</span>, <span class="st">"59.90"</span>,</span>
-<span id="cb10-66"><a href="#cb10-66" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"7"</span>, <span class="st">"2024-03-10 08:25:49 UTC"</span>, <span class="st">"236"</span>, <span class="st">"FRAUD"</span>, <span class="st">"256.98"</span>,</span>
-<span id="cb10-67"><a href="#cb10-67" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"7"</span>, <span class="st">"2024-03-10 05:21:49 UTC"</span>, <span class="st">"458"</span>, <span class="st">"FRAUD"</span>, <span class="st">"986.69"</span>,</span>
-<span id="cb10-68"><a href="#cb10-68" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"7"</span>, <span class="st">"2024-03-09 01:08:49 UTC"</span>, <span class="st">"125"</span>, <span class="st">"FRAUD"</span>, <span class="st">"1256.89"</span>,</span>
-<span id="cb10-69"><a href="#cb10-69" aria-hidden="true" tabindex="-1"></a>                         ) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-70"><a href="#cb10-70" aria-hidden="true" tabindex="-1"></a>                      dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">transaction_amount =</span> <span class="fu">as.numeric</span>(transaction_amount),</span>
-<span id="cb10-71"><a href="#cb10-71" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">data_curta =</span> <span class="fu">as.Date</span>(transaction_date)) </span>
-<span id="cb10-72"><a href="#cb10-72" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-73"><a href="#cb10-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-76"><a href="#cb10-76" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb10-77"><a href="#cb10-77" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(tabela_transactions)</span>
-<span id="cb10-78"><a href="#cb10-78" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-79"><a href="#cb10-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-80"><a href="#cb10-80" aria-hidden="true" tabindex="-1"></a><span class="fu">## tabela_user</span></span>
-<span id="cb10-81"><a href="#cb10-81" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-84"><a href="#cb10-84" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb10-85"><a href="#cb10-85" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb10-86"><a href="#cb10-86" aria-hidden="true" tabindex="-1"></a>tabela_user <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
-<span id="cb10-87"><a href="#cb10-87" aria-hidden="true" tabindex="-1"></a>                         <span class="sc">~</span>id, <span class="sc">~</span>age, <span class="sc">~</span>pais, </span>
-<span id="cb10-88"><a href="#cb10-88" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"1"</span>, <span class="st">"18"</span>, <span class="st">"Brasil"</span>,</span>
-<span id="cb10-89"><a href="#cb10-89" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"2"</span>, <span class="st">"29"</span>, <span class="st">"Estados Unidos"</span>,</span>
-<span id="cb10-90"><a href="#cb10-90" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"3"</span>, <span class="st">"55"</span>, <span class="st">"África do Sul"</span>,</span>
-<span id="cb10-91"><a href="#cb10-91" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"4"</span>, <span class="st">"32"</span>, <span class="st">"Bolívia"</span>,</span>
-<span id="cb10-92"><a href="#cb10-92" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"5"</span>, <span class="st">"60"</span>, <span class="st">"Brasil"</span>,</span>
-<span id="cb10-93"><a href="#cb10-93" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"6"</span>, <span class="st">"42"</span>, <span class="st">"Brasil"</span>,</span>
-<span id="cb10-94"><a href="#cb10-94" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"7"</span>, <span class="st">"38"</span>, <span class="st">"África do Sul"</span>,</span>
-<span id="cb10-95"><a href="#cb10-95" aria-hidden="true" tabindex="-1"></a>                         ) </span>
-<span id="cb10-96"><a href="#cb10-96" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-97"><a href="#cb10-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-100"><a href="#cb10-100" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb10-101"><a href="#cb10-101" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(tabela_user)</span>
-<span id="cb10-102"><a href="#cb10-102" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-103"><a href="#cb10-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-104"><a href="#cb10-104" aria-hidden="true" tabindex="-1"></a>Para que a experiência do SQL seja real, vou conectar as bases com o SQLite.</span>
-<span id="cb10-105"><a href="#cb10-105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-108"><a href="#cb10-108" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb10-109"><a href="#cb10-109" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dbplyr)</span>
-<span id="cb10-110"><a href="#cb10-110" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb10-111"><a href="#cb10-111" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-112"><a href="#cb10-112" aria-hidden="true" tabindex="-1"></a>con <span class="ot">&lt;-</span> DBI<span class="sc">::</span><span class="fu">dbConnect</span>(RSQLite<span class="sc">::</span><span class="fu">SQLite</span>(), <span class="st">":memory:"</span>)</span>
-<span id="cb10-113"><a href="#cb10-113" aria-hidden="true" tabindex="-1"></a><span class="fu">copy_to</span>(con, tabela_user)</span>
-<span id="cb10-114"><a href="#cb10-114" aria-hidden="true" tabindex="-1"></a><span class="fu">copy_to</span>(con, tabela_transactions)</span>
-<span id="cb10-115"><a href="#cb10-115" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-116"><a href="#cb10-116" aria-hidden="true" tabindex="-1"></a>tabela_user <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con, <span class="st">"tabela_user"</span>)                 <span class="co"># &lt;1&gt;</span></span>
-<span id="cb10-117"><a href="#cb10-117" aria-hidden="true" tabindex="-1"></a>tabela_transactions <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con, <span class="st">"tabela_transactions"</span>) <span class="co"># &lt;2&gt;</span></span>
-<span id="cb10-118"><a href="#cb10-118" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-119"><a href="#cb10-119" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-120"><a href="#cb10-120" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Conectando a base de dados {tabela_user} com o SQLite</span>
-<span id="cb10-121"><a href="#cb10-121" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Conectando a base de dados {tabela_transactions} com o SQLite</span>
-<span id="cb10-122"><a href="#cb10-122" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-123"><a href="#cb10-123" aria-hidden="true" tabindex="-1"></a>::: panel-tabset</span>
-<span id="cb10-124"><a href="#cb10-124" aria-hidden="true" tabindex="-1"></a><span class="fu"># A</span></span>
-<span id="cb10-125"><a href="#cb10-125" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-126"><a href="#cb10-126" aria-hidden="true" tabindex="-1"></a>Qual é a idade média de usuários do sistema por país?</span>
-<span id="cb10-127"><a href="#cb10-127" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-130"><a href="#cb10-130" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb10-131"><a href="#cb10-131" aria-hidden="true" tabindex="-1"></a>tabela_A <span class="ot">&lt;-</span> tabela_user <span class="sc">%&gt;%</span></span>
-<span id="cb10-132"><a href="#cb10-132" aria-hidden="true" tabindex="-1"></a>                     dplyr<span class="sc">::</span><span class="fu">group_by</span>(pais) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-133"><a href="#cb10-133" aria-hidden="true" tabindex="-1"></a>                     dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">media_idade =</span> <span class="fu">round</span>(<span class="fu">mean</span>(age, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),<span class="dv">2</span>))</span>
-<span id="cb10-134"><a href="#cb10-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-135"><a href="#cb10-135" aria-hidden="true" tabindex="-1"></a><span class="co"># tabela_A %&gt;%</span></span>
-<span id="cb10-136"><a href="#cb10-136" aria-hidden="true" tabindex="-1"></a><span class="co">#   show_query()</span></span>
-<span id="cb10-137"><a href="#cb10-137" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-138"><a href="#cb10-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-139"><a href="#cb10-139" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb10-140"><a href="#cb10-140" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb10-141"><a href="#cb10-141" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb10-142"><a href="#cb10-142" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-143"><a href="#cb10-143" aria-hidden="true" tabindex="-1"></a><span class="in">``` SQL</span></span>
-<span id="cb10-144"><a href="#cb10-144" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>SQL<span class="op">&gt;</span></span>
-<span id="cb10-145"><a href="#cb10-145" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="st">`pais`</span>, <span class="fu">ROUND</span>(<span class="fu">AVG</span>(<span class="st">`age`</span>), <span class="dv">2</span>) <span class="kw">AS</span> <span class="st">`media_idade`</span></span>
-<span id="cb10-146"><a href="#cb10-146" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> <span class="st">`tabela_user`</span></span>
-<span id="cb10-147"><a href="#cb10-147" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> <span class="st">`pais`</span></span>
-<span id="cb10-148"><a href="#cb10-148" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-149"><a href="#cb10-149" aria-hidden="true" tabindex="-1"></a><span class="fu"># B</span></span>
-<span id="cb10-150"><a href="#cb10-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-151"><a href="#cb10-151" aria-hidden="true" tabindex="-1"></a>Qual é o país com a maior quantidade de dinheiro transacionado (considere só transações finalizadas com sucesso ou "SUCCESS")?</span>
-<span id="cb10-152"><a href="#cb10-152" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-153"><a href="#cb10-153" aria-hidden="true" tabindex="-1"></a>Como vamos precisar do merge das duas tabelas, vou criar a **tabela_merge** sem algum filtro para facilitar as consultas e não alocar memória desnecessária.</span>
-<span id="cb10-154"><a href="#cb10-154" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-157"><a href="#cb10-157" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb10-158"><a href="#cb10-158" aria-hidden="true" tabindex="-1"></a>tabela_merge <span class="ot">&lt;-</span> tabela_transactions <span class="sc">%&gt;%</span></span>
-<span id="cb10-159"><a href="#cb10-159" aria-hidden="true" tabindex="-1"></a>                 dplyr<span class="sc">::</span><span class="fu">left_join</span>(tabela_user, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"user_id"</span> <span class="ot">=</span> <span class="st">"id"</span>)) </span>
-<span id="cb10-160"><a href="#cb10-160" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-161"><a href="#cb10-161" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-164"><a href="#cb10-164" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb10-165"><a href="#cb10-165" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb10-166"><a href="#cb10-166" aria-hidden="true" tabindex="-1"></a>tabela_B <span class="ot">&lt;-</span> tabela_merge <span class="sc">%&gt;%</span> </span>
-<span id="cb10-167"><a href="#cb10-167" aria-hidden="true" tabindex="-1"></a>                  dplyr<span class="sc">::</span><span class="fu">filter</span>(transaction_state <span class="sc">==</span> <span class="st">"SUCCESS"</span> <span class="sc">|</span> transaction_state <span class="sc">==</span> <span class="st">"sucesso"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-168"><a href="#cb10-168" aria-hidden="true" tabindex="-1"></a>                  dplyr<span class="sc">::</span><span class="fu">slice_max</span>(transaction_amount)</span>
-<span id="cb10-169"><a href="#cb10-169" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-170"><a href="#cb10-170" aria-hidden="true" tabindex="-1"></a><span class="co"># tabela_B %&gt;%</span></span>
-<span id="cb10-171"><a href="#cb10-171" aria-hidden="true" tabindex="-1"></a><span class="co">#   show_query()</span></span>
-<span id="cb10-172"><a href="#cb10-172" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-173"><a href="#cb10-173" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-174"><a href="#cb10-174" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb10-175"><a href="#cb10-175" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb10-176"><a href="#cb10-176" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb10-177"><a href="#cb10-177" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-178"><a href="#cb10-178" aria-hidden="true" tabindex="-1"></a><span class="in">``` SQL</span></span>
-<span id="cb10-179"><a href="#cb10-179" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>SQL<span class="op">&gt;</span></span>
-<span id="cb10-180"><a href="#cb10-180" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb10-181"><a href="#cb10-181" aria-hidden="true" tabindex="-1"></a>  <span class="st">`user_id`</span>,</span>
-<span id="cb10-182"><a href="#cb10-182" aria-hidden="true" tabindex="-1"></a>  <span class="st">`transaction_date`</span>,</span>
-<span id="cb10-183"><a href="#cb10-183" aria-hidden="true" tabindex="-1"></a>  <span class="st">`transaction_id`</span>,</span>
-<span id="cb10-184"><a href="#cb10-184" aria-hidden="true" tabindex="-1"></a>  <span class="st">`transaction_state`</span>,</span>
-<span id="cb10-185"><a href="#cb10-185" aria-hidden="true" tabindex="-1"></a>  <span class="st">`transaction_amount`</span>,</span>
-<span id="cb10-186"><a href="#cb10-186" aria-hidden="true" tabindex="-1"></a>  <span class="st">`data_curta`</span>,</span>
-<span id="cb10-187"><a href="#cb10-187" aria-hidden="true" tabindex="-1"></a>  <span class="st">`age`</span>,</span>
-<span id="cb10-188"><a href="#cb10-188" aria-hidden="true" tabindex="-1"></a>  <span class="st">`pais`</span></span>
-<span id="cb10-189"><a href="#cb10-189" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> (</span>
-<span id="cb10-190"><a href="#cb10-190" aria-hidden="true" tabindex="-1"></a>  <span class="kw">SELECT</span> <span class="st">`q01`</span><span class="ch">.</span><span class="op">*</span>, RANK() OVER (<span class="kw">ORDER</span> <span class="kw">BY</span> <span class="st">`transaction_amount`</span> <span class="kw">DESC</span>) <span class="kw">AS</span> <span class="st">`col01`</span></span>
-<span id="cb10-191"><a href="#cb10-191" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> (</span>
-<span id="cb10-192"><a href="#cb10-192" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span> <span class="st">`tabela_transactions`</span><span class="ch">.</span><span class="op">*</span>, <span class="st">`age`</span>, <span class="st">`pais`</span></span>
-<span id="cb10-193"><a href="#cb10-193" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> <span class="st">`tabela_transactions`</span></span>
-<span id="cb10-194"><a href="#cb10-194" aria-hidden="true" tabindex="-1"></a>    <span class="kw">LEFT</span> <span class="kw">JOIN</span> <span class="st">`tabela_user`</span></span>
-<span id="cb10-195"><a href="#cb10-195" aria-hidden="true" tabindex="-1"></a>      <span class="kw">ON</span> (<span class="st">`tabela_transactions`</span><span class="ch">.</span><span class="st">`user_id`</span> <span class="op">=</span> <span class="st">`tabela_user`</span><span class="ch">.</span><span class="st">`id`</span>)</span>
-<span id="cb10-196"><a href="#cb10-196" aria-hidden="true" tabindex="-1"></a>  ) <span class="kw">AS</span> <span class="st">`q01`</span></span>
-<span id="cb10-197"><a href="#cb10-197" aria-hidden="true" tabindex="-1"></a>  <span class="kw">WHERE</span> (<span class="st">`transaction_state`</span> <span class="op">=</span> <span class="st">'SUCCESS'</span> <span class="kw">OR</span> <span class="st">`transaction_state`</span> <span class="op">=</span> <span class="st">'sucesso'</span>)</span>
-<span id="cb10-198"><a href="#cb10-198" aria-hidden="true" tabindex="-1"></a>) <span class="kw">AS</span> <span class="st">`q01`</span></span>
-<span id="cb10-199"><a href="#cb10-199" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> (<span class="st">`col01`</span> <span class="op">&lt;=</span> <span class="dv">1</span>)</span>
-<span id="cb10-200"><a href="#cb10-200" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-201"><a href="#cb10-201" aria-hidden="true" tabindex="-1"></a><span class="fu"># C</span></span>
-<span id="cb10-202"><a href="#cb10-202" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-203"><a href="#cb10-203" aria-hidden="true" tabindex="-1"></a>Qual é o país com maior taxa de fraude em porcentagem respeito ao número de transações totais no país?</span>
-<span id="cb10-204"><a href="#cb10-204" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-207"><a href="#cb10-207" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb10-208"><a href="#cb10-208" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb10-209"><a href="#cb10-209" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
-<span id="cb10-210"><a href="#cb10-210" aria-hidden="true" tabindex="-1"></a>tabela_C <span class="ot">&lt;-</span> tabela_merge <span class="sc">%&gt;%</span> </span>
-<span id="cb10-211"><a href="#cb10-211" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">group_by</span>(transaction_state) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-212"><a href="#cb10-212" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">taxa =</span> transaction_amount<span class="sc">/</span><span class="fu">sum</span>(transaction_amount)) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-213"><a href="#cb10-213" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb10-214"><a href="#cb10-214" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">filter</span>(transaction_state <span class="sc">==</span> <span class="st">"FRAUD"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-215"><a href="#cb10-215" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">slice_max</span>(taxa)</span>
-<span id="cb10-216"><a href="#cb10-216" aria-hidden="true" tabindex="-1"></a><span class="co"># tabela_C %&gt;%</span></span>
-<span id="cb10-217"><a href="#cb10-217" aria-hidden="true" tabindex="-1"></a><span class="co">#   show_query()</span></span>
-<span id="cb10-218"><a href="#cb10-218" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-219"><a href="#cb10-219" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-220"><a href="#cb10-220" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb10-221"><a href="#cb10-221" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb10-222"><a href="#cb10-222" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb10-223"><a href="#cb10-223" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-224"><a href="#cb10-224" aria-hidden="true" tabindex="-1"></a><span class="in">``` SQL</span></span>
-<span id="cb10-225"><a href="#cb10-225" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>SQL<span class="op">&gt;</span></span>
-<span id="cb10-226"><a href="#cb10-226" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb10-227"><a href="#cb10-227" aria-hidden="true" tabindex="-1"></a>  <span class="st">`user_id`</span>,</span>
-<span id="cb10-228"><a href="#cb10-228" aria-hidden="true" tabindex="-1"></a>  <span class="st">`transaction_date`</span>,</span>
-<span id="cb10-229"><a href="#cb10-229" aria-hidden="true" tabindex="-1"></a>  <span class="st">`transaction_id`</span>,</span>
-<span id="cb10-230"><a href="#cb10-230" aria-hidden="true" tabindex="-1"></a>  <span class="st">`transaction_state`</span>,</span>
-<span id="cb10-231"><a href="#cb10-231" aria-hidden="true" tabindex="-1"></a>  <span class="st">`transaction_amount`</span>,</span>
-<span id="cb10-232"><a href="#cb10-232" aria-hidden="true" tabindex="-1"></a>  <span class="st">`data_curta`</span>,</span>
-<span id="cb10-233"><a href="#cb10-233" aria-hidden="true" tabindex="-1"></a>  <span class="st">`age`</span>,</span>
-<span id="cb10-234"><a href="#cb10-234" aria-hidden="true" tabindex="-1"></a>  <span class="st">`pais`</span>,</span>
-<span id="cb10-235"><a href="#cb10-235" aria-hidden="true" tabindex="-1"></a>  <span class="st">`taxa`</span></span>
-<span id="cb10-236"><a href="#cb10-236" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> (</span>
-<span id="cb10-237"><a href="#cb10-237" aria-hidden="true" tabindex="-1"></a>  <span class="kw">SELECT</span> <span class="st">`q01`</span><span class="ch">.</span><span class="op">*</span>, RANK() OVER (<span class="kw">ORDER</span> <span class="kw">BY</span> <span class="st">`taxa`</span> <span class="kw">DESC</span>) <span class="kw">AS</span> <span class="st">`col01`</span></span>
-<span id="cb10-238"><a href="#cb10-238" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> (</span>
-<span id="cb10-239"><a href="#cb10-239" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span></span>
-<span id="cb10-240"><a href="#cb10-240" aria-hidden="true" tabindex="-1"></a>      <span class="st">`q01`</span><span class="ch">.</span><span class="op">*</span>,</span>
-<span id="cb10-241"><a href="#cb10-241" aria-hidden="true" tabindex="-1"></a>      <span class="st">`transaction_amount`</span> <span class="op">/</span> <span class="fu">SUM</span>(<span class="st">`transaction_amount`</span>) OVER (PARTITION <span class="kw">BY</span> <span class="st">`transaction_state`</span>) <span class="kw">AS</span> <span class="st">`taxa`</span></span>
-<span id="cb10-242"><a href="#cb10-242" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> (</span>
-<span id="cb10-243"><a href="#cb10-243" aria-hidden="true" tabindex="-1"></a>      <span class="kw">SELECT</span> <span class="st">`tabela_transactions`</span><span class="ch">.</span><span class="op">*</span>, <span class="st">`age`</span>, <span class="st">`pais`</span></span>
-<span id="cb10-244"><a href="#cb10-244" aria-hidden="true" tabindex="-1"></a>      <span class="kw">FROM</span> <span class="st">`tabela_transactions`</span></span>
-<span id="cb10-245"><a href="#cb10-245" aria-hidden="true" tabindex="-1"></a>      <span class="kw">LEFT</span> <span class="kw">JOIN</span> <span class="st">`tabela_user`</span></span>
-<span id="cb10-246"><a href="#cb10-246" aria-hidden="true" tabindex="-1"></a>        <span class="kw">ON</span> (<span class="st">`tabela_transactions`</span><span class="ch">.</span><span class="st">`user_id`</span> <span class="op">=</span> <span class="st">`tabela_user`</span><span class="ch">.</span><span class="st">`id`</span>)</span>
-<span id="cb10-247"><a href="#cb10-247" aria-hidden="true" tabindex="-1"></a>    ) <span class="kw">AS</span> <span class="st">`q01`</span></span>
-<span id="cb10-248"><a href="#cb10-248" aria-hidden="true" tabindex="-1"></a>  ) <span class="kw">AS</span> <span class="st">`q01`</span></span>
-<span id="cb10-249"><a href="#cb10-249" aria-hidden="true" tabindex="-1"></a>  <span class="kw">WHERE</span> (<span class="st">`transaction_state`</span> <span class="op">=</span> <span class="st">'FRAUD'</span>)</span>
-<span id="cb10-250"><a href="#cb10-250" aria-hidden="true" tabindex="-1"></a>) <span class="kw">AS</span> <span class="st">`q01`</span></span>
-<span id="cb10-251"><a href="#cb10-251" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> (<span class="st">`col01`</span> <span class="op">&lt;=</span> <span class="dv">1</span>)</span>
-<span id="cb10-252"><a href="#cb10-252" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-253"><a href="#cb10-253" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-254"><a href="#cb10-254" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-255"><a href="#cb10-255" aria-hidden="true" tabindex="-1"></a><span class="fu"># D</span></span>
-<span id="cb10-256"><a href="#cb10-256" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-257"><a href="#cb10-257" aria-hidden="true" tabindex="-1"></a>Na mesma linha da pergunta anterior, responda qual é a faixa de idade de usuários que mais cometem fraude (em percentagem). Separe as faixas etárias em: (<span class="sc">\&lt;</span>18 anos, 18-30 anos, 30 - 45 anos, 45 - 60 anos, 60 <span class="sc">\&gt;</span> anos) e considere que para responder essa pergunta, você deverá considerar o fato que um usuário pode ter executado várias transações, das quais poucas (ou muitas) podem ter sido fraude entre as demais.</span>
-<span id="cb10-258"><a href="#cb10-258" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-261"><a href="#cb10-261" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb10-262"><a href="#cb10-262" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb10-263"><a href="#cb10-263" aria-hidden="true" tabindex="-1"></a>tabela_D <span class="ot">&lt;-</span> tabela_merge <span class="sc">%&gt;%</span> </span>
-<span id="cb10-264"><a href="#cb10-264" aria-hidden="true" tabindex="-1"></a>             dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">age_cat =</span> dplyr<span class="sc">::</span><span class="fu">case_when</span>(age <span class="sc">&lt;</span> <span class="dv">18</span> <span class="sc">~</span> <span class="st">"menor que 18 anos"</span>,</span>
-<span id="cb10-265"><a href="#cb10-265" aria-hidden="true" tabindex="-1"></a>                                                      age <span class="sc">&gt;=</span> <span class="dv">18</span> <span class="sc">&amp;</span> age <span class="sc">&lt;</span> <span class="dv">30</span> <span class="sc">~</span> <span class="st">"18-29 anos"</span>,</span>
-<span id="cb10-266"><a href="#cb10-266" aria-hidden="true" tabindex="-1"></a>                                                      age <span class="sc">&gt;=</span> <span class="dv">30</span> <span class="sc">&amp;</span> age <span class="sc">&lt;</span> <span class="dv">45</span> <span class="sc">~</span> <span class="st">"30-44 anos"</span>,</span>
-<span id="cb10-267"><a href="#cb10-267" aria-hidden="true" tabindex="-1"></a>                                                      age <span class="sc">&gt;=</span> <span class="dv">45</span> <span class="sc">&amp;</span> age <span class="sc">&lt;</span> <span class="dv">60</span> <span class="sc">~</span> <span class="st">"45-59 anos"</span>,</span>
-<span id="cb10-268"><a href="#cb10-268" aria-hidden="true" tabindex="-1"></a>                                                      age <span class="sc">&gt;=</span> <span class="dv">60</span>  <span class="sc">~</span> <span class="st">"maior igual a 60 anos"</span>),</span>
-<span id="cb10-269"><a href="#cb10-269" aria-hidden="true" tabindex="-1"></a>                           <span class="at">taxa_idade =</span> dplyr<span class="sc">::</span><span class="fu">if_else</span>(transaction_state <span class="sc">==</span> <span class="st">"FRAUD"</span>, transaction_amount<span class="sc">/</span><span class="fu">sum</span>(transaction_amount), <span class="dv">0</span>))  </span>
-<span id="cb10-270"><a href="#cb10-270" aria-hidden="true" tabindex="-1"></a>          </span>
-<span id="cb10-271"><a href="#cb10-271" aria-hidden="true" tabindex="-1"></a><span class="co"># tabela_C %&gt;%</span></span>
-<span id="cb10-272"><a href="#cb10-272" aria-hidden="true" tabindex="-1"></a><span class="co">#   show_query()</span></span>
-<span id="cb10-273"><a href="#cb10-273" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-274"><a href="#cb10-274" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-275"><a href="#cb10-275" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb10-276"><a href="#cb10-276" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb10-277"><a href="#cb10-277" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb10-278"><a href="#cb10-278" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-279"><a href="#cb10-279" aria-hidden="true" tabindex="-1"></a><span class="in">``` SQL</span></span>
-<span id="cb10-280"><a href="#cb10-280" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-281"><a href="#cb10-281" aria-hidden="true" tabindex="-1"></a><span class="fu"># E</span></span>
-<span id="cb10-282"><a href="#cb10-282" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-283"><a href="#cb10-283" aria-hidden="true" tabindex="-1"></a>Imagine que a camada executiva da empresa dona do sistema, precisa criar um Dashboard para monitorar o estado das transações nos últimos 3 dias. Para isso você precisa criar uma query SQL que calcule o número e dinheiro das transações não finalizadas, número e dinheiro de transações finalizadas com sucesso (SUCCESS), o número e dinheiro de transações canceladas (CANCELLED), o número e dinheiro de fraudes (FRAUD), agrupado por país, nos 3 dias anteriores de quando o executivo da empresa consulte seu Dashboard.</span>
-<span id="cb10-284"><a href="#cb10-284" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-287"><a href="#cb10-287" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb10-288"><a href="#cb10-288" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb10-289"><a href="#cb10-289" aria-hidden="true" tabindex="-1"></a>tabela_E <span class="ot">&lt;-</span> tabela_merge <span class="sc">%&gt;%</span> </span>
-<span id="cb10-290"><a href="#cb10-290" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">tres_n =</span> dplyr<span class="sc">::</span><span class="fu">if_else</span>((lubridate<span class="sc">::</span><span class="fu">today</span>() <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">==</span> data_curta, <span class="dv">1</span>,</span>
-<span id="cb10-291"><a href="#cb10-291" aria-hidden="true" tabindex="-1"></a>                                                    dplyr<span class="sc">::</span><span class="fu">if_else</span>((lubridate<span class="sc">::</span><span class="fu">today</span>() <span class="sc">-</span> <span class="dv">2</span>) <span class="sc">==</span> data_curta, <span class="dv">1</span>,</span>
-<span id="cb10-292"><a href="#cb10-292" aria-hidden="true" tabindex="-1"></a>                                                                   dplyr<span class="sc">::</span><span class="fu">if_else</span>((lubridate<span class="sc">::</span><span class="fu">today</span>() <span class="sc">-</span> <span class="dv">2</span>) <span class="sc">==</span> data_curta,<span class="dv">1</span>,<span class="dv">0</span>)))) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-293"><a href="#cb10-293" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">filter</span>(tres_n <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-294"><a href="#cb10-294" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">transaction_state =</span> dplyr<span class="sc">::</span><span class="fu">if_else</span>(transaction_state <span class="sc">==</span> <span class="st">"sucesso"</span>, <span class="st">"SUCCESS"</span>, transaction_state)) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-295"><a href="#cb10-295" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">group_by</span>(pais, transaction_state) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-296"><a href="#cb10-296" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">n_transacoes =</span>  <span class="fu">n</span>(),</span>
-<span id="cb10-297"><a href="#cb10-297" aria-hidden="true" tabindex="-1"></a>                            <span class="at">dinheiro =</span> <span class="fu">sum</span>(transaction_amount))</span>
-<span id="cb10-298"><a href="#cb10-298" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-299"><a href="#cb10-299" aria-hidden="true" tabindex="-1"></a><span class="co"># tabela_E %&gt;%</span></span>
-<span id="cb10-300"><a href="#cb10-300" aria-hidden="true" tabindex="-1"></a><span class="co">#   show_query()</span></span>
-<span id="cb10-301"><a href="#cb10-301" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-302"><a href="#cb10-302" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-303"><a href="#cb10-303" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb10-304"><a href="#cb10-304" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb10-305"><a href="#cb10-305" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb10-306"><a href="#cb10-306" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-307"><a href="#cb10-307" aria-hidden="true" tabindex="-1"></a><span class="in">``` SQL</span></span>
-<span id="cb10-308"><a href="#cb10-308" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>SQL<span class="op">&gt;</span></span>
-<span id="cb10-309"><a href="#cb10-309" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb10-310"><a href="#cb10-310" aria-hidden="true" tabindex="-1"></a>  <span class="st">`q01`</span><span class="ch">.</span><span class="op">*</span>,</span>
-<span id="cb10-311"><a href="#cb10-311" aria-hidden="true" tabindex="-1"></a>  <span class="fu">COUNT</span>(<span class="op">*</span>) OVER <span class="st">`win1`</span> <span class="kw">AS</span> <span class="st">`n_transacoes`</span>,</span>
-<span id="cb10-312"><a href="#cb10-312" aria-hidden="true" tabindex="-1"></a>  <span class="fu">SUM</span>(<span class="st">`transaction_amount`</span>) OVER <span class="st">`win1`</span> <span class="kw">AS</span> <span class="st">`dinheiro`</span></span>
-<span id="cb10-313"><a href="#cb10-313" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> (</span>
-<span id="cb10-314"><a href="#cb10-314" aria-hidden="true" tabindex="-1"></a>  <span class="kw">SELECT</span></span>
-<span id="cb10-315"><a href="#cb10-315" aria-hidden="true" tabindex="-1"></a>    <span class="st">`user_id`</span>,</span>
-<span id="cb10-316"><a href="#cb10-316" aria-hidden="true" tabindex="-1"></a>    <span class="st">`transaction_date`</span>,</span>
-<span id="cb10-317"><a href="#cb10-317" aria-hidden="true" tabindex="-1"></a>    <span class="st">`transaction_id`</span>,</span>
-<span id="cb10-318"><a href="#cb10-318" aria-hidden="true" tabindex="-1"></a>    <span class="cf">CASE</span> <span class="cf">WHEN</span> (<span class="st">`transaction_state`</span> <span class="op">=</span> <span class="st">'sucesso'</span>) <span class="cf">THEN</span> <span class="st">'SUCCESS'</span> <span class="cf">WHEN</span> <span class="kw">NOT</span> (<span class="st">`transaction_state`</span> <span class="op">=</span> <span class="st">'sucesso'</span>) <span class="cf">THEN</span> <span class="st">`transaction_state`</span> <span class="cf">END</span> <span class="kw">AS</span> <span class="st">`transaction_state`</span>,</span>
-<span id="cb10-319"><a href="#cb10-319" aria-hidden="true" tabindex="-1"></a>    <span class="st">`transaction_amount`</span>,</span>
-<span id="cb10-320"><a href="#cb10-320" aria-hidden="true" tabindex="-1"></a>    <span class="st">`data_curta`</span>,</span>
-<span id="cb10-321"><a href="#cb10-321" aria-hidden="true" tabindex="-1"></a>    <span class="st">`age`</span>,</span>
-<span id="cb10-322"><a href="#cb10-322" aria-hidden="true" tabindex="-1"></a>    <span class="st">`pais`</span>,</span>
-<span id="cb10-323"><a href="#cb10-323" aria-hidden="true" tabindex="-1"></a>    <span class="st">`tres_n`</span></span>
-<span id="cb10-324"><a href="#cb10-324" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> (</span>
-<span id="cb10-325"><a href="#cb10-325" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span></span>
-<span id="cb10-326"><a href="#cb10-326" aria-hidden="true" tabindex="-1"></a>      <span class="st">`q01`</span><span class="ch">.</span><span class="op">*</span>,</span>
-<span id="cb10-327"><a href="#cb10-327" aria-hidden="true" tabindex="-1"></a>      <span class="cf">CASE</span> <span class="cf">WHEN</span> ((<span class="dt">DATE</span>(<span class="st">'now'</span>) <span class="op">-</span> <span class="fl">1.0</span>) <span class="op">=</span> <span class="st">`data_curta`</span>) <span class="cf">THEN</span> <span class="fl">1.0</span> <span class="cf">WHEN</span> <span class="kw">NOT</span> ((<span class="dt">DATE</span>(<span class="st">'now'</span>) <span class="op">-</span> <span class="fl">1.0</span>) <span class="op">=</span> <span class="st">`data_curta`</span>) <span class="cf">THEN</span> (<span class="cf">CASE</span> <span class="cf">WHEN</span> ((<span class="dt">DATE</span>(<span class="st">'now'</span>) <span class="op">-</span> <span class="fl">2.0</span>) <span class="op">=</span> <span class="st">`data_curta`</span>) <span class="cf">THEN</span> <span class="fl">1.0</span> <span class="cf">WHEN</span> <span class="kw">NOT</span> ((<span class="dt">DATE</span>(<span class="st">'now'</span>) <span class="op">-</span> <span class="fl">2.0</span>) <span class="op">=</span> <span class="st">`data_curta`</span>) <span class="cf">THEN</span> (<span class="cf">CASE</span> <span class="cf">WHEN</span> ((<span class="dt">DATE</span>(<span class="st">'now'</span>) <span class="op">-</span> <span class="fl">2.0</span>) <span class="op">=</span> <span class="st">`data_curta`</span>) <span class="cf">THEN</span> <span class="fl">1.0</span> <span class="cf">WHEN</span> <span class="kw">NOT</span> ((<span class="dt">DATE</span>(<span class="st">'now'</span>) <span class="op">-</span> <span class="fl">2.0</span>) <span class="op">=</span> <span class="st">`data_curta`</span>) <span class="cf">THEN</span> <span class="fl">0.0</span> <span class="cf">END</span>) <span class="cf">END</span>) <span class="cf">END</span> <span class="kw">AS</span> <span class="st">`tres_n`</span></span>
-<span id="cb10-328"><a href="#cb10-328" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> (</span>
-<span id="cb10-329"><a href="#cb10-329" aria-hidden="true" tabindex="-1"></a>      <span class="kw">SELECT</span> <span class="st">`tabela_transactions`</span><span class="ch">.</span><span class="op">*</span>, <span class="st">`age`</span>, <span class="st">`pais`</span></span>
-<span id="cb10-330"><a href="#cb10-330" aria-hidden="true" tabindex="-1"></a>      <span class="kw">FROM</span> <span class="st">`tabela_transactions`</span></span>
-<span id="cb10-331"><a href="#cb10-331" aria-hidden="true" tabindex="-1"></a>      <span class="kw">LEFT</span> <span class="kw">JOIN</span> <span class="st">`tabela_user`</span></span>
-<span id="cb10-332"><a href="#cb10-332" aria-hidden="true" tabindex="-1"></a>        <span class="kw">ON</span> (<span class="st">`tabela_transactions`</span><span class="ch">.</span><span class="st">`user_id`</span> <span class="op">=</span> <span class="st">`tabela_user`</span><span class="ch">.</span><span class="st">`id`</span>)</span>
-<span id="cb10-333"><a href="#cb10-333" aria-hidden="true" tabindex="-1"></a>    ) <span class="kw">AS</span> <span class="st">`q01`</span></span>
-<span id="cb10-334"><a href="#cb10-334" aria-hidden="true" tabindex="-1"></a>  ) <span class="kw">AS</span> <span class="st">`q01`</span></span>
-<span id="cb10-335"><a href="#cb10-335" aria-hidden="true" tabindex="-1"></a>  <span class="kw">WHERE</span> (<span class="st">`tres_n`</span> <span class="op">=</span> <span class="fl">1.0</span>)</span>
-<span id="cb10-336"><a href="#cb10-336" aria-hidden="true" tabindex="-1"></a>) <span class="kw">AS</span> <span class="st">`q01`</span></span>
-<span id="cb10-337"><a href="#cb10-337" aria-hidden="true" tabindex="-1"></a>WINDOW <span class="st">`win1`</span> <span class="kw">AS</span> (PARTITION <span class="kw">BY</span> <span class="st">`pais`</span>, <span class="st">`transaction_state`</span>)</span>
-<span id="cb10-338"><a href="#cb10-338" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-339"><a href="#cb10-339" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb10-340"><a href="#cb10-340" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-341"><a href="#cb10-341" aria-hidden="true" tabindex="-1"></a><span class="fu"># Tarefa 02: Python</span></span>
-<span id="cb10-342"><a href="#cb10-342" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-343"><a href="#cb10-343" aria-hidden="true" tabindex="-1"></a>Numa tribo ancestral e muito desenvolvida, orientada principalmente por uma cultura lógica e matemática, os nativos estão interessados no estudo das linguagens de outras tribos e civilizações.</span>
-<span id="cb10-344"><a href="#cb10-344" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-345"><a href="#cb10-345" aria-hidden="true" tabindex="-1"></a>Durante seus estudos, estes perceberam que as linguagens dessas outras civilizações são compostas por um conjunto de símbolos (letras do alfabeto) que são agrupados e combinados para representar conceitos (palavras). Assim mesmo, estes também sabem que cada civilização possui um alfabeto específico.</span>
-<span id="cb10-346"><a href="#cb10-346" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-347"><a href="#cb10-347" aria-hidden="true" tabindex="-1"></a>Na tentativa da tribo de avançar nos seus estudos, estes desejam saber qual seria o número de palavras possíveis a serem criadas em função do tamanho da palavra e o conjunto de símbolos (alfabeto) da civilização em estudo, independentemente se essas "palavras" representam algum significado ou não.</span>
-<span id="cb10-348"><a href="#cb10-348" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-349"><a href="#cb10-349" aria-hidden="true" tabindex="-1"></a>::: panel-tabset</span>
-<span id="cb10-350"><a href="#cb10-350" aria-hidden="true" tabindex="-1"></a><span class="fu"># A</span></span>
-<span id="cb10-351"><a href="#cb10-351" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-352"><a href="#cb10-352" aria-hidden="true" tabindex="-1"></a>Você, que compartilha os atributos da tribo enquanto as capacidades analíticas e lógicas, precisa ajudá-la escrevendo um algoritmo para fazer o cálculo descrito acima, considerando que tribo oferecerá para você o alfabeto da civilização e o tamanho da palavra/combinação. Seu algoritmo deveria ser capaz de calcular que o número total de palavras possíveis (independente se tem significado ou não) é de 16.</span>
-<span id="cb10-353"><a href="#cb10-353" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-354"><a href="#cb10-354" aria-hidden="true" tabindex="-1"></a>OBS: NÃO PRECISA ESCREVER A LISTA DAS PALAVRAS, A TRIBO SÓ PRECISA DO NÚMERO!</span>
-<span id="cb10-355"><a href="#cb10-355" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-356"><a href="#cb10-356" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb10-357"><a href="#cb10-357" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb10-358"><a href="#cb10-358" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb10-359"><a href="#cb10-359" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-360"><a href="#cb10-360" aria-hidden="true" tabindex="-1"></a><span class="fu"># B</span></span>
-<span id="cb10-361"><a href="#cb10-361" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-362"><a href="#cb10-362" aria-hidden="true" tabindex="-1"></a>Para ajudar a tribo ainda mais! Você deverá modificar seu algoritmo (ou talvez escrever um novo) para fazer o mesmo cálculo, só que agora, as palavras não podem ter símbolos repetidos.</span>
-<span id="cb10-363"><a href="#cb10-363" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-364"><a href="#cb10-364" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb10-365"><a href="#cb10-365" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb10-366"><a href="#cb10-366" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb10-367"><a href="#cb10-367" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-368"><a href="#cb10-368" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb10-369"><a href="#cb10-369" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-370"><a href="#cb10-370" aria-hidden="true" tabindex="-1"></a><span class="fu"># Tarefa 03: Estatística e Machine Learning</span></span>
-<span id="cb10-371"><a href="#cb10-371" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-372"><a href="#cb10-372" aria-hidden="true" tabindex="-1"></a>::: panel-tabset</span>
-<span id="cb10-373"><a href="#cb10-373" aria-hidden="true" tabindex="-1"></a><span class="fu"># 1</span></span>
-<span id="cb10-374"><a href="#cb10-374" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-375"><a href="#cb10-375" aria-hidden="true" tabindex="-1"></a>Dado um dataset das estaturas (em centímetros) de 13 indivíduos:</span>
-<span id="cb10-376"><a href="#cb10-376" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-377"><a href="#cb10-377" aria-hidden="true" tabindex="-1"></a>Dataset = {175, 166, 183, 193, 155, 177, 173, 171, 162, 185, 176, 161, 188}</span>
-<span id="cb10-378"><a href="#cb10-378" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-379"><a href="#cb10-379" aria-hidden="true" tabindex="-1"></a>Calcule a média, a mediana, 20 percentil, 80 percentil e desvio padrão. Considerando os dados, responda a que distribuição (paramétrica) os dados se aproximam.</span>
-<span id="cb10-380"><a href="#cb10-380" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-381"><a href="#cb10-381" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb10-382"><a href="#cb10-382" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb10-383"><a href="#cb10-383" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb10-384"><a href="#cb10-384" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-385"><a href="#cb10-385" aria-hidden="true" tabindex="-1"></a><span class="fu"># 2</span></span>
-<span id="cb10-386"><a href="#cb10-386" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-387"><a href="#cb10-387" aria-hidden="true" tabindex="-1"></a>Com suas próprias palavras, explique em que consiste o teorema central do limite, e se possível, mencione a sua importância no campo da inferência estatística.</span>
-<span id="cb10-388"><a href="#cb10-388" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-389"><a href="#cb10-389" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb10-390"><a href="#cb10-390" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb10-391"><a href="#cb10-391" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb10-392"><a href="#cb10-392" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-393"><a href="#cb10-393" aria-hidden="true" tabindex="-1"></a><span class="fu"># 3</span></span>
-<span id="cb10-394"><a href="#cb10-394" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-395"><a href="#cb10-395" aria-hidden="true" tabindex="-1"></a>Suponha que numa escola, 2 grupos diferentes de estudantes (Grupo A e Grupo B) fazem o mesmo teste de matemáticas. As pontuações para cada grupo são dados pelos seguintes datasets:</span>
-<span id="cb10-396"><a href="#cb10-396" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-397"><a href="#cb10-397" aria-hidden="true" tabindex="-1"></a>Grupo A: {80, 85, 88, 90, 92, 75, 78} Grupo B: {75, 78, 82, 85, 87, 93, 99}</span>
-<span id="cb10-398"><a href="#cb10-398" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-399"><a href="#cb10-399" aria-hidden="true" tabindex="-1"></a>Elabore um teste de hipótese para determinar se existe uma diferença estatisticamente significativa entre a média das pontuações dos dois grupos com uma confiança de 95%.</span>
-<span id="cb10-400"><a href="#cb10-400" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-401"><a href="#cb10-401" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb10-402"><a href="#cb10-402" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb10-403"><a href="#cb10-403" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb10-404"><a href="#cb10-404" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-405"><a href="#cb10-405" aria-hidden="true" tabindex="-1"></a><span class="fu"># 4</span></span>
-<span id="cb10-406"><a href="#cb10-406" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-407"><a href="#cb10-407" aria-hidden="true" tabindex="-1"></a>Determine a hipótese nula (Ho) e hipótese alternativa (Ha) do seguinte cenário: Uma empresa afirma que o tempo médio dos seus produtos é menos de 4 dias. Você, conta com uma amostra dessas entregas para validar estadísticamente essa afirmação.</span>
-<span id="cb10-408"><a href="#cb10-408" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-409"><a href="#cb10-409" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb10-410"><a href="#cb10-410" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb10-411"><a href="#cb10-411" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb10-412"><a href="#cb10-412" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-413"><a href="#cb10-413" aria-hidden="true" tabindex="-1"></a><span class="fu"># 5</span></span>
-<span id="cb10-414"><a href="#cb10-414" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-415"><a href="#cb10-415" aria-hidden="true" tabindex="-1"></a>Calcule o coeficiente de correlação de pearson das variáveis "Número de aparições Zendaya em filmes por ano" e "Número de pessoas afogadas em piscinas no Brasil ao ano". Em base nos seus resultados, considera que a variável "Número de aparições Zendaya em filmes por ano" é um bom preditor do número de pessoas afogadas no Brasil?Justifique a sua resposta.</span>
-<span id="cb10-416"><a href="#cb10-416" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-417"><a href="#cb10-417" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb10-418"><a href="#cb10-418" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb10-419"><a href="#cb10-419" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb10-420"><a href="#cb10-420" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-421"><a href="#cb10-421" aria-hidden="true" tabindex="-1"></a><span class="fu"># 6</span></span>
-<span id="cb10-422"><a href="#cb10-422" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-423"><a href="#cb10-423" aria-hidden="true" tabindex="-1"></a>Explique a diferença entre amostragem estratificada e amostragem randômica ou aleatória. Discuta quais são as vantagens e desvantagens de cada uma e de exemplos de casos onde uma abordagem é mais adequada que a outra.</span>
-<span id="cb10-424"><a href="#cb10-424" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-425"><a href="#cb10-425" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb10-426"><a href="#cb10-426" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb10-427"><a href="#cb10-427" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb10-428"><a href="#cb10-428" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-429"><a href="#cb10-429" aria-hidden="true" tabindex="-1"></a><span class="fu"># 7</span></span>
-<span id="cb10-430"><a href="#cb10-430" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-431"><a href="#cb10-431" aria-hidden="true" tabindex="-1"></a>Se você treina um modelo de Machine Learning (ou estadístico), como você identificaria se seu modelo tem uma alta variância (overfitting) ou um alto viés (bias, ou underfitting). Caso seu modelo apresenta alta variância, como você resolveria esse problema?</span>
-<span id="cb10-432"><a href="#cb10-432" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-433"><a href="#cb10-433" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb10-434"><a href="#cb10-434" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb10-435"><a href="#cb10-435" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb10-436"><a href="#cb10-436" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-437"><a href="#cb10-437" aria-hidden="true" tabindex="-1"></a><span class="fu"># 8</span></span>
-<span id="cb10-438"><a href="#cb10-438" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-439"><a href="#cb10-439" aria-hidden="true" tabindex="-1"></a>Considere o seguinte modelo de regressão:</span>
-<span id="cb10-440"><a href="#cb10-440" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-441"><a href="#cb10-441" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Salário = 1200+ 500.Idade + 600. Têm Faculdade + 50.Têm Linkedin</span>
-<span id="cb10-442"><a href="#cb10-442" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-443"><a href="#cb10-443" aria-hidden="true" tabindex="-1"></a>Interprete o efeito da Idade na variável salário. Que acontece com as pessoas que não tem faculdade? Considere agora que o desvio padrão do coeficiente da variável "Têm Linkedin" é de 47, por tanto o seu p-valor é \~0.92 (como visto na equação abaixo). O que isso implica para o modelo em questão? Essa variável é relevante?</span>
-<span id="cb10-444"><a href="#cb10-444" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-445"><a href="#cb10-445" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb10-446"><a href="#cb10-446" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb10-447"><a href="#cb10-447" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb10-448"><a href="#cb10-448" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-449"><a href="#cb10-449" aria-hidden="true" tabindex="-1"></a>:::</span>
+<div class="sourceCode" id="cb13" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Teste Técnico" # Título do relatório</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "**Posição de Data Analyst Jr - Buraco Jogatina**"</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "Fernanda Kelly R. Silva" # Autor(a)</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="an">lang:</span><span class="co"> pt </span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "`r format(Sys.Date())`" </span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="an">date-format:</span><span class="co"> short </span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="an">toc:</span><span class="co"> true </span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span><span class="co"> </span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co">    html: </span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co">      #css: ["custom.css"] </span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="co">      code-fold: false </span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co">      code-tools: true  </span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co">      theme: </span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co">        light: cosmo</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="co">        dark: superhero </span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="co">#title-block-banner: "#874a9c" </span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="an">code-annotations:</span><span class="co"> hover </span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="co">  warning: false</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="co">  message: false</span></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a><span class="fu"># Tarefa 01: SQL</span></span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>Um sistema de pagamentos, registra as transações dos seus usuários em duas tabelas:</span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>Users: Contém o registro de usuários do sistema. Os seus atributos são:</span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>id: Identificador único de usuário</span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>age (idade): em anos</span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>país de residência: país onde o usuários indicou que reside</span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>Transactions: Que contém o registro de todas as transações que os usuários realizam através do sistema.</span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>transaction_id: Identificador único da transação</span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>transaction_date: Data na qual a transação foi realizada. O tipo é timestamp, ou seja, é um tipo de data que contém o ano, mês, dia, hora, minuto e segundos.</span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>user_id: Identificador do usuário que realizou a transação (é uma chave externa à tabela users)</span>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>transaction_state: Campo que indica o estado da transação que pode ser *INITIATED*, *SUCCESS*, *FRAUD* or *CANCELLED*.</span>
+<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>transaction_amount: Valor da transação em USD</span>
+<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a>Com estes dados disponíveis, precisamos gerar queries SQL para responder às seguintes perguntas. **Para fins didáticos, criei esses bancos de dados para simular a resolução das questões.**</span>
+<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a><span class="fu">## tabela_transactions</span></span>
+<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-56"><a href="#cb13-56" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb13-57"><a href="#cb13-57" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb13-58"><a href="#cb13-58" aria-hidden="true" tabindex="-1"></a>tabela_transactions <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
+<span id="cb13-59"><a href="#cb13-59" aria-hidden="true" tabindex="-1"></a>                         <span class="sc">~</span>user_id, <span class="sc">~</span>transaction_date, <span class="sc">~</span>transaction_id, <span class="sc">~</span>transaction_state, <span class="sc">~</span>transaction_amount,</span>
+<span id="cb13-60"><a href="#cb13-60" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"1"</span>, <span class="st">"2024-03-12 15:08:49 UTC"</span>, <span class="st">"255"</span>, <span class="st">"sucesso"</span>, <span class="st">"119.65"</span>,</span>
+<span id="cb13-61"><a href="#cb13-61" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"2"</span>, <span class="st">"2024-03-23 20:08:03 UTC"</span>, <span class="st">"585"</span>, <span class="st">"INITIATED"</span>, <span class="st">"22.63"</span>,</span>
+<span id="cb13-62"><a href="#cb13-62" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"3"</span>, <span class="st">"2024-03-18 10:56:25 UTC"</span>, <span class="st">"178"</span>, <span class="st">"CANCELLED"</span>, <span class="st">"225.87"</span>,</span>
+<span id="cb13-63"><a href="#cb13-63" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"4"</span>, <span class="st">"2024-03-12 08:21:32 UTC"</span>, <span class="st">"887"</span>, <span class="st">"SUCCESS"</span>, <span class="st">"16.58"</span>,</span>
+<span id="cb13-64"><a href="#cb13-64" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"5"</span>, <span class="st">"2024-03-30 05:24:49 UTC"</span>, <span class="st">"569"</span>, <span class="st">"FRAUD"</span>, <span class="st">"1225.89"</span>,</span>
+<span id="cb13-65"><a href="#cb13-65" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"6"</span>, <span class="st">"2024-03-21 12:32:51 UTC"</span>, <span class="st">"789"</span>, <span class="st">"SUCCESS"</span>, <span class="st">"59.90"</span>,</span>
+<span id="cb13-66"><a href="#cb13-66" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"7"</span>, <span class="st">"2024-03-10 08:25:49 UTC"</span>, <span class="st">"236"</span>, <span class="st">"FRAUD"</span>, <span class="st">"256.98"</span>,</span>
+<span id="cb13-67"><a href="#cb13-67" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"7"</span>, <span class="st">"2024-03-10 05:21:49 UTC"</span>, <span class="st">"458"</span>, <span class="st">"FRAUD"</span>, <span class="st">"986.69"</span>,</span>
+<span id="cb13-68"><a href="#cb13-68" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"7"</span>, <span class="st">"2024-03-09 01:08:49 UTC"</span>, <span class="st">"125"</span>, <span class="st">"FRAUD"</span>, <span class="st">"1256.89"</span>,</span>
+<span id="cb13-69"><a href="#cb13-69" aria-hidden="true" tabindex="-1"></a>                         ) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-70"><a href="#cb13-70" aria-hidden="true" tabindex="-1"></a>                      dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">transaction_amount =</span> <span class="fu">as.numeric</span>(transaction_amount),</span>
+<span id="cb13-71"><a href="#cb13-71" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">data_curta =</span> <span class="fu">as.Date</span>(transaction_date)) </span>
+<span id="cb13-72"><a href="#cb13-72" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-73"><a href="#cb13-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-76"><a href="#cb13-76" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb13-77"><a href="#cb13-77" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(tabela_transactions)</span>
+<span id="cb13-78"><a href="#cb13-78" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-79"><a href="#cb13-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-80"><a href="#cb13-80" aria-hidden="true" tabindex="-1"></a><span class="fu">## tabela_user</span></span>
+<span id="cb13-81"><a href="#cb13-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-84"><a href="#cb13-84" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb13-85"><a href="#cb13-85" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb13-86"><a href="#cb13-86" aria-hidden="true" tabindex="-1"></a>tabela_user <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
+<span id="cb13-87"><a href="#cb13-87" aria-hidden="true" tabindex="-1"></a>                         <span class="sc">~</span>id, <span class="sc">~</span>age, <span class="sc">~</span>pais, </span>
+<span id="cb13-88"><a href="#cb13-88" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"1"</span>, <span class="st">"18"</span>, <span class="st">"Brasil"</span>,</span>
+<span id="cb13-89"><a href="#cb13-89" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"2"</span>, <span class="st">"29"</span>, <span class="st">"Estados Unidos"</span>,</span>
+<span id="cb13-90"><a href="#cb13-90" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"3"</span>, <span class="st">"55"</span>, <span class="st">"África do Sul"</span>,</span>
+<span id="cb13-91"><a href="#cb13-91" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"4"</span>, <span class="st">"32"</span>, <span class="st">"Bolívia"</span>,</span>
+<span id="cb13-92"><a href="#cb13-92" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"5"</span>, <span class="st">"60"</span>, <span class="st">"Brasil"</span>,</span>
+<span id="cb13-93"><a href="#cb13-93" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"6"</span>, <span class="st">"42"</span>, <span class="st">"Brasil"</span>,</span>
+<span id="cb13-94"><a href="#cb13-94" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"7"</span>, <span class="st">"38"</span>, <span class="st">"África do Sul"</span>,</span>
+<span id="cb13-95"><a href="#cb13-95" aria-hidden="true" tabindex="-1"></a>                         ) </span>
+<span id="cb13-96"><a href="#cb13-96" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-97"><a href="#cb13-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-100"><a href="#cb13-100" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb13-101"><a href="#cb13-101" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(tabela_user)</span>
+<span id="cb13-102"><a href="#cb13-102" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-103"><a href="#cb13-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-104"><a href="#cb13-104" aria-hidden="true" tabindex="-1"></a>Para que a experiência do SQL seja real, vou conectar as bases com o SQLite.</span>
+<span id="cb13-105"><a href="#cb13-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-108"><a href="#cb13-108" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb13-109"><a href="#cb13-109" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dbplyr)</span>
+<span id="cb13-110"><a href="#cb13-110" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb13-111"><a href="#cb13-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-112"><a href="#cb13-112" aria-hidden="true" tabindex="-1"></a>con <span class="ot">&lt;-</span> DBI<span class="sc">::</span><span class="fu">dbConnect</span>(RSQLite<span class="sc">::</span><span class="fu">SQLite</span>(), <span class="st">":memory:"</span>)</span>
+<span id="cb13-113"><a href="#cb13-113" aria-hidden="true" tabindex="-1"></a><span class="fu">copy_to</span>(con, tabela_user)</span>
+<span id="cb13-114"><a href="#cb13-114" aria-hidden="true" tabindex="-1"></a><span class="fu">copy_to</span>(con, tabela_transactions)</span>
+<span id="cb13-115"><a href="#cb13-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-116"><a href="#cb13-116" aria-hidden="true" tabindex="-1"></a>tabela_user <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con, <span class="st">"tabela_user"</span>)                 <span class="co"># &lt;1&gt;</span></span>
+<span id="cb13-117"><a href="#cb13-117" aria-hidden="true" tabindex="-1"></a>tabela_transactions <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con, <span class="st">"tabela_transactions"</span>) <span class="co"># &lt;2&gt;</span></span>
+<span id="cb13-118"><a href="#cb13-118" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-119"><a href="#cb13-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-120"><a href="#cb13-120" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Conectando a base de dados {tabela_user} com o SQLite</span>
+<span id="cb13-121"><a href="#cb13-121" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Conectando a base de dados {tabela_transactions} com o SQLite</span>
+<span id="cb13-122"><a href="#cb13-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-123"><a href="#cb13-123" aria-hidden="true" tabindex="-1"></a>::: panel-tabset</span>
+<span id="cb13-124"><a href="#cb13-124" aria-hidden="true" tabindex="-1"></a><span class="fu"># A</span></span>
+<span id="cb13-125"><a href="#cb13-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-126"><a href="#cb13-126" aria-hidden="true" tabindex="-1"></a>Qual é a idade média de usuários do sistema por país?</span>
+<span id="cb13-127"><a href="#cb13-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-130"><a href="#cb13-130" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb13-131"><a href="#cb13-131" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb13-132"><a href="#cb13-132" aria-hidden="true" tabindex="-1"></a>tabela_A <span class="ot">&lt;-</span> tabela_user <span class="sc">%&gt;%</span></span>
+<span id="cb13-133"><a href="#cb13-133" aria-hidden="true" tabindex="-1"></a>                     dplyr<span class="sc">::</span><span class="fu">group_by</span>(pais) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-134"><a href="#cb13-134" aria-hidden="true" tabindex="-1"></a>                     dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">media_idade =</span> <span class="fu">round</span>(<span class="fu">mean</span>(age, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),<span class="dv">2</span>))</span>
+<span id="cb13-135"><a href="#cb13-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-136"><a href="#cb13-136" aria-hidden="true" tabindex="-1"></a><span class="co"># tabela_A %&gt;%</span></span>
+<span id="cb13-137"><a href="#cb13-137" aria-hidden="true" tabindex="-1"></a><span class="co">#   show_query()</span></span>
+<span id="cb13-138"><a href="#cb13-138" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-139"><a href="#cb13-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-140"><a href="#cb13-140" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb13-141"><a href="#cb13-141" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb13-142"><a href="#cb13-142" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb13-143"><a href="#cb13-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-144"><a href="#cb13-144" aria-hidden="true" tabindex="-1"></a><span class="in">``` sql</span></span>
+<span id="cb13-145"><a href="#cb13-145" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>SQL<span class="op">&gt;</span></span>
+<span id="cb13-146"><a href="#cb13-146" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="st">`pais`</span>, <span class="fu">ROUND</span>(<span class="fu">AVG</span>(<span class="st">`age`</span>), <span class="dv">2</span>) <span class="kw">AS</span> <span class="st">`media_idade`</span></span>
+<span id="cb13-147"><a href="#cb13-147" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> <span class="st">`tabela_user`</span></span>
+<span id="cb13-148"><a href="#cb13-148" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> <span class="st">`pais`</span></span>
+<span id="cb13-149"><a href="#cb13-149" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-150"><a href="#cb13-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-151"><a href="#cb13-151" aria-hidden="true" tabindex="-1"></a><span class="fu"># B</span></span>
+<span id="cb13-152"><a href="#cb13-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-153"><a href="#cb13-153" aria-hidden="true" tabindex="-1"></a>Qual é o país com a maior quantidade de dinheiro transacionado (considere só transações finalizadas com sucesso ou "SUCCESS")?</span>
+<span id="cb13-154"><a href="#cb13-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-155"><a href="#cb13-155" aria-hidden="true" tabindex="-1"></a>Como vamos precisar do merge das duas tabelas, vou criar a **tabela_merge** sem algum filtro para facilitar as consultas e não alocar memória desnecessária.</span>
+<span id="cb13-156"><a href="#cb13-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-159"><a href="#cb13-159" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb13-160"><a href="#cb13-160" aria-hidden="true" tabindex="-1"></a>tabela_merge <span class="ot">&lt;-</span> tabela_transactions <span class="sc">%&gt;%</span></span>
+<span id="cb13-161"><a href="#cb13-161" aria-hidden="true" tabindex="-1"></a>                 dplyr<span class="sc">::</span><span class="fu">left_join</span>(tabela_user, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"user_id"</span> <span class="ot">=</span> <span class="st">"id"</span>)) </span>
+<span id="cb13-162"><a href="#cb13-162" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-163"><a href="#cb13-163" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-166"><a href="#cb13-166" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb13-167"><a href="#cb13-167" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb13-168"><a href="#cb13-168" aria-hidden="true" tabindex="-1"></a>tabela_B <span class="ot">&lt;-</span> tabela_merge <span class="sc">%&gt;%</span> </span>
+<span id="cb13-169"><a href="#cb13-169" aria-hidden="true" tabindex="-1"></a>                  dplyr<span class="sc">::</span><span class="fu">filter</span>(transaction_state <span class="sc">==</span> <span class="st">"SUCCESS"</span> <span class="sc">|</span> transaction_state <span class="sc">==</span> <span class="st">"sucesso"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-170"><a href="#cb13-170" aria-hidden="true" tabindex="-1"></a>                  dplyr<span class="sc">::</span><span class="fu">slice_max</span>(transaction_amount)</span>
+<span id="cb13-171"><a href="#cb13-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-172"><a href="#cb13-172" aria-hidden="true" tabindex="-1"></a><span class="co"># tabela_B %&gt;%</span></span>
+<span id="cb13-173"><a href="#cb13-173" aria-hidden="true" tabindex="-1"></a><span class="co">#   show_query()</span></span>
+<span id="cb13-174"><a href="#cb13-174" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-175"><a href="#cb13-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-176"><a href="#cb13-176" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb13-177"><a href="#cb13-177" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb13-178"><a href="#cb13-178" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb13-179"><a href="#cb13-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-180"><a href="#cb13-180" aria-hidden="true" tabindex="-1"></a><span class="in">``` sql</span></span>
+<span id="cb13-181"><a href="#cb13-181" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>SQL<span class="op">&gt;</span></span>
+<span id="cb13-182"><a href="#cb13-182" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb13-183"><a href="#cb13-183" aria-hidden="true" tabindex="-1"></a>  <span class="st">`user_id`</span>,</span>
+<span id="cb13-184"><a href="#cb13-184" aria-hidden="true" tabindex="-1"></a>  <span class="st">`transaction_date`</span>,</span>
+<span id="cb13-185"><a href="#cb13-185" aria-hidden="true" tabindex="-1"></a>  <span class="st">`transaction_id`</span>,</span>
+<span id="cb13-186"><a href="#cb13-186" aria-hidden="true" tabindex="-1"></a>  <span class="st">`transaction_state`</span>,</span>
+<span id="cb13-187"><a href="#cb13-187" aria-hidden="true" tabindex="-1"></a>  <span class="st">`transaction_amount`</span>,</span>
+<span id="cb13-188"><a href="#cb13-188" aria-hidden="true" tabindex="-1"></a>  <span class="st">`data_curta`</span>,</span>
+<span id="cb13-189"><a href="#cb13-189" aria-hidden="true" tabindex="-1"></a>  <span class="st">`age`</span>,</span>
+<span id="cb13-190"><a href="#cb13-190" aria-hidden="true" tabindex="-1"></a>  <span class="st">`pais`</span></span>
+<span id="cb13-191"><a href="#cb13-191" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> (</span>
+<span id="cb13-192"><a href="#cb13-192" aria-hidden="true" tabindex="-1"></a>  <span class="kw">SELECT</span> <span class="st">`q01`</span><span class="ch">.</span><span class="op">*</span>, RANK() OVER (<span class="kw">ORDER</span> <span class="kw">BY</span> <span class="st">`transaction_amount`</span> <span class="kw">DESC</span>) <span class="kw">AS</span> <span class="st">`col01`</span></span>
+<span id="cb13-193"><a href="#cb13-193" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> (</span>
+<span id="cb13-194"><a href="#cb13-194" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span> <span class="st">`tabela_transactions`</span><span class="ch">.</span><span class="op">*</span>, <span class="st">`age`</span>, <span class="st">`pais`</span></span>
+<span id="cb13-195"><a href="#cb13-195" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> <span class="st">`tabela_transactions`</span></span>
+<span id="cb13-196"><a href="#cb13-196" aria-hidden="true" tabindex="-1"></a>    <span class="kw">LEFT</span> <span class="kw">JOIN</span> <span class="st">`tabela_user`</span></span>
+<span id="cb13-197"><a href="#cb13-197" aria-hidden="true" tabindex="-1"></a>      <span class="kw">ON</span> (<span class="st">`tabela_transactions`</span><span class="ch">.</span><span class="st">`user_id`</span> <span class="op">=</span> <span class="st">`tabela_user`</span><span class="ch">.</span><span class="st">`id`</span>)</span>
+<span id="cb13-198"><a href="#cb13-198" aria-hidden="true" tabindex="-1"></a>  ) <span class="kw">AS</span> <span class="st">`q01`</span></span>
+<span id="cb13-199"><a href="#cb13-199" aria-hidden="true" tabindex="-1"></a>  <span class="kw">WHERE</span> (<span class="st">`transaction_state`</span> <span class="op">=</span> <span class="st">'SUCCESS'</span> <span class="kw">OR</span> <span class="st">`transaction_state`</span> <span class="op">=</span> <span class="st">'sucesso'</span>)</span>
+<span id="cb13-200"><a href="#cb13-200" aria-hidden="true" tabindex="-1"></a>) <span class="kw">AS</span> <span class="st">`q01`</span></span>
+<span id="cb13-201"><a href="#cb13-201" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> (<span class="st">`col01`</span> <span class="op">&lt;=</span> <span class="dv">1</span>)</span>
+<span id="cb13-202"><a href="#cb13-202" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-203"><a href="#cb13-203" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-204"><a href="#cb13-204" aria-hidden="true" tabindex="-1"></a><span class="fu"># C</span></span>
+<span id="cb13-205"><a href="#cb13-205" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-206"><a href="#cb13-206" aria-hidden="true" tabindex="-1"></a>Qual é o país com maior taxa de fraude em porcentagem respeito ao número de transações totais no país?</span>
+<span id="cb13-207"><a href="#cb13-207" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-210"><a href="#cb13-210" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb13-211"><a href="#cb13-211" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb13-212"><a href="#cb13-212" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb13-213"><a href="#cb13-213" aria-hidden="true" tabindex="-1"></a>tabela_C <span class="ot">&lt;-</span> tabela_merge <span class="sc">%&gt;%</span> </span>
+<span id="cb13-214"><a href="#cb13-214" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">group_by</span>(transaction_state) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-215"><a href="#cb13-215" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">taxa =</span> transaction_amount<span class="sc">/</span><span class="fu">sum</span>(transaction_amount)) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-216"><a href="#cb13-216" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb13-217"><a href="#cb13-217" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">filter</span>(transaction_state <span class="sc">==</span> <span class="st">"FRAUD"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-218"><a href="#cb13-218" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">slice_max</span>(taxa)</span>
+<span id="cb13-219"><a href="#cb13-219" aria-hidden="true" tabindex="-1"></a><span class="co"># tabela_C %&gt;%</span></span>
+<span id="cb13-220"><a href="#cb13-220" aria-hidden="true" tabindex="-1"></a><span class="co">#   show_query()</span></span>
+<span id="cb13-221"><a href="#cb13-221" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-222"><a href="#cb13-222" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-223"><a href="#cb13-223" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb13-224"><a href="#cb13-224" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb13-225"><a href="#cb13-225" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb13-226"><a href="#cb13-226" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-227"><a href="#cb13-227" aria-hidden="true" tabindex="-1"></a><span class="in">``` sql</span></span>
+<span id="cb13-228"><a href="#cb13-228" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>SQL<span class="op">&gt;</span></span>
+<span id="cb13-229"><a href="#cb13-229" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb13-230"><a href="#cb13-230" aria-hidden="true" tabindex="-1"></a>  <span class="st">`user_id`</span>,</span>
+<span id="cb13-231"><a href="#cb13-231" aria-hidden="true" tabindex="-1"></a>  <span class="st">`transaction_date`</span>,</span>
+<span id="cb13-232"><a href="#cb13-232" aria-hidden="true" tabindex="-1"></a>  <span class="st">`transaction_id`</span>,</span>
+<span id="cb13-233"><a href="#cb13-233" aria-hidden="true" tabindex="-1"></a>  <span class="st">`transaction_state`</span>,</span>
+<span id="cb13-234"><a href="#cb13-234" aria-hidden="true" tabindex="-1"></a>  <span class="st">`transaction_amount`</span>,</span>
+<span id="cb13-235"><a href="#cb13-235" aria-hidden="true" tabindex="-1"></a>  <span class="st">`data_curta`</span>,</span>
+<span id="cb13-236"><a href="#cb13-236" aria-hidden="true" tabindex="-1"></a>  <span class="st">`age`</span>,</span>
+<span id="cb13-237"><a href="#cb13-237" aria-hidden="true" tabindex="-1"></a>  <span class="st">`pais`</span>,</span>
+<span id="cb13-238"><a href="#cb13-238" aria-hidden="true" tabindex="-1"></a>  <span class="st">`taxa`</span></span>
+<span id="cb13-239"><a href="#cb13-239" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> (</span>
+<span id="cb13-240"><a href="#cb13-240" aria-hidden="true" tabindex="-1"></a>  <span class="kw">SELECT</span> <span class="st">`q01`</span><span class="ch">.</span><span class="op">*</span>, RANK() OVER (<span class="kw">ORDER</span> <span class="kw">BY</span> <span class="st">`taxa`</span> <span class="kw">DESC</span>) <span class="kw">AS</span> <span class="st">`col01`</span></span>
+<span id="cb13-241"><a href="#cb13-241" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> (</span>
+<span id="cb13-242"><a href="#cb13-242" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span></span>
+<span id="cb13-243"><a href="#cb13-243" aria-hidden="true" tabindex="-1"></a>      <span class="st">`q01`</span><span class="ch">.</span><span class="op">*</span>,</span>
+<span id="cb13-244"><a href="#cb13-244" aria-hidden="true" tabindex="-1"></a>      <span class="st">`transaction_amount`</span> <span class="op">/</span> <span class="fu">SUM</span>(<span class="st">`transaction_amount`</span>) OVER (PARTITION <span class="kw">BY</span> <span class="st">`transaction_state`</span>) <span class="kw">AS</span> <span class="st">`taxa`</span></span>
+<span id="cb13-245"><a href="#cb13-245" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> (</span>
+<span id="cb13-246"><a href="#cb13-246" aria-hidden="true" tabindex="-1"></a>      <span class="kw">SELECT</span> <span class="st">`tabela_transactions`</span><span class="ch">.</span><span class="op">*</span>, <span class="st">`age`</span>, <span class="st">`pais`</span></span>
+<span id="cb13-247"><a href="#cb13-247" aria-hidden="true" tabindex="-1"></a>      <span class="kw">FROM</span> <span class="st">`tabela_transactions`</span></span>
+<span id="cb13-248"><a href="#cb13-248" aria-hidden="true" tabindex="-1"></a>      <span class="kw">LEFT</span> <span class="kw">JOIN</span> <span class="st">`tabela_user`</span></span>
+<span id="cb13-249"><a href="#cb13-249" aria-hidden="true" tabindex="-1"></a>        <span class="kw">ON</span> (<span class="st">`tabela_transactions`</span><span class="ch">.</span><span class="st">`user_id`</span> <span class="op">=</span> <span class="st">`tabela_user`</span><span class="ch">.</span><span class="st">`id`</span>)</span>
+<span id="cb13-250"><a href="#cb13-250" aria-hidden="true" tabindex="-1"></a>    ) <span class="kw">AS</span> <span class="st">`q01`</span></span>
+<span id="cb13-251"><a href="#cb13-251" aria-hidden="true" tabindex="-1"></a>  ) <span class="kw">AS</span> <span class="st">`q01`</span></span>
+<span id="cb13-252"><a href="#cb13-252" aria-hidden="true" tabindex="-1"></a>  <span class="kw">WHERE</span> (<span class="st">`transaction_state`</span> <span class="op">=</span> <span class="st">'FRAUD'</span>)</span>
+<span id="cb13-253"><a href="#cb13-253" aria-hidden="true" tabindex="-1"></a>) <span class="kw">AS</span> <span class="st">`q01`</span></span>
+<span id="cb13-254"><a href="#cb13-254" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> (<span class="st">`col01`</span> <span class="op">&lt;=</span> <span class="dv">1</span>)</span>
+<span id="cb13-255"><a href="#cb13-255" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-256"><a href="#cb13-256" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-257"><a href="#cb13-257" aria-hidden="true" tabindex="-1"></a><span class="fu"># D</span></span>
+<span id="cb13-258"><a href="#cb13-258" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-259"><a href="#cb13-259" aria-hidden="true" tabindex="-1"></a>Na mesma linha da pergunta anterior, responda qual é a faixa de idade de usuários que mais cometem fraude (em percentagem). Separe as faixas etárias em: (<span class="sc">\&lt;</span>18 anos, 18-30 anos, 30 - 45 anos, 45 - 60 anos, 60 <span class="sc">\&gt;</span> anos) e considere que para responder essa pergunta, você deverá considerar o fato que um usuário pode ter executado várias transações, das quais poucas (ou muitas) podem ter sido fraude entre as demais.</span>
+<span id="cb13-260"><a href="#cb13-260" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-263"><a href="#cb13-263" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb13-264"><a href="#cb13-264" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb13-265"><a href="#cb13-265" aria-hidden="true" tabindex="-1"></a>tabela_D <span class="ot">&lt;-</span> tabela_merge <span class="sc">%&gt;%</span> </span>
+<span id="cb13-266"><a href="#cb13-266" aria-hidden="true" tabindex="-1"></a>             dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">age_cat =</span> dplyr<span class="sc">::</span><span class="fu">case_when</span>(age <span class="sc">&lt;</span> <span class="dv">18</span> <span class="sc">~</span> <span class="st">"menor que 18 anos"</span>,</span>
+<span id="cb13-267"><a href="#cb13-267" aria-hidden="true" tabindex="-1"></a>                                                      age <span class="sc">&gt;=</span> <span class="dv">18</span> <span class="sc">&amp;</span> age <span class="sc">&lt;</span> <span class="dv">30</span> <span class="sc">~</span> <span class="st">"18-29 anos"</span>,</span>
+<span id="cb13-268"><a href="#cb13-268" aria-hidden="true" tabindex="-1"></a>                                                      age <span class="sc">&gt;=</span> <span class="dv">30</span> <span class="sc">&amp;</span> age <span class="sc">&lt;</span> <span class="dv">45</span> <span class="sc">~</span> <span class="st">"30-44 anos"</span>,</span>
+<span id="cb13-269"><a href="#cb13-269" aria-hidden="true" tabindex="-1"></a>                                                      age <span class="sc">&gt;=</span> <span class="dv">45</span> <span class="sc">&amp;</span> age <span class="sc">&lt;</span> <span class="dv">60</span> <span class="sc">~</span> <span class="st">"45-59 anos"</span>,</span>
+<span id="cb13-270"><a href="#cb13-270" aria-hidden="true" tabindex="-1"></a>                                                      age <span class="sc">&gt;=</span> <span class="dv">60</span>  <span class="sc">~</span> <span class="st">"maior igual a 60 anos"</span>),</span>
+<span id="cb13-271"><a href="#cb13-271" aria-hidden="true" tabindex="-1"></a>                           <span class="at">taxa_idade =</span> dplyr<span class="sc">::</span><span class="fu">if_else</span>(transaction_state <span class="sc">==</span> <span class="st">"FRAUD"</span>, transaction_amount<span class="sc">/</span><span class="fu">sum</span>(transaction_amount), <span class="dv">0</span>))  </span>
+<span id="cb13-272"><a href="#cb13-272" aria-hidden="true" tabindex="-1"></a>          </span>
+<span id="cb13-273"><a href="#cb13-273" aria-hidden="true" tabindex="-1"></a><span class="co"># tabela_C %&gt;%</span></span>
+<span id="cb13-274"><a href="#cb13-274" aria-hidden="true" tabindex="-1"></a><span class="co">#   show_query()</span></span>
+<span id="cb13-275"><a href="#cb13-275" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-276"><a href="#cb13-276" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-277"><a href="#cb13-277" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb13-278"><a href="#cb13-278" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb13-279"><a href="#cb13-279" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb13-280"><a href="#cb13-280" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-281"><a href="#cb13-281" aria-hidden="true" tabindex="-1"></a><span class="in">``` sql</span></span>
+<span id="cb13-282"><a href="#cb13-282" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-283"><a href="#cb13-283" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-284"><a href="#cb13-284" aria-hidden="true" tabindex="-1"></a><span class="fu"># E</span></span>
+<span id="cb13-285"><a href="#cb13-285" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-286"><a href="#cb13-286" aria-hidden="true" tabindex="-1"></a>Imagine que a camada executiva da empresa dona do sistema, precisa criar um Dashboard para monitorar o estado das transações nos últimos 3 dias. Para isso você precisa criar uma query SQL que calcule o número e dinheiro das transações não finalizadas, número e dinheiro de transações finalizadas com sucesso (SUCCESS), o número e dinheiro de transações canceladas (CANCELLED), o número e dinheiro de fraudes (FRAUD), agrupado por país, nos 3 dias anteriores de quando o executivo da empresa consulte seu Dashboard.</span>
+<span id="cb13-287"><a href="#cb13-287" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-290"><a href="#cb13-290" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb13-291"><a href="#cb13-291" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb13-292"><a href="#cb13-292" aria-hidden="true" tabindex="-1"></a>tabela_E <span class="ot">&lt;-</span> tabela_merge <span class="sc">%&gt;%</span> </span>
+<span id="cb13-293"><a href="#cb13-293" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">tres_n =</span> dplyr<span class="sc">::</span><span class="fu">if_else</span>((lubridate<span class="sc">::</span><span class="fu">today</span>() <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">==</span> data_curta, <span class="dv">1</span>,</span>
+<span id="cb13-294"><a href="#cb13-294" aria-hidden="true" tabindex="-1"></a>                                                    dplyr<span class="sc">::</span><span class="fu">if_else</span>((lubridate<span class="sc">::</span><span class="fu">today</span>() <span class="sc">-</span> <span class="dv">2</span>) <span class="sc">==</span> data_curta, <span class="dv">1</span>,</span>
+<span id="cb13-295"><a href="#cb13-295" aria-hidden="true" tabindex="-1"></a>                                                                   dplyr<span class="sc">::</span><span class="fu">if_else</span>((lubridate<span class="sc">::</span><span class="fu">today</span>() <span class="sc">-</span> <span class="dv">2</span>) <span class="sc">==</span> data_curta,<span class="dv">1</span>,<span class="dv">0</span>)))) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-296"><a href="#cb13-296" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">filter</span>(tres_n <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-297"><a href="#cb13-297" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">transaction_state =</span> dplyr<span class="sc">::</span><span class="fu">if_else</span>(transaction_state <span class="sc">==</span> <span class="st">"sucesso"</span>, <span class="st">"SUCCESS"</span>, transaction_state)) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-298"><a href="#cb13-298" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">group_by</span>(pais, transaction_state) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-299"><a href="#cb13-299" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">n_transacoes =</span>  <span class="fu">n</span>(),</span>
+<span id="cb13-300"><a href="#cb13-300" aria-hidden="true" tabindex="-1"></a>                            <span class="at">dinheiro =</span> <span class="fu">sum</span>(transaction_amount))</span>
+<span id="cb13-301"><a href="#cb13-301" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-302"><a href="#cb13-302" aria-hidden="true" tabindex="-1"></a><span class="co"># tabela_E %&gt;%</span></span>
+<span id="cb13-303"><a href="#cb13-303" aria-hidden="true" tabindex="-1"></a><span class="co">#   show_query()</span></span>
+<span id="cb13-304"><a href="#cb13-304" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-305"><a href="#cb13-305" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-306"><a href="#cb13-306" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb13-307"><a href="#cb13-307" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb13-308"><a href="#cb13-308" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb13-309"><a href="#cb13-309" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-310"><a href="#cb13-310" aria-hidden="true" tabindex="-1"></a><span class="in">``` sql</span></span>
+<span id="cb13-311"><a href="#cb13-311" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>SQL<span class="op">&gt;</span></span>
+<span id="cb13-312"><a href="#cb13-312" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb13-313"><a href="#cb13-313" aria-hidden="true" tabindex="-1"></a>  <span class="st">`q01`</span><span class="ch">.</span><span class="op">*</span>,</span>
+<span id="cb13-314"><a href="#cb13-314" aria-hidden="true" tabindex="-1"></a>  <span class="fu">COUNT</span>(<span class="op">*</span>) OVER <span class="st">`win1`</span> <span class="kw">AS</span> <span class="st">`n_transacoes`</span>,</span>
+<span id="cb13-315"><a href="#cb13-315" aria-hidden="true" tabindex="-1"></a>  <span class="fu">SUM</span>(<span class="st">`transaction_amount`</span>) OVER <span class="st">`win1`</span> <span class="kw">AS</span> <span class="st">`dinheiro`</span></span>
+<span id="cb13-316"><a href="#cb13-316" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> (</span>
+<span id="cb13-317"><a href="#cb13-317" aria-hidden="true" tabindex="-1"></a>  <span class="kw">SELECT</span></span>
+<span id="cb13-318"><a href="#cb13-318" aria-hidden="true" tabindex="-1"></a>    <span class="st">`user_id`</span>,</span>
+<span id="cb13-319"><a href="#cb13-319" aria-hidden="true" tabindex="-1"></a>    <span class="st">`transaction_date`</span>,</span>
+<span id="cb13-320"><a href="#cb13-320" aria-hidden="true" tabindex="-1"></a>    <span class="st">`transaction_id`</span>,</span>
+<span id="cb13-321"><a href="#cb13-321" aria-hidden="true" tabindex="-1"></a>    <span class="cf">CASE</span> <span class="cf">WHEN</span> (<span class="st">`transaction_state`</span> <span class="op">=</span> <span class="st">'sucesso'</span>) <span class="cf">THEN</span> <span class="st">'SUCCESS'</span> <span class="cf">WHEN</span> <span class="kw">NOT</span> (<span class="st">`transaction_state`</span> <span class="op">=</span> <span class="st">'sucesso'</span>) <span class="cf">THEN</span> <span class="st">`transaction_state`</span> <span class="cf">END</span> <span class="kw">AS</span> <span class="st">`transaction_state`</span>,</span>
+<span id="cb13-322"><a href="#cb13-322" aria-hidden="true" tabindex="-1"></a>    <span class="st">`transaction_amount`</span>,</span>
+<span id="cb13-323"><a href="#cb13-323" aria-hidden="true" tabindex="-1"></a>    <span class="st">`data_curta`</span>,</span>
+<span id="cb13-324"><a href="#cb13-324" aria-hidden="true" tabindex="-1"></a>    <span class="st">`age`</span>,</span>
+<span id="cb13-325"><a href="#cb13-325" aria-hidden="true" tabindex="-1"></a>    <span class="st">`pais`</span>,</span>
+<span id="cb13-326"><a href="#cb13-326" aria-hidden="true" tabindex="-1"></a>    <span class="st">`tres_n`</span></span>
+<span id="cb13-327"><a href="#cb13-327" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> (</span>
+<span id="cb13-328"><a href="#cb13-328" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span></span>
+<span id="cb13-329"><a href="#cb13-329" aria-hidden="true" tabindex="-1"></a>      <span class="st">`q01`</span><span class="ch">.</span><span class="op">*</span>,</span>
+<span id="cb13-330"><a href="#cb13-330" aria-hidden="true" tabindex="-1"></a>      <span class="cf">CASE</span> <span class="cf">WHEN</span> ((<span class="dt">DATE</span>(<span class="st">'now'</span>) <span class="op">-</span> <span class="fl">1.0</span>) <span class="op">=</span> <span class="st">`data_curta`</span>) <span class="cf">THEN</span> <span class="fl">1.0</span> <span class="cf">WHEN</span> <span class="kw">NOT</span> ((<span class="dt">DATE</span>(<span class="st">'now'</span>) <span class="op">-</span> <span class="fl">1.0</span>) <span class="op">=</span> <span class="st">`data_curta`</span>) <span class="cf">THEN</span> (<span class="cf">CASE</span> <span class="cf">WHEN</span> ((<span class="dt">DATE</span>(<span class="st">'now'</span>) <span class="op">-</span> <span class="fl">2.0</span>) <span class="op">=</span> <span class="st">`data_curta`</span>) <span class="cf">THEN</span> <span class="fl">1.0</span> <span class="cf">WHEN</span> <span class="kw">NOT</span> ((<span class="dt">DATE</span>(<span class="st">'now'</span>) <span class="op">-</span> <span class="fl">2.0</span>) <span class="op">=</span> <span class="st">`data_curta`</span>) <span class="cf">THEN</span> (<span class="cf">CASE</span> <span class="cf">WHEN</span> ((<span class="dt">DATE</span>(<span class="st">'now'</span>) <span class="op">-</span> <span class="fl">2.0</span>) <span class="op">=</span> <span class="st">`data_curta`</span>) <span class="cf">THEN</span> <span class="fl">1.0</span> <span class="cf">WHEN</span> <span class="kw">NOT</span> ((<span class="dt">DATE</span>(<span class="st">'now'</span>) <span class="op">-</span> <span class="fl">2.0</span>) <span class="op">=</span> <span class="st">`data_curta`</span>) <span class="cf">THEN</span> <span class="fl">0.0</span> <span class="cf">END</span>) <span class="cf">END</span>) <span class="cf">END</span> <span class="kw">AS</span> <span class="st">`tres_n`</span></span>
+<span id="cb13-331"><a href="#cb13-331" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> (</span>
+<span id="cb13-332"><a href="#cb13-332" aria-hidden="true" tabindex="-1"></a>      <span class="kw">SELECT</span> <span class="st">`tabela_transactions`</span><span class="ch">.</span><span class="op">*</span>, <span class="st">`age`</span>, <span class="st">`pais`</span></span>
+<span id="cb13-333"><a href="#cb13-333" aria-hidden="true" tabindex="-1"></a>      <span class="kw">FROM</span> <span class="st">`tabela_transactions`</span></span>
+<span id="cb13-334"><a href="#cb13-334" aria-hidden="true" tabindex="-1"></a>      <span class="kw">LEFT</span> <span class="kw">JOIN</span> <span class="st">`tabela_user`</span></span>
+<span id="cb13-335"><a href="#cb13-335" aria-hidden="true" tabindex="-1"></a>        <span class="kw">ON</span> (<span class="st">`tabela_transactions`</span><span class="ch">.</span><span class="st">`user_id`</span> <span class="op">=</span> <span class="st">`tabela_user`</span><span class="ch">.</span><span class="st">`id`</span>)</span>
+<span id="cb13-336"><a href="#cb13-336" aria-hidden="true" tabindex="-1"></a>    ) <span class="kw">AS</span> <span class="st">`q01`</span></span>
+<span id="cb13-337"><a href="#cb13-337" aria-hidden="true" tabindex="-1"></a>  ) <span class="kw">AS</span> <span class="st">`q01`</span></span>
+<span id="cb13-338"><a href="#cb13-338" aria-hidden="true" tabindex="-1"></a>  <span class="kw">WHERE</span> (<span class="st">`tres_n`</span> <span class="op">=</span> <span class="fl">1.0</span>)</span>
+<span id="cb13-339"><a href="#cb13-339" aria-hidden="true" tabindex="-1"></a>) <span class="kw">AS</span> <span class="st">`q01`</span></span>
+<span id="cb13-340"><a href="#cb13-340" aria-hidden="true" tabindex="-1"></a>WINDOW <span class="st">`win1`</span> <span class="kw">AS</span> (PARTITION <span class="kw">BY</span> <span class="st">`pais`</span>, <span class="st">`transaction_state`</span>)</span>
+<span id="cb13-341"><a href="#cb13-341" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-342"><a href="#cb13-342" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb13-343"><a href="#cb13-343" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-344"><a href="#cb13-344" aria-hidden="true" tabindex="-1"></a><span class="fu"># Tarefa 02: Python</span></span>
+<span id="cb13-345"><a href="#cb13-345" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-346"><a href="#cb13-346" aria-hidden="true" tabindex="-1"></a>Numa tribo ancestral e muito desenvolvida, orientada principalmente por uma cultura lógica e matemática, os nativos estão interessados no estudo das linguagens de outras tribos e civilizações.</span>
+<span id="cb13-347"><a href="#cb13-347" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-348"><a href="#cb13-348" aria-hidden="true" tabindex="-1"></a>Durante seus estudos, estes perceberam que as linguagens dessas outras civilizações são compostas por um conjunto de símbolos (letras do alfabeto) que são agrupados e combinados para representar conceitos (palavras). Assim mesmo, estes também sabem que cada civilização possui um alfabeto específico.</span>
+<span id="cb13-349"><a href="#cb13-349" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-350"><a href="#cb13-350" aria-hidden="true" tabindex="-1"></a>Na tentativa da tribo de avançar nos seus estudos, estes desejam saber qual seria o número de palavras possíveis a serem criadas em função do tamanho da palavra e o conjunto de símbolos (alfabeto) da civilização em estudo, independentemente se essas "palavras" representam algum significado ou não.</span>
+<span id="cb13-351"><a href="#cb13-351" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-352"><a href="#cb13-352" aria-hidden="true" tabindex="-1"></a>::: panel-tabset</span>
+<span id="cb13-353"><a href="#cb13-353" aria-hidden="true" tabindex="-1"></a><span class="fu"># A</span></span>
+<span id="cb13-354"><a href="#cb13-354" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-355"><a href="#cb13-355" aria-hidden="true" tabindex="-1"></a>Você, que compartilha os atributos da tribo enquanto as capacidades analíticas e lógicas, precisa ajudá-la escrevendo um algoritmo para fazer o cálculo descrito acima, considerando que tribo oferecerá para você o alfabeto da civilização e o tamanho da palavra/combinação. Seu algoritmo deveria ser capaz de calcular que o número total de palavras possíveis (independente se tem significado ou não) é de 16.</span>
+<span id="cb13-356"><a href="#cb13-356" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-357"><a href="#cb13-357" aria-hidden="true" tabindex="-1"></a>OBS: NÃO PRECISA ESCREVER A LISTA DAS PALAVRAS, A TRIBO SÓ PRECISA DO NÚMERO!</span>
+<span id="cb13-358"><a href="#cb13-358" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-359"><a href="#cb13-359" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb13-360"><a href="#cb13-360" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb13-361"><a href="#cb13-361" aria-hidden="true" tabindex="-1"></a>Esse é um claro problema de análise combinatória com reposição/reposição.</span>
+<span id="cb13-362"><a href="#cb13-362" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb13-363"><a href="#cb13-363" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-366"><a href="#cb13-366" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb13-367"><a href="#cb13-367" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itertools <span class="im">import</span> combinations_with_replacement</span>
+<span id="cb13-368"><a href="#cb13-368" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-369"><a href="#cb13-369" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtem todas as combinações de [1, 2, 3] e tamanho 2</span></span>
+<span id="cb13-370"><a href="#cb13-370" aria-hidden="true" tabindex="-1"></a>comb <span class="op">=</span> combinations_with_replacement([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>], <span class="dv">2</span>)</span>
+<span id="cb13-371"><a href="#cb13-371" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-372"><a href="#cb13-372" aria-hidden="true" tabindex="-1"></a><span class="co"># Imprime as combinações</span></span>
+<span id="cb13-373"><a href="#cb13-373" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">list</span>(comb):</span>
+<span id="cb13-374"><a href="#cb13-374" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(i)</span>
+<span id="cb13-375"><a href="#cb13-375" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-376"><a href="#cb13-376" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-377"><a href="#cb13-377" aria-hidden="true" tabindex="-1"></a><span class="fu"># B</span></span>
+<span id="cb13-378"><a href="#cb13-378" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-379"><a href="#cb13-379" aria-hidden="true" tabindex="-1"></a>Para ajudar a tribo ainda mais! Você deverá modificar seu algoritmo (ou talvez escrever um novo) para fazer o mesmo cálculo, só que agora, as palavras não podem ter símbolos repetidos.</span>
+<span id="cb13-380"><a href="#cb13-380" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-381"><a href="#cb13-381" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb13-382"><a href="#cb13-382" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb13-383"><a href="#cb13-383" aria-hidden="true" tabindex="-1"></a>Esse também é um claro problema de análise combinatória, mas, nesse caso, é um problema em que **não há reposição**.</span>
+<span id="cb13-384"><a href="#cb13-384" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb13-385"><a href="#cb13-385" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-388"><a href="#cb13-388" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb13-389"><a href="#cb13-389" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itertools <span class="im">import</span> combinations</span>
+<span id="cb13-390"><a href="#cb13-390" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-391"><a href="#cb13-391" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtem todas as permutações de {@,d,2,b}  </span></span>
+<span id="cb13-392"><a href="#cb13-392" aria-hidden="true" tabindex="-1"></a>comb <span class="op">=</span> combinations([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>], <span class="dv">2</span>)</span>
+<span id="cb13-393"><a href="#cb13-393" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-394"><a href="#cb13-394" aria-hidden="true" tabindex="-1"></a><span class="co"># imprime todas as combinações</span></span>
+<span id="cb13-395"><a href="#cb13-395" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">list</span>(comb):</span>
+<span id="cb13-396"><a href="#cb13-396" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span> (i)</span>
+<span id="cb13-397"><a href="#cb13-397" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-398"><a href="#cb13-398" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-399"><a href="#cb13-399" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb13-400"><a href="#cb13-400" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-401"><a href="#cb13-401" aria-hidden="true" tabindex="-1"></a><span class="fu"># Tarefa 03: Estatística e Machine Learning</span></span>
+<span id="cb13-402"><a href="#cb13-402" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-403"><a href="#cb13-403" aria-hidden="true" tabindex="-1"></a>::: panel-tabset</span>
+<span id="cb13-404"><a href="#cb13-404" aria-hidden="true" tabindex="-1"></a><span class="fu"># 1</span></span>
+<span id="cb13-405"><a href="#cb13-405" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-406"><a href="#cb13-406" aria-hidden="true" tabindex="-1"></a>Dado um dataset das estaturas (em centímetros) de 13 indivíduos:</span>
+<span id="cb13-407"><a href="#cb13-407" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-408"><a href="#cb13-408" aria-hidden="true" tabindex="-1"></a>Dataset = {175, 166, 183, 193, 155, 177, 173, 171, 162, 185, 176, 161, 188}</span>
+<span id="cb13-409"><a href="#cb13-409" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-410"><a href="#cb13-410" aria-hidden="true" tabindex="-1"></a>Calcule a média, a mediana, 20 percentil, 80 percentil e desvio padrão. Considerando os dados, responda a que distribuição (paramétrica) os dados se aproximam.</span>
+<span id="cb13-411"><a href="#cb13-411" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-412"><a href="#cb13-412" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb13-413"><a href="#cb13-413" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb13-414"><a href="#cb13-414" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb13-415"><a href="#cb13-415" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-416"><a href="#cb13-416" aria-hidden="true" tabindex="-1"></a><span class="fu"># 2</span></span>
+<span id="cb13-417"><a href="#cb13-417" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-418"><a href="#cb13-418" aria-hidden="true" tabindex="-1"></a>Com suas próprias palavras, explique em que consiste o teorema central do limite, e se possível, mencione a sua importância no campo da inferência estatística.</span>
+<span id="cb13-419"><a href="#cb13-419" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-420"><a href="#cb13-420" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb13-421"><a href="#cb13-421" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb13-422"><a href="#cb13-422" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb13-423"><a href="#cb13-423" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-424"><a href="#cb13-424" aria-hidden="true" tabindex="-1"></a><span class="fu"># 3</span></span>
+<span id="cb13-425"><a href="#cb13-425" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-426"><a href="#cb13-426" aria-hidden="true" tabindex="-1"></a>Suponha que numa escola, 2 grupos diferentes de estudantes (Grupo A e Grupo B) fazem o mesmo teste de matemáticas. As pontuações para cada grupo são dados pelos seguintes datasets:</span>
+<span id="cb13-427"><a href="#cb13-427" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-428"><a href="#cb13-428" aria-hidden="true" tabindex="-1"></a>Grupo A: {80, 85, 88, 90, 92, 75, 78} Grupo B: {75, 78, 82, 85, 87, 93, 99}</span>
+<span id="cb13-429"><a href="#cb13-429" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-430"><a href="#cb13-430" aria-hidden="true" tabindex="-1"></a>Elabore um teste de hipótese para determinar se existe uma diferença estatisticamente significativa entre a média das pontuações dos dois grupos com uma confiança de 95%.</span>
+<span id="cb13-431"><a href="#cb13-431" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-432"><a href="#cb13-432" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb13-433"><a href="#cb13-433" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb13-434"><a href="#cb13-434" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb13-435"><a href="#cb13-435" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-436"><a href="#cb13-436" aria-hidden="true" tabindex="-1"></a><span class="fu"># 4</span></span>
+<span id="cb13-437"><a href="#cb13-437" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-438"><a href="#cb13-438" aria-hidden="true" tabindex="-1"></a>Determine a hipótese nula (Ho) e hipótese alternativa (Ha) do seguinte cenário: Uma empresa afirma que o tempo médio dos seus produtos é menos de 4 dias. Você, conta com uma amostra dessas entregas para validar estadísticamente essa afirmação.</span>
+<span id="cb13-439"><a href="#cb13-439" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-440"><a href="#cb13-440" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb13-441"><a href="#cb13-441" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb13-442"><a href="#cb13-442" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb13-443"><a href="#cb13-443" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-444"><a href="#cb13-444" aria-hidden="true" tabindex="-1"></a><span class="fu"># 5</span></span>
+<span id="cb13-445"><a href="#cb13-445" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-446"><a href="#cb13-446" aria-hidden="true" tabindex="-1"></a>Calcule o coeficiente de correlação de pearson das variáveis "Número de aparições Zendaya em filmes por ano" e "Número de pessoas afogadas em piscinas no Brasil ao ano". Em base nos seus resultados, considera que a variável "Número de aparições Zendaya em filmes por ano" é um bom preditor do número de pessoas afogadas no Brasil?Justifique a sua resposta.</span>
+<span id="cb13-447"><a href="#cb13-447" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-448"><a href="#cb13-448" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb13-449"><a href="#cb13-449" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb13-450"><a href="#cb13-450" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb13-451"><a href="#cb13-451" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-452"><a href="#cb13-452" aria-hidden="true" tabindex="-1"></a><span class="fu"># 6</span></span>
+<span id="cb13-453"><a href="#cb13-453" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-454"><a href="#cb13-454" aria-hidden="true" tabindex="-1"></a>Explique a diferença entre amostragem estratificada e amostragem randômica ou aleatória. Discuta quais são as vantagens e desvantagens de cada uma e de exemplos de casos onde uma abordagem é mais adequada que a outra.</span>
+<span id="cb13-455"><a href="#cb13-455" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-456"><a href="#cb13-456" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb13-457"><a href="#cb13-457" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb13-458"><a href="#cb13-458" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb13-459"><a href="#cb13-459" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-460"><a href="#cb13-460" aria-hidden="true" tabindex="-1"></a><span class="fu"># 7</span></span>
+<span id="cb13-461"><a href="#cb13-461" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-462"><a href="#cb13-462" aria-hidden="true" tabindex="-1"></a>Se você treina um modelo de Machine Learning (ou estadístico), como você identificaria se seu modelo tem uma alta variância (overfitting) ou um alto viés (bias, ou underfitting). Caso seu modelo apresenta alta variância, como você resolveria esse problema?</span>
+<span id="cb13-463"><a href="#cb13-463" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-464"><a href="#cb13-464" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb13-465"><a href="#cb13-465" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb13-466"><a href="#cb13-466" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb13-467"><a href="#cb13-467" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-468"><a href="#cb13-468" aria-hidden="true" tabindex="-1"></a><span class="fu"># 8</span></span>
+<span id="cb13-469"><a href="#cb13-469" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-470"><a href="#cb13-470" aria-hidden="true" tabindex="-1"></a>Considere o seguinte modelo de regressão:</span>
+<span id="cb13-471"><a href="#cb13-471" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-472"><a href="#cb13-472" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Salário = 1200+ 500.Idade + 600. Têm Faculdade + 50.Têm Linkedin</span>
+<span id="cb13-473"><a href="#cb13-473" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-474"><a href="#cb13-474" aria-hidden="true" tabindex="-1"></a>Interprete o efeito da Idade na variável salário. Que acontece com as pessoas que não tem faculdade? Considere agora que o desvio padrão do coeficiente da variável "Têm Linkedin" é de 47, por tanto o seu p-valor é \~0.92 (como visto na equação abaixo). O que isso implica para o modelo em questão? Essa variável é relevante?</span>
+<span id="cb13-475"><a href="#cb13-475" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-476"><a href="#cb13-476" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb13-477"><a href="#cb13-477" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb13-478"><a href="#cb13-478" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb13-479"><a href="#cb13-479" aria-hidden="true" tabindex="-1"></a>:::</span>
 </code><button title="Copiar para a área de transferência" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

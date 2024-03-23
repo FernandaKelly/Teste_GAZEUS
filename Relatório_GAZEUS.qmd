@@ -334,19 +334,40 @@ OBS: NÃO PRECISA ESCREVER A LISTA DAS PALAVRAS, A TRIBO SÓ PRECISA DO NÚMERO!
 
 ::: callout-tip
 # Resposta
-Esse é um claro problema de análise combinatória.
+Esse é um claro problema de análise combinatória com reposição/reposição.
 :::
 
-``` python
+```{python}
+from itertools import combinations_with_replacement
 
+# Obtem todas as combinações de [1, 2, 3] e tamanho 2
+comb = combinations_with_replacement([1, 2, 3], 2)
+
+# Imprime as combinações
+for i in list(comb):
+    print(i)
 ```
+
 # B
 
 Para ajudar a tribo ainda mais! Você deverá modificar seu algoritmo (ou talvez escrever um novo) para fazer o mesmo cálculo, só que agora, as palavras não podem ter símbolos repetidos.
 
 ::: callout-tip
 # Resposta
+Esse também é um claro problema de análise combinatória, mas, nesse caso, é um problema em que **não há reposição**.
 :::
+
+```{python}
+from itertools import combinations
+
+# Obtem todas as permutações de {@,d,2,b}  
+comb = combinations([1, 2, 3], 2)
+
+# imprime todas as combinações
+for i in list(comb):
+    print (i)
+```
+
 :::
 
 # Tarefa 03: Estatística e Machine Learning
