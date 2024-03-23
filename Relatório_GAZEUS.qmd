@@ -58,6 +58,7 @@ tabela_transactions <- tibble::tribble(
                          "4", "2022-01-12", "887", "SUCCESS", "16.58",
                          "5", "2022-08-30", "569", "FRAUD", "1225.89",
                          "6", "2022-05-25", "789", "SUCCESS", "59.90",
+                         "7", "2022-05-10", "236", "FRAUD", "256.98",
                          ) %>% 
                       dplyr::mutate(transaction_amount = as.numeric(transaction_amount)) 
 
@@ -75,6 +76,7 @@ tabela_user <- tibble::tribble(
                          "4", "32", "Bolívia",
                          "5", "28", "Brasil",
                          "6", "42", "Brasil",
+                         "7", "38", "África do Sul",
                          ) 
 knitr::kable(tabela_user)
 ```
@@ -103,11 +105,11 @@ Qual é a idade média de usuários do sistema por país?
 
 
 ```{r}
-mean_tabela_user <- tabela_user %>%
+tabela_A <- tabela_user %>%
                      dplyr::group_by(pais) %>% 
                      dplyr::summarise(media_idade = round(mean(age, na.rm = TRUE),2))
 
-# mean_tabela_user %>% 
+# tabela_A %>%
 #   show_query()
 ```
 
@@ -123,14 +125,21 @@ GROUP BY `pais`
 
 Qual é o país com a maior quantidade de dinheiro transacionado (considere só transações finalizadas com sucesso ou "SUCCESS")?
 
+Como vamos precisar do merge das duas tabelas, vou criar a **tabela_merge** sem algum filtro para facilitar as consultas e não alocar memória desnecessária.
+
 ```{r}
-tabela_merge <- tabela_transactions %>% 
+tabela_merge <- tabela_transactions %>%
+                 dplyr::left_join(tabela_user, by = c("user_id" = "id")) 
+```
+
+
+```{r}
+tabela_B <- tabela_merge %>% 
                   dplyr::filter(transaction_state == "SUCCESS" | transaction_state == "sucesso") %>% 
-                  dplyr::left_join(tabela_user, by = c("user_id" = "id")) %>% 
                   dplyr::slice_max(transaction_amount)
 
-tabela_merge %>% 
-  show_query()
+# tabela_B %>% 
+#   show_query()
 ```
 
 ::: callout-tip
@@ -162,7 +171,21 @@ WHERE (`col01` <= 1)
 
 # C
 
-Qual é o país com maior taxa de fraude em porcentagem respeito ao número de transações totais no país
+Qual é o país com maior taxa de fraude em porcentagem respeito ao número de transações totais no país?
+
+```{r}
+library(janitor)
+tabela_C <- tabela_merge %>% 
+              dplyr::group_by(transaction_state) %>% 
+              dplyr::mutate(taxa = transaction_amount/sum(transaction_amount)) %>% 
+              dplyr::ungroup() %>%
+              dplyr::slice_max(taxa)
+  
+
+
+  
+```
+
 
 # D
 

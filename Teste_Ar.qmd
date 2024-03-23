@@ -189,4 +189,11 @@ dados_gapminder |>                                  # <1>
 5.  Linhas na tabela
 6.  Ordem crescente na coluna 'ano'
 
+```{r}
+mtcars %>%
+  tabyl(am, cyl) %>%
+  adorn_totals("row") %>%
+  adorn_percentages()
+```
+
 
