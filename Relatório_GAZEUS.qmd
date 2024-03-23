@@ -14,7 +14,7 @@ format:
       theme: 
         light: cosmo
         dark: superhero 
-title-block-banner: "#874a9c" 
+#title-block-banner: "#874a9c" 
 code-annotations: hover 
 execute:
   warning: false
@@ -45,9 +45,9 @@ Transactions: Que contém o registro de todas as transações que os usuários r
 -   transaction_state: Campo que indica o estado da transação que pode ser *INITIATED*, *SUCCESS*, *FRAUD* or *CANCELLED*.
 -   transaction_amount: Valor da transação em USD
 
-Com estes dados disponíveis, precisamos gerar queries SQL para responder às seguintes perguntas:
+Com estes dados disponíveis, precisamos gerar queries SQL para responder às seguintes perguntas. **Para fins didáticos, criei esses bancos de dados para simular a resolução das questões.**
 
-*Para fins didáticos, criei esses bancos de dados para simular a resolução das questões.*
+## tabela_transactions
 
 ```{r}
 tabela_transactions <- tibble::tribble(
@@ -59,8 +59,14 @@ tabela_transactions <- tibble::tribble(
                          "5", "2022-08-30", "569", "FRAUD", "1225.89",
                          "6", "2022-05-25", "789", "SUCCESS", "59.90",
                          ) %>% 
-                      dplyr::mutate(transaction_amount = as.numeric(transaction_amount))
+                      dplyr::mutate(transaction_amount = as.numeric(transaction_amount)) 
 
+knitr::kable(tabela_transactions)
+```
+
+## tabela_user
+
+```{r}
 tabela_user <- tibble::tribble(
                          ~id, ~age, ~pais, 
                          "1", "22", "Brasil",
@@ -69,13 +75,11 @@ tabela_user <- tibble::tribble(
                          "4", "32", "Bolívia",
                          "5", "28", "Brasil",
                          "6", "42", "Brasil",
-                         )
+                         ) 
+knitr::kable(tabela_user)
 ```
 
-::: panel-tabset
-# A
-
-Qual é a idade média de usuários do sistema por país?
+Para que a experiência do SQL seja real, vou conectar as bases com o SQLite.
 
 ```{r}
 library(dbplyr)
@@ -92,19 +96,27 @@ tabela_transactions <- tbl(con, "tabela_transactions") # <2>
 1.  Conectando a base de dados {tabela_user} com o SQLite
 2.  Conectando a base de dados {tabela_transactions} com o SQLite
 
+::: panel-tabset
+# A
+
+Qual é a idade média de usuários do sistema por país?
+
+
 ```{r}
 mean_tabela_user <- tabela_user %>%
                      dplyr::group_by(pais) %>% 
                      dplyr::summarise(media_idade = round(mean(age, na.rm = TRUE),2))
 
-mean_tabela_user %>% 
-  show_query()
+# mean_tabela_user %>% 
+#   show_query()
 ```
 
 ::: callout-tip
 # Resposta
 
-<SQL> SELECT `pais`, ROUND(AVG(`age`), 2) AS `media_idade` FROM `tabela_user` GROUP BY `pais`
+<SQL> SELECT `pais`, ROUND(AVG(`age`), 2) AS `media_idade` 
+FROM `tabela_user` 
+GROUP BY `pais`
 :::
 
 # B
@@ -124,7 +136,28 @@ tabela_merge %>%
 ::: callout-tip
 # Resposta
 
-<SQL> SELECT `user_id`, `transaction_date`, `transaction_id`, `transaction_state`, `transaction_amount`, `age`, `pais` FROM ( SELECT `q01`.*, RANK() OVER (ORDER BY `transaction_amount` DESC) AS `col01` FROM ( SELECT `LHS`.*, `age`, `pais` FROM ( SELECT `tabela_transactions`.\* FROM `tabela_transactions` WHERE (`transaction_state` = 'SUCCESS' OR `transaction_state` = 'sucesso') ) AS `LHS` LEFT JOIN `tabela_user` ON (`LHS`.`user_id` = `tabela_user`.`id`) ) AS `q01` ) AS `q01` WHERE (`col01` \<= 1)
+SELECT
+  `user_id`,
+  `transaction_date`,
+  `transaction_id`,
+  `transaction_state`,
+  `transaction_amount`,
+  `age`,
+  `pais`
+FROM (
+  SELECT `q01`.*, RANK() OVER (ORDER BY `transaction_amount` DESC) AS `col01`
+  FROM (
+    SELECT `LHS`.*, `age`, `pais`
+    FROM (
+      SELECT `tabela_transactions`.*
+      FROM `tabela_transactions`
+      WHERE (`transaction_state` = 'SUCCESS' OR `transaction_state` = 'sucesso')
+    ) AS `LHS`
+    LEFT JOIN `tabela_user`
+      ON (`LHS`.`user_id` = `tabela_user`.`id`)
+  ) AS `q01`
+) AS `q01`
+WHERE (`col01` <= 1)
 :::
 
 # C
