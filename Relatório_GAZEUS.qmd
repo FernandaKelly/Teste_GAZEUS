@@ -675,8 +675,6 @@ stats::cor.test(tabela_5$zendaya, tabela_5$piscina,
 
 Ou seja, ao nível de 95% de significância, há correlação entre as variáveis analisadas, como explicado acima, essa correlação é denominada por correlação espúria.
 
-
-
 # 6
 
 Explique a diferença entre amostragem estratificada e amostragem randômica ou aleatória. Discuta quais são as vantagens e desvantagens de cada uma e dê exemplos de casos onde uma abordagem é mais adequada que a outra.
@@ -684,6 +682,18 @@ Explique a diferença entre amostragem estratificada e amostragem randômica ou 
 ::: callout-tip
 # Resposta
 :::
+
+A **amostragem aleatória simples** é um método de seleção de n unidades de N, de modo que cada uma das $C_{n}$ amostras distintas tenha uma chance igual de ser sorteada. Na prática, uma amostra aleatória simples é extraída unidade por unidade. As unidades da população são numeradas de 1 a N. Uma série de números aleatórios entre 1 e N é então sorteada, seja por meio de uma tabela de números aleatórios ou por meio de um programa de computador que produz tal tabela. Em qualquer sorteio o processo utilizado deve dar uma chance igual de seleção a qualquer número da população ainda não sorteado. As unidades que contêm esses n números constituem a amostra. É facilmente verificado que todas as amostras distintas de $C_{n}$ têm chances iguais de serem selecionadas por este método. Considere uma amostra distinta, ou seja, um conjunto de n unidades especificadas. No primeiro sorteio, a probabilidade de que alguma das n unidades especificadas seja selecionada é n/ N. No segundo sorteio, a probabilidade de que alguma das unidades especificadas restantes (n -1) seja sorteada é (n -1)/( N-1), e assim por diante.
+
+Como um número sorteado é removido da população em todos os sorteios subsequentes, esse método também é chamado de amostragem aleatória sem reposição. A amostragem aleatória com reposição é inteiramente viável: em qualquer sorteio, todos os N membros da população têm a mesma chance de serem sorteados, independentemente da frequência com que já tenham sido sorteados. As fórmulas para as variâncias e variâncias estimadas das estimativas feitas a partir da amostra são muitas vezes mais simples quando a amostragem é com reposição do que quando é sem reposição. Por esta razão, a amostragem com reposição é por vezes utilizada nos planos amostrais mais complexos, embora à primeira vista pareça pouco sentido ter a mesma unidade duas ou mais vezes na amostra.
+
+Na **amostragem estratificada**, a população de N unidades é primeiro dividida em subpopulações de unidades $N_{1}, N_{2}, \cdots, N_{L}$, respectivamente. Essas subpopulações não se sobrepõem e juntas compreendem toda a população, de modo que $N_{1} + N_{2} + \cdots + N_{L} = N$. As subpopulações são chamadas de estratos. Para obter todos os benefícios da estratificação, os valores do $N_{h}$ devem ser conhecidos. Determinados os estratos, de cada um é retirada uma amostra, sendo os sorteios feitos de forma independente nos diferentes estratos. Os tamanhos das amostras dentro dos estratos são indicados por $n_{1}, n_{2}, \cdots, n_{L}$ respectivamente. Se uma amostra aleatória simples for retirada em cada estrato, todo o procedimento é descrito como amostragem aleatória estratificada. A estratificação é uma técnica comum. Há muitas razões para isto, os principais são os seguintes.
+
+1. Se forem necessários dados de precisão conhecida para certas subdivisões do população, é aconselhável tratar cada subdivisão como uma “população” por direito próprio.
+
+2. Os problemas de amostragem podem diferir acentuadamente em diferentes partes da população. No caso das populações humanas, as pessoas que vivem em instituições (por exemplo, hotéis, hospitais, prisões) são frequentemente colocadas num estrato diferente das pessoas que vivem em casas normais porque uma abordagem diferente à amostragem é apropriada para as duas situações. Na amostragem de empresas, podemos possuir uma lista das grandes empresas, que são colocadas num estrato separado. Algum tipo de amostragem de área pode ter que ser usado para as empresas menores.
+
+3. A estratificação pode produzir um ganho de precisão nas estimativas das características de toda a população. Pode ser possível dividir uma população heterogênea em subpopulações, cada uma das quais internamente homogênea. Isto é sugerido pelo nome estratos, com a implicação de uma divisão em camadas. Se cada estrato for homogêneo, no sentido de que as medidas variam pouco de uma unidade para outra, uma estimativa precisa da média de qualquer estrato pode ser obtida a partir de uma pequena amostra desse estrato. Estas estimativas podem então ser combinadas numa estimativa precisa para toda a população.
 
 # 7
 
@@ -697,11 +707,17 @@ Se você treina um modelo de Machine Learning (ou estadístico), como você iden
 
 Considere o seguinte modelo de regressão:
 
--   Salário = 1200+ 500.Idade + 600. Têm Faculdade + 50.Têm Linkedin
+- Salário = 1200 + 500.Idade + 600.Têm Faculdade + 50.Têm Linkedin
 
-Interprete o efeito da Idade na variável salário. Que acontece com as pessoas que não tem faculdade? Considere agora que o desvio padrão do coeficiente da variável "Têm Linkedin" é de 47, por tanto o seu p-valor é \~0.92 (como visto na equação abaixo). O que isso implica para o modelo em questão? Essa variável é relevante?
+Interprete o efeito da Idade na variável salário. Que acontece com as pessoas que não tem faculdade? Considere agora que o desvio padrão do coeficiente da variável "Têm Linkedin" é de 47, por tanto o seu p-valor é 0.92 (como visto na equação abaixo). O que isso implica para o modelo em questão? Essa variável é relevante?
 
 ::: callout-tip
 # Resposta
 :::
+
+
+
+
+
+
 :::
