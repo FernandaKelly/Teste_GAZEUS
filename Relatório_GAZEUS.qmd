@@ -47,7 +47,7 @@ Transactions: Que contém o registro de todas as transações que os usuários r
 
 Com estes dados disponíveis, precisamos gerar queries SQL para responder às seguintes perguntas. **Para fins didáticos, criei esses bancos de dados para simular a resolução das questões.**
 
-## tabela_transactions
+### tabela_transactions
 
 ```{r}
 #| echo: false
@@ -71,7 +71,7 @@ tabela_transactions <- tibble::tribble(
 knitr::kable(tabela_transactions)
 ```
 
-## tabela_user
+### tabela_user
 
 ```{r}
 #| echo: false
@@ -465,7 +465,7 @@ Com suas próprias palavras, explique em que consiste o teorema central do limit
 # Resposta
 :::
 
-O Teorema do limite central (TLC) basicamente demonstra a **tendência** de aproximação das variáveis aleatórias com a distribuição normal, em que a aproximação da distribuição Normal melhora na medida que se fizesse a média do lançamento de mais dados. Esse comportamento pode ser visualizado na imagem abaixo.
+O Teorema do limite central (TLC) basicamente demonstra a **tendência** de aproximação das variáveis aleatórias com a distribuição normal, em que a aproximação da distribuição Normal melhora na medida que se fizesse a média do lançamento de mais dados. Esse comportamento pode ser visualizado na imagem abaixo. Na estatística, há provas que um n igual a 30 é suficientemente grande para que essa amostra seja descrita com uma distribuição normal e, por isso, é fácil encontrar análises clássicas com todos os pressupostos violados por seus pesquisadores devido a esta pressuposição do n igual a 30.
 
 ![Teorema do Limite Central](img/img213.png){fig-align="center" width="300"}
 
@@ -500,10 +500,10 @@ tabela_estudantes <- tibble::tribble(
                          87, "B",
                          93, "B",
                          99, "B",
-                         ) 
+                         ) %>% dplyr::mutate(grupo = factor(grupo, levels = c("A", "B")))
 ```
 
-Antes de qualquer levantamento de hipótese, é bom analisar as medidas de tendência central de cada grupo e também graficamente. De acordo com a tabela abaixo, não há muitas evidências de que essa média entre os grupos seja diferente, mas vamos para o teste.
+**Antes de qualquer levantamento de hipótese, é bom analisar as medidas de tendência central de cada grupo e também graficamente** e, de acordo com a tabela abaixo, não há muitas evidências de que essa média entre os grupos seja diferente, mas é evidente que o **grupo B** tem uma variabilidade maior em relação as notas (desvio padrão = 8.363754).
 
 ```{r}
 #| echo: false
@@ -511,15 +511,16 @@ Antes de qualquer levantamento de hipótese, é bom analisar as medidas de tend�
 summarise_estudantes <- tabela_estudantes %>% 
   dplyr::group_by(grupo) %>% 
   dplyr::summarise(vinte_percentil = quantile(nota, probs = 0.20, na.rm = TRUE),
-                   mean = mean(nota, na.rm = TRUE),
+                   mean = round(mean(nota, na.rm = TRUE),2),
                    median = median(nota, na.rm = TRUE),
                    oitenta_percentil = quantile(nota, probs = 0.80, na.rm = TRUE),
-                   desvio_padrao = sd(nota, na.rm = TRUE)
+                   desvio_padrao = round(sd(nota, na.rm = TRUE),2)
                    ) 
 
 knitr::kable(summarise_dataset)
 ```
 ```{r}
+#| echo: false
 library(ggplot2)
 
 ggplot(tabela_estudantes) +
@@ -533,7 +534,50 @@ B = "#E56B0D")) +
  hjust = 0))
 ```
 
-Seguindo os passo para elaboração de um teste de hipótese:
+É importante ressaltar que a verificação dos pressupostos é de extrema relevância para que os insights e conclusões sejam verdadeiramente corretos. Neste casso, estamos **supondo ** que as duas amostras são independentes e, em caso de teste de médias, usaríamos o teste t independente que apresenta dois **pressupostos**:
+
+- **Normalidade da variável dependente de cada grupo**
+- **Homogeneidade de variâncias (ou seja, grupos com variâncias homogêneas)**
+
+### Normalidade
+
+Para verificar a normalidade dos dados, é recomendável utilizar o teste de **Shapiro WIlk** quando o número de amostra é menor que 50. A estatı́stica T (ou T ) é basicamente o quadrado de um coeficiente de correlação, onde o coeficiente de correlação de Pearson é calculado entre a estatı́stica ordenada X i na amostra e o escore ai , que representa o que a estatı́stica ordenada deveria parecer se a população é Normal. Portanto, as hipóteses levantadas são:
+
+$H_{0}$ : F(x) é função de distribuição normal;
+$H_{1}$ : F(x) não é função de distribuição normal;
+
+```{r}
+#| echo: false
+ 
+teste_shapiro <- tabela_estudantes %>% 
+  dplyr::group_by(grupo) %>% 
+  rstatix::shapiro_test(nota)
+
+knitr::kable(teste_shapiro)
+```
+
+
+Veja que de acordo com o teste de Shapiro Wilk, ao nível de 95% de significância, **não rejeita-se a hipótese nula**, ou seja, a variável **notas** é descrita por uma distribuição normal.
+
+
+### Variância
+
+O segundo pressuposto pode ser avaliado pelo **teste de Levene**, em que as hipóteses são:
+
+$H_{0}$ : Os grupos apresentam variâncias homogêneas;
+$H_{1}$ : Os grupos não apresentam variâncias homogêneas;
+
+```{r}
+#| echo: false
+
+teste_levene <- car::leveneTest(nota ~ grupo, data = tabela_estudantes, center = mean)
+
+knitr::kable(teste_levene)
+```
+
+Logo, ao nível de 95% de significância, **não rejeitamos a hipótese nula**, ou seja, os grupos apresentam variâncias homogêneas e assim podemos seguir com o teste t independente.
+
+Seguindo os passos para elaboração de um teste de hipótese:
 
 1.  Enunciar as Hipóteses:
 
@@ -542,21 +586,26 @@ $H_{1}$ : Há diferença média entre os grupos;
 
 2. Fixar o nı́vel de significância $\alpha$) do teste:
 
-$\alpha$ : Erro tipo I: Rejeitar $H_{0}$  quando é verdadeira;
-
 **No nosso caso, o nível de significância será 95%.**
+
+- $\alpha$ : Erro tipo I: Rejeitar $H_{0}$  quando é verdadeira.
+
 
 3. Escolha da Estatı́stica teste adequada:
 
-A estatística de teste adequada para este caso (amostras independentes) é o teste de médias
+Para responder a essa pergunta, usaremos o teste-t independente. Note que queremos comparar as notas (variáveis numéricas) de dois grupos independentes de alunos (A x B).
 
-4. Obtenção dos valores crı́ticos:
+4. Obtenção dos valores crı́ticos e Obtenção da Estatı́stica calculada:
 
-5. Obtenção da Estatı́stica calculad:
+```{r}
+#| echo: false
+teste_t <- stats::t.test(nota ~ grupo, tabela_estudantes, var.equal=TRUE)
+teste_t
+```
 
 6. Conclusão e tomada de decisão
 
-
+O teste resulta em um valor de t (no caso, t = -0.3935) e um valor de p (p-value) que é calculado com base nesse valor de t e nos graus de liberdade (df, do inglês degrees of freedom). Nesse caso, o valor de p é: 0.7008, um valor superior ao nível de significância 0.05. Como p > 0.05, não vamos rejeitar a $H_{0}$ e considerar que os dois grupos que apresentam notas, em média, não são estatisticamente diferentes. Veja que o IC 95% para a diferença entre médias inclui o zero: [-10.27; 7.12].
 
 
 
