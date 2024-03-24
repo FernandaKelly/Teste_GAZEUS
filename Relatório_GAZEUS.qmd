@@ -703,21 +703,45 @@ Se você treina um modelo de Machine Learning (ou estadístico), como você iden
 # Resposta
 :::
 
+Essa é uma questão de viés e variância em modelagem. 
 # 8
 
 Considere o seguinte modelo de regressão:
 
 - Salário = 1200 + 500.Idade + 600.Têm Faculdade + 50.Têm Linkedin
 
-Interprete o efeito da Idade na variável salário. Que acontece com as pessoas que não tem faculdade? Considere agora que o desvio padrão do coeficiente da variável "Têm Linkedin" é de 47, por tanto o seu p-valor é 0.92 (como visto na equação abaixo). O que isso implica para o modelo em questão? Essa variável é relevante?
+::: panel-tabset
+
+# A
+Interprete o efeito da Idade na variável salário. 
 
 ::: callout-tip
 # Resposta
 :::
 
+Neste modelo, temos que a variável idade foi significativa (p-value = 0.023) com sinal positivo, ou seja, quanto maior a idade (aqui é importante ressaltar que se ela estiver categorizada, a interpretação é alterada), maior será a chance do Salário estar acima da média. Para este resultado é pertinente dizer que as empresas associam a idade a um bom salário, ou, assumem que quando o individuo é mais velho, este consequentemente deve ganhar mais em relação aos mais novos.
 
+# B
 
+Que acontece com as pessoas que não tem faculdade? 
 
+::: callout-tip
+# Resposta
+:::
+
+A variável "Têm faculdade" foi significativa (p-value = 0.032) com sinal positivo, o que implica que esta variável auxilia no aumento do salário, em que quanto maior o seu nível de instrução, maior será a chance (600 vezes) do salário estar acima da média daqueles que não têm faculdade e isso pode ser recorrente ao fato desse indivíduo ter mais conhecimento sobre a área. Logo, de acordo com o modelo, aqueles que não têm faculdade estão propícios a receberem um salário abaixo da média em relação a aqueles que possuem faculdade.
+
+# C
+
+Considere agora que o desvio padrão do coeficiente da variável "Têm Linkedin" é de 47, por tanto o seu p-valor é 0.92 (como visto na equação abaixo). O que isso implica para o modelo em questão? Essa variável é relevante?
+
+::: callout-tip
+# Resposta
+:::
+
+Essa variável não é relevante para predizer salários, mas veja que, apesar de não ser significativa, ela é positiva. Podemos iniciar com a problemática de que ter uma conta no linkedin não implica que seu salário será impactado por isso, mas podemos supor que o linkedin te ajuda positivamente em alguns aspectos, menos no salário. Aqui temos uma chance de analisar um pouco mais essa variável.
+
+:::
 
 
 :::
