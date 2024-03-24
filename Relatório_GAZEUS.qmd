@@ -581,8 +581,8 @@ Seguindo os passos para elaboração de um teste de hipótese:
 
 1.  Enunciar as Hipóteses:
 
-$H_{0}$ : Não há diferença média entre os grupos; 
-$H_{1}$ : Há diferença média entre os grupos;
+- $H_{0}$ : Não há diferença média entre os grupos; 
+- $H_{1}$ : Há diferença média entre os grupos;
 
 2. Fixar o nı́vel de significância $\alpha$) do teste:
 
@@ -608,7 +608,6 @@ teste_t
 O teste resulta em um valor de t (no caso, t = -0.3935) e um valor de p (p-value) que é calculado com base nesse valor de t e nos graus de liberdade (df, do inglês degrees of freedom). Nesse caso, o valor de p é: 0.7008, um valor superior ao nível de significância 0.05. Como p > 0.05, não vamos rejeitar a $H_{0}$ e considerar que os dois grupos que apresentam notas, em média, não são estatisticamente diferentes. Veja que o IC 95% para a diferença entre médias inclui o zero: [-10.27; 7.12].
 
 
-
 # 4
 
 Determine a hipótese nula (Ho) e hipótese alternativa (Ha) do seguinte cenário: Uma empresa afirma que o tempo médio dos seus produtos é menos de 4 dias. Você, conta com uma amostra dessas entregas para validar estadísticamente essa afirmação.
@@ -616,6 +615,13 @@ Determine a hipótese nula (Ho) e hipótese alternativa (Ha) do seguinte cenári
 ::: callout-tip
 # Resposta
 :::
+
+Não é possível avaliar os pressupostos dessa amostra, mas considerando que esse tempo médio seja em dias (inteiros), o teste paramétrico sobre uma média populacional, a hipótese nula utilizada seria:
+
+
+- $H_{0}$ : $\mu$ = 4;
+- $H_{1}$ : $\mu$ $\neq$ 4;
+
 
 # 5
 
