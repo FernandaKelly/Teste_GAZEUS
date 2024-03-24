@@ -8,6 +8,7 @@ date-format: short
 toc: true 
 format: 
     html: 
+      embed-resources: true
       #css: ["custom.css"] 
       code-fold: false 
       code-tools: true  
