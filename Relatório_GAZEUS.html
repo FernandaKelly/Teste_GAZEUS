@@ -1013,7 +1013,7 @@ Resposta
 <figcaption>Andrew Ng</figcaption>
 </figure>
 </div>
-<p>A abordagem Bayesiana evita o overfitting, por mais que esse não seja necessariamente seu objetivo primordial, mas estamos condicionados a utilizar das formas ditas <strong>regularizadoras</strong>. Elas também chamadas de <strong>penalizadoras</strong> e são conhecidas por regressões LASSO e Ridge. É claro que a análise dos valores de VP, FN, VN e FP usando-se uma amostra de teste ou validação é crucial para evitar o overfitting, mas ainda assim, é importante estar atento a amostragem dos dados para compor a amostra de teste ou de validação.</p>
+<p>A abordagem Bayesiana evita o overfitting, por mais que esse não seja necessariamente seu objetivo primordial, mas estamos condicionados a utilizar das formas ditas <strong>regularizadoras</strong>. Elas também chamadas de <strong>penalizadoras</strong> e são conhecidas por regressões LASSO, Ridge e Elastic-Net. É claro que a análise dos valores de VP, FN, VN e FP usando-se uma amostra de teste ou validação é crucial para evitar o overfitting, mas ainda assim, é importante estar atento a amostragem dos dados para compor a amostra de teste ou de validação.</p>
 <p>Acredito que deve haver vários outros métodos mais atualizados que esses mencionados acima, mas os básico as vezes já resolve o problema e também identifica a causa raiz, facilitando assim a procura de outros métodos ao invés de só ir aplicando vários métodos e escolher o que mais proporciona ganhos.</p>
 </div>
 <div id="tabset-4-8" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-8-tab">
@@ -2484,55 +2484,51 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb18-798"><a href="#cb18-798" aria-hidden="true" tabindex="-1"></a><span class="al">![Andrew Ng](img/vies.jpeg)</span>{fig-align="center" width="300"}</span>
 <span id="cb18-799"><a href="#cb18-799" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-800"><a href="#cb18-800" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-801"><a href="#cb18-801" aria-hidden="true" tabindex="-1"></a>A abordagem Bayesiana evita o overfitting, por mais que esse não seja necessariamente seu objetivo primordial, mas estamos condicionados a utilizar das formas ditas **regularizadoras**. Elas também chamadas de **penalizadoras** e são conhecidas por regressões LASSO e Ridge. É claro que a análise dos valores de VP, FN, VN e FP usando-se uma amostra de teste ou validação é crucial para evitar o overfitting, mas ainda assim, é importante estar atento a amostragem dos dados para compor a amostra de teste ou de validação.</span>
+<span id="cb18-801"><a href="#cb18-801" aria-hidden="true" tabindex="-1"></a>A abordagem Bayesiana evita o overfitting, por mais que esse não seja necessariamente seu objetivo primordial, mas estamos condicionados a utilizar das formas ditas **regularizadoras**. Elas também chamadas de **penalizadoras** e são conhecidas por regressões LASSO, Ridge e Elastic-Net. É claro que a análise dos valores de VP, FN, VN e FP usando-se uma amostra de teste ou validação é crucial para evitar o overfitting, mas ainda assim, é importante estar atento a amostragem dos dados para compor a amostra de teste ou de validação.</span>
 <span id="cb18-802"><a href="#cb18-802" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-803"><a href="#cb18-803" aria-hidden="true" tabindex="-1"></a>Acredito que deve haver vários outros métodos mais atualizados que esses mencionados acima, mas os básico as vezes já resolve o problema e também identifica a causa raiz, facilitando assim a procura de outros métodos ao invés de só ir aplicando vários métodos e escolher o que mais proporciona ganhos.</span>
 <span id="cb18-804"><a href="#cb18-804" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-805"><a href="#cb18-805" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-805"><a href="#cb18-805" aria-hidden="true" tabindex="-1"></a><span class="fu"># 8</span></span>
 <span id="cb18-806"><a href="#cb18-806" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-807"><a href="#cb18-807" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-807"><a href="#cb18-807" aria-hidden="true" tabindex="-1"></a>Considere o seguinte modelo de regressão:</span>
 <span id="cb18-808"><a href="#cb18-808" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-809"><a href="#cb18-809" aria-hidden="true" tabindex="-1"></a><span class="fu"># 8</span></span>
+<span id="cb18-809"><a href="#cb18-809" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Salário = 1200 + 500.Idade + 600.Têm Faculdade + 50.Têm Linkedin</span>
 <span id="cb18-810"><a href="#cb18-810" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-811"><a href="#cb18-811" aria-hidden="true" tabindex="-1"></a>Considere o seguinte modelo de regressão:</span>
+<span id="cb18-811"><a href="#cb18-811" aria-hidden="true" tabindex="-1"></a>::: panel-tabset</span>
 <span id="cb18-812"><a href="#cb18-812" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-813"><a href="#cb18-813" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Salário = 1200 + 500.Idade + 600.Têm Faculdade + 50.Têm Linkedin</span>
-<span id="cb18-814"><a href="#cb18-814" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-815"><a href="#cb18-815" aria-hidden="true" tabindex="-1"></a>::: panel-tabset</span>
-<span id="cb18-816"><a href="#cb18-816" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-817"><a href="#cb18-817" aria-hidden="true" tabindex="-1"></a><span class="fu"># A</span></span>
-<span id="cb18-818"><a href="#cb18-818" aria-hidden="true" tabindex="-1"></a>Interprete o efeito da Idade na variável salário. </span>
+<span id="cb18-813"><a href="#cb18-813" aria-hidden="true" tabindex="-1"></a><span class="fu"># A</span></span>
+<span id="cb18-814"><a href="#cb18-814" aria-hidden="true" tabindex="-1"></a>Interprete o efeito da Idade na variável salário. </span>
+<span id="cb18-815"><a href="#cb18-815" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-816"><a href="#cb18-816" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb18-817"><a href="#cb18-817" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb18-818"><a href="#cb18-818" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb18-819"><a href="#cb18-819" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-820"><a href="#cb18-820" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb18-821"><a href="#cb18-821" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb18-822"><a href="#cb18-822" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb18-820"><a href="#cb18-820" aria-hidden="true" tabindex="-1"></a>Neste modelo, temos que a variável idade foi significativa (p-value = 0.023) com sinal positivo, ou seja, quanto maior a idade (aqui é importante ressaltar que se ela estiver categorizada, a interpretação é alterada), maior será a chance do Salário estar acima da média. Para este resultado é pertinente dizer que as empresas associam a idade a um bom salário, ou, assumem que quando o individuo é mais velho, este consequentemente deve ganhar mais em relação aos mais novos.</span>
+<span id="cb18-821"><a href="#cb18-821" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-822"><a href="#cb18-822" aria-hidden="true" tabindex="-1"></a><span class="fu"># B</span></span>
 <span id="cb18-823"><a href="#cb18-823" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-824"><a href="#cb18-824" aria-hidden="true" tabindex="-1"></a>Neste modelo, temos que a variável idade foi significativa (p-value = 0.023) com sinal positivo, ou seja, quanto maior a idade (aqui é importante ressaltar que se ela estiver categorizada, a interpretação é alterada), maior será a chance do Salário estar acima da média. Para este resultado é pertinente dizer que as empresas associam a idade a um bom salário, ou, assumem que quando o individuo é mais velho, este consequentemente deve ganhar mais em relação aos mais novos.</span>
+<span id="cb18-824"><a href="#cb18-824" aria-hidden="true" tabindex="-1"></a>Que acontece com as pessoas que não tem faculdade? </span>
 <span id="cb18-825"><a href="#cb18-825" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-826"><a href="#cb18-826" aria-hidden="true" tabindex="-1"></a><span class="fu"># B</span></span>
-<span id="cb18-827"><a href="#cb18-827" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-828"><a href="#cb18-828" aria-hidden="true" tabindex="-1"></a>Que acontece com as pessoas que não tem faculdade? </span>
+<span id="cb18-826"><a href="#cb18-826" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb18-827"><a href="#cb18-827" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb18-828"><a href="#cb18-828" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb18-829"><a href="#cb18-829" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-830"><a href="#cb18-830" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb18-831"><a href="#cb18-831" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb18-832"><a href="#cb18-832" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb18-830"><a href="#cb18-830" aria-hidden="true" tabindex="-1"></a>A variável "Têm faculdade" foi significativa (p-value = 0.032) com sinal positivo, o que implica que esta variável auxilia no aumento do salário, em que quanto maior o seu nível de instrução, maior será a chance (600 vezes) do salário estar acima da média daqueles que não têm faculdade e isso pode ser recorrente ao fato desse indivíduo ter mais conhecimento sobre a área. Logo, de acordo com o modelo, aqueles que não têm faculdade estão propícios a receberem um salário abaixo da média em relação a aqueles que possuem faculdade.</span>
+<span id="cb18-831"><a href="#cb18-831" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-832"><a href="#cb18-832" aria-hidden="true" tabindex="-1"></a><span class="fu"># C</span></span>
 <span id="cb18-833"><a href="#cb18-833" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-834"><a href="#cb18-834" aria-hidden="true" tabindex="-1"></a>A variável "Têm faculdade" foi significativa (p-value = 0.032) com sinal positivo, o que implica que esta variável auxilia no aumento do salário, em que quanto maior o seu nível de instrução, maior será a chance (600 vezes) do salário estar acima da média daqueles que não têm faculdade e isso pode ser recorrente ao fato desse indivíduo ter mais conhecimento sobre a área. Logo, de acordo com o modelo, aqueles que não têm faculdade estão propícios a receberem um salário abaixo da média em relação a aqueles que possuem faculdade.</span>
+<span id="cb18-834"><a href="#cb18-834" aria-hidden="true" tabindex="-1"></a>Considere agora que o desvio padrão do coeficiente da variável "Têm Linkedin" é de 47, por tanto o seu p-valor é 0.92 (como visto na equação abaixo). O que isso implica para o modelo em questão? Essa variável é relevante?</span>
 <span id="cb18-835"><a href="#cb18-835" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-836"><a href="#cb18-836" aria-hidden="true" tabindex="-1"></a><span class="fu"># C</span></span>
-<span id="cb18-837"><a href="#cb18-837" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-838"><a href="#cb18-838" aria-hidden="true" tabindex="-1"></a>Considere agora que o desvio padrão do coeficiente da variável "Têm Linkedin" é de 47, por tanto o seu p-valor é 0.92 (como visto na equação abaixo). O que isso implica para o modelo em questão? Essa variável é relevante?</span>
+<span id="cb18-836"><a href="#cb18-836" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb18-837"><a href="#cb18-837" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb18-838"><a href="#cb18-838" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb18-839"><a href="#cb18-839" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-840"><a href="#cb18-840" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb18-841"><a href="#cb18-841" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb18-840"><a href="#cb18-840" aria-hidden="true" tabindex="-1"></a>Essa variável não é relevante para predizer salários, mas veja que, apesar de não ser significativa, ela é positiva. Podemos iniciar com a problemática de que ter uma conta no linkedin não implica que seu salário será impactado por isso, mas podemos supor que o linkedin te ajuda positivamente em alguns aspectos, menos no salário. Aqui temos uma chance de analisar um pouco mais essa variável.</span>
+<span id="cb18-841"><a href="#cb18-841" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-842"><a href="#cb18-842" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb18-843"><a href="#cb18-843" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-844"><a href="#cb18-844" aria-hidden="true" tabindex="-1"></a>Essa variável não é relevante para predizer salários, mas veja que, apesar de não ser significativa, ela é positiva. Podemos iniciar com a problemática de que ter uma conta no linkedin não implica que seu salário será impactado por isso, mas podemos supor que o linkedin te ajuda positivamente em alguns aspectos, menos no salário. Aqui temos uma chance de analisar um pouco mais essa variável.</span>
-<span id="cb18-845"><a href="#cb18-845" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-846"><a href="#cb18-846" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb18-847"><a href="#cb18-847" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-848"><a href="#cb18-848" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-849"><a href="#cb18-849" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb18-844"><a href="#cb18-844" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-845"><a href="#cb18-845" aria-hidden="true" tabindex="-1"></a>:::</span>
 </code><button title="Copiar para a área de transferência" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

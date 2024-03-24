@@ -1,7 +1,7 @@
 ---
 title: "Teste Técnico" # Título do relatório
 subtitle: "**Posição de Data Analyst Jr - Buraco Jogatina**"
-author: "Fernanda Kelly R. Silva | www.fernandakellyrs.com" # Autor(a)
+author: "Fernanda Kelly R. Silva | www.fernandakellyrs.com"
 lang: pt 
 date: "`r format(Sys.Date())`" 
 date-format: short 
@@ -236,7 +236,7 @@ WHERE (`col01` <= 1)
 
 # D
 
-Na mesma linha da pergunta anterior, responda qual é a faixa de idade de usuários que mais cometem fraude (em percentagem). Separe as faixas etárias em: (< 18 anos, 18-30 anos, 30 - 45 anos, 45 - 60 anos, 60 > anos) e considere que para responder essa pergunta, você deverá considerar o fato que um usuário pode ter executado várias transações, das quais poucas (ou muitas) podem ter sido fraude entre as demais.
+Na mesma linha da pergunta anterior, responda qual é a faixa de idade de usuários que mais cometem fraude (em percentagem). Separe as faixas etárias em: (\< 18 anos, 18-30 anos, 30 - 45 anos, 45 - 60 anos, 60 \> anos) e considere que para responder essa pergunta, você deverá considerar o fato que um usuário pode ter executado várias transações, das quais poucas (ou muitas) podem ter sido fraude entre as demais.
 
 ```{r}
 #| echo: false
@@ -553,6 +553,7 @@ summarise_estudantes <- tabela_estudantes %>%
 
 knitr::kable(summarise_dataset)
 ```
+
 ```{r}
 #| echo: false
 library(ggplot2)
@@ -568,17 +569,16 @@ B = "#E56B0D")) +
  hjust = 0))
 ```
 
-É importante ressaltar que a verificação dos pressupostos é de extrema relevância para que os insights e conclusões sejam verdadeiramente corretos. Neste casso, estamos **supondo ** que as duas amostras são independentes e, em caso de teste de médias, usaríamos o teste t independente que apresenta dois **pressupostos**:
+É importante ressaltar que a verificação dos pressupostos é de extrema relevância para que os insights e conclusões sejam verdadeiramente corretos. Neste casso, estamos **supondo** que as duas amostras são independentes e, em caso de teste de médias, usaríamos o teste t independente que apresenta dois **pressupostos**:
 
-- **Normalidade da variável dependente de cada grupo**
-- **Homogeneidade de variâncias (ou seja, grupos com variâncias homogêneas)**
+-   **Normalidade da variável dependente de cada grupo**
+-   **Homogeneidade de variâncias (ou seja, grupos com variâncias homogêneas)**
 
 ### Normalidade
 
 Para verificar a normalidade dos dados, é recomendável utilizar o teste de **Shapiro WIlk** quando o número de amostra é menor que 50. A estatı́stica T (ou T ) é basicamente o quadrado de um coeficiente de correlação, onde o coeficiente de correlação de Pearson é calculado entre a estatı́stica ordenada X i na amostra e o escore ai , que representa o que a estatı́stica ordenada deveria parecer se a população é Normal. Portanto, as hipóteses levantadas são:
 
-$H_{0}$ : F(x) é função de distribuição normal;
-$H_{1}$ : F(x) não é função de distribuição normal;
+$H_{0}$ : F(x) é função de distribuição normal; $H_{1}$ : F(x) não é função de distribuição normal;
 
 ```{r}
 #| echo: false
@@ -590,16 +590,13 @@ teste_shapiro <- tabela_estudantes %>%
 knitr::kable(teste_shapiro)
 ```
 
-
 Veja que de acordo com o teste de Shapiro Wilk, ao nível de 95% de significância, **não rejeita-se a hipótese nula**, ou seja, a variável **notas** é descrita por uma distribuição normal.
-
 
 ### Variância
 
 O segundo pressuposto pode ser avaliado pelo **teste de Levene**, em que as hipóteses são:
 
-$H_{0}$ : Os grupos apresentam variâncias homogêneas;
-$H_{1}$ : Os grupos não apresentam variâncias homogêneas;
+$H_{0}$ : Os grupos apresentam variâncias homogêneas; $H_{1}$ : Os grupos não apresentam variâncias homogêneas;
 
 ```{r}
 #| echo: false
@@ -615,21 +612,20 @@ Seguindo os passos para elaboração de um teste de hipótese:
 
 1.  Enunciar as Hipóteses:
 
-- $H_{0}$ : Não há diferença média entre os grupos; 
-- $H_{1}$ : Há diferença média entre os grupos;
+-   $H_{0}$ : Não há diferença média entre os grupos;
+-   $H_{1}$ : Há diferença média entre os grupos;
 
-2. Fixar o nı́vel de significância $\alpha$) do teste:
+2.  Fixar o nı́vel de significância $\alpha$) do teste:
 
 **No nosso caso, o nível de significância será 95%.**
 
-- $\alpha$ : Erro tipo I: Rejeitar $H_{0}$  quando é verdadeira.
+-   $\alpha$ : Erro tipo I: Rejeitar $H_{0}$ quando é verdadeira.
 
-
-3. Escolha da Estatı́stica teste adequada:
+3.  Escolha da Estatı́stica teste adequada:
 
 Para responder a essa pergunta, usaremos o teste-t independente. Note que queremos comparar as notas (variáveis numéricas) de dois grupos independentes de alunos (A x B).
 
-4. Obtenção dos valores crı́ticos e Obtenção da Estatı́stica calculada:
+4.  Obtenção dos valores crı́ticos e Obtenção da Estatı́stica calculada:
 
 ```{r}
 #| echo: false
@@ -637,10 +633,9 @@ teste_t <- stats::t.test(nota ~ grupo, tabela_estudantes, var.equal=TRUE)
 teste_t
 ```
 
-6. Conclusão e tomada de decisão
+6.  Conclusão e tomada de decisão
 
-O teste resulta em um valor de t (no caso, t = -0.3935) e um valor de p (p-value) que é calculado com base nesse valor de t e nos graus de liberdade (df, do inglês degrees of freedom). Nesse caso, o valor de p é: 0.7008, um valor superior ao nível de significância 0.05. Como p > 0.05, não vamos rejeitar a $H_{0}$ e considerar que os dois grupos que apresentam notas, em média, não são estatisticamente diferentes. Veja que o IC 95% para a diferença entre médias inclui o zero: [-10.27; 7.12].
-
+O teste resulta em um valor de t (no caso, t = -0.3935) e um valor de p (p-value) que é calculado com base nesse valor de t e nos graus de liberdade (df, do inglês degrees of freedom). Nesse caso, o valor de p é: 0.7008, um valor superior ao nível de significância 0.05. Como p \> 0.05, não vamos rejeitar a $H_{0}$ e considerar que os dois grupos que apresentam notas, em média, não são estatisticamente diferentes. Veja que o IC 95% para a diferença entre médias inclui o zero: \[-10.27; 7.12\].
 
 # 4
 
@@ -652,10 +647,8 @@ Determine a hipótese nula (Ho) e hipótese alternativa (Ha) do seguinte cenári
 
 Não é possível avaliar os pressupostos dessa amostra, mas considerando que esse tempo médio seja em dias (inteiros), o teste paramétrico sobre uma média populacional, a hipótese nula utilizada seria:
 
-
-- $H_{0}$ : $\mu$ = 4;
-- $H_{1}$ : $\mu$ $\neq$ 4;
-
+-   $H_{0}$ : $\mu$ = 4;
+-   $H_{1}$ : $\mu$ $\neq$ 4;
 
 # 5
 
@@ -697,8 +690,8 @@ ggpairs(tabela_5[,2:3], lower = list(continuous = "smooth"))
 
 A hipótese levantada é:
 
-- $H_{0}$ : $\rho$ = 0;
-- $H_{1}$ : $\rho$ $\neq$ 0;
+-   $H_{0}$ : $\rho$ = 0;
+-   $H_{1}$ : $\rho$ $\neq$ 0;
 
 Vamos considerar o nível de significância a 95%. O teste de correção de Pearson é dados por,
 
@@ -723,11 +716,11 @@ Como um número sorteado é removido da população em todos os sorteios subsequ
 
 Na **amostragem estratificada**, a população de N unidades é primeiro dividida em subpopulações de unidades $N_{1}, N_{2}, \cdots, N_{L}$, respectivamente. Essas subpopulações não se sobrepõem e juntas compreendem toda a população, de modo que $N_{1} + N_{2} + \cdots + N_{L} = N$. As subpopulações são chamadas de estratos. Para obter todos os benefícios da estratificação, os valores do $N_{h}$ devem ser conhecidos. Determinados os estratos, de cada um é retirada uma amostra, sendo os sorteios feitos de forma independente nos diferentes estratos. Os tamanhos das amostras dentro dos estratos são indicados por $n_{1}, n_{2}, \cdots, n_{L}$ respectivamente. Se uma amostra aleatória simples for retirada em cada estrato, todo o procedimento é descrito como amostragem aleatória estratificada. A estratificação é uma técnica comum. Há muitas razões para isto, os principais são os seguintes.
 
-1. Se forem necessários dados de precisão conhecida para certas subdivisões do população, é aconselhável tratar cada subdivisão como uma “população” por direito próprio.
+1.  Se forem necessários dados de precisão conhecida para certas subdivisões do população, é aconselhável tratar cada subdivisão como uma “população” por direito próprio.
 
-2. Os problemas de amostragem podem diferir acentuadamente em diferentes partes da população. No caso das populações humanas, as pessoas que vivem em instituições (por exemplo, hotéis, hospitais, prisões) são frequentemente colocadas num estrato diferente das pessoas que vivem em casas normais porque uma abordagem diferente à amostragem é apropriada para as duas situações. Na amostragem de empresas, podemos possuir uma lista das grandes empresas, que são colocadas num estrato separado. Algum tipo de amostragem de área pode ter que ser usado para as empresas menores.
+2.  Os problemas de amostragem podem diferir acentuadamente em diferentes partes da população. No caso das populações humanas, as pessoas que vivem em instituições (por exemplo, hotéis, hospitais, prisões) são frequentemente colocadas num estrato diferente das pessoas que vivem em casas normais porque uma abordagem diferente à amostragem é apropriada para as duas situações. Na amostragem de empresas, podemos possuir uma lista das grandes empresas, que são colocadas num estrato separado. Algum tipo de amostragem de área pode ter que ser usado para as empresas menores.
 
-3. A estratificação pode produzir um ganho de precisão nas estimativas das características de toda a população. Pode ser possível dividir uma população heterogênea em subpopulações, cada uma das quais internamente homogênea. Isto é sugerido pelo nome estratos, com a implicação de uma divisão em camadas. Se cada estrato for homogêneo, no sentido de que as medidas variam pouco de uma unidade para outra, uma estimativa precisa da média de qualquer estrato pode ser obtida a partir de uma pequena amostra desse estrato. Estas estimativas podem então ser combinadas numa estimativa precisa para toda a população.
+3.  A estratificação pode produzir um ganho de precisão nas estimativas das características de toda a população. Pode ser possível dividir uma população heterogênea em subpopulações, cada uma das quais internamente homogênea. Isto é sugerido pelo nome estratos, com a implicação de uma divisão em camadas. Se cada estrato for homogêneo, no sentido de que as medidas variam pouco de uma unidade para outra, uma estimativa precisa da média de qualquer estrato pode ser obtida a partir de uma pequena amostra desse estrato. Estas estimativas podem então ser combinadas numa estimativa precisa para toda a população.
 
 # 7
 
@@ -741,7 +734,6 @@ Essa é uma questão de viés e variância em modelagem. Essa relação é fáci
 
 ![Andrew Ng](img/vies.jpeg){fig-align="center" width="300"}
 
-
 A abordagem Bayesiana evita o overfitting, por mais que esse não seja necessariamente seu objetivo primordial, mas estamos condicionados a utilizar das formas ditas **regularizadoras**. Elas também chamadas de **penalizadoras** e são conhecidas por regressões LASSO, Ridge e Elastic-Net. É claro que a análise dos valores de VP, FN, VN e FP usando-se uma amostra de teste ou validação é crucial para evitar o overfitting, mas ainda assim, é importante estar atento a amostragem dos dados para compor a amostra de teste ou de validação.
 
 Acredito que deve haver vários outros métodos mais atualizados que esses mencionados acima, mas os básico as vezes já resolve o problema e também identifica a causa raiz, facilitando assim a procura de outros métodos ao invés de só ir aplicando vários métodos e escolher o que mais proporciona ganhos.
@@ -750,12 +742,12 @@ Acredito que deve haver vários outros métodos mais atualizados que esses menci
 
 Considere o seguinte modelo de regressão:
 
-- Salário = 1200 + 500.Idade + 600.Têm Faculdade + 50.Têm Linkedin
+-   Salário = 1200 + 500.Idade + 600.Têm Faculdade + 50.Têm Linkedin
 
 ::: panel-tabset
-
 # A
-Interprete o efeito da Idade na variável salário. 
+
+Interprete o efeito da Idade na variável salário.
 
 ::: callout-tip
 # Resposta
@@ -765,7 +757,7 @@ Neste modelo, temos que a variável idade foi significativa (p-value = 0.023) co
 
 # B
 
-Que acontece com as pessoas que não tem faculdade? 
+Que acontece com as pessoas que não tem faculdade?
 
 ::: callout-tip
 # Resposta
@@ -782,8 +774,5 @@ Considere agora que o desvio padrão do coeficiente da variável "Têm Linkedin"
 :::
 
 Essa variável não é relevante para predizer salários, mas veja que, apesar de não ser significativa, ela é positiva. Podemos iniciar com a problemática de que ter uma conta no linkedin não implica que seu salário será impactado por isso, mas podemos supor que o linkedin te ajuda positivamente em alguns aspectos, menos no salário. Aqui temos uma chance de analisar um pouco mais essa variável.
-
 :::
-
-
 :::
