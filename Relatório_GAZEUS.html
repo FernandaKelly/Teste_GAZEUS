@@ -461,7 +461,7 @@ Resposta
 <span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> (`col01` <span class="op">&lt;=</span> <span class="dv">1</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
-<p>Na mesma linha da pergunta anterior, responda qual é a faixa de idade de usuários que mais cometem fraude (em percentagem). Separe as faixas etárias em: (&lt;18 anos, 18-30 anos, 30 - 45 anos, 45 - 60 anos, 60 &gt; anos) e considere que para responder essa pergunta, você deverá considerar o fato que um usuário pode ter executado várias transações, das quais poucas (ou muitas) podem ter sido fraude entre as demais.</p>
+<p>Na mesma linha da pergunta anterior, responda qual é a faixa de idade de usuários que mais cometem fraude (em percentagem). Separe as faixas etárias em: (&lt; 18 anos, 18-30 anos, 30 - 45 anos, 45 - 60 anos, 60 &gt; anos) e considere que para responder essa pergunta, você deverá considerar o fato que um usuário pode ter executado várias transações, das quais poucas (ou muitas) podem ter sido fraude entre as demais.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -475,7 +475,39 @@ Resposta
 
 </div>
 </div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  `user_id`,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  `transaction_date`,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  `transaction_id`,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  `transaction_state`,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  `transaction_amount`,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  `data_curta`,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  `age`,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  `pais`,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  `age_cat`,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  `taxa_idade`</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> (</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">SELECT</span> `q01`.<span class="op">*</span>, <span class="fu">RANK</span>() <span class="kw">OVER</span> (<span class="kw">ORDER</span> <span class="kw">BY</span> `taxa_idade` <span class="kw">DESC</span>) <span class="kw">AS</span> `col01`</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> (</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>      `q01`.<span class="op">*</span>,</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>      <span class="cf">CASE</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="cf">WHEN</span> (`age` <span class="op">&lt;</span> <span class="fl">18.0</span>) <span class="cf">THEN</span> <span class="st">'menor que 18 anos'</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="cf">WHEN</span> (`age` <span class="op">&gt;=</span> <span class="fl">18.0</span> <span class="kw">AND</span> `age` <span class="op">&lt;</span> <span class="fl">30.0</span>) <span class="cf">THEN</span> <span class="st">'18-29 anos'</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="cf">WHEN</span> (`age` <span class="op">&gt;=</span> <span class="fl">30.0</span> <span class="kw">AND</span> `age` <span class="op">&lt;</span> <span class="fl">45.0</span>) <span class="cf">THEN</span> <span class="st">'30-44 anos'</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="cf">WHEN</span> (`age` <span class="op">&gt;=</span> <span class="fl">45.0</span> <span class="kw">AND</span> `age` <span class="op">&lt;</span> <span class="fl">60.0</span>) <span class="cf">THEN</span> <span class="st">'45-59 anos'</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="cf">WHEN</span> (`age` <span class="op">&gt;=</span> <span class="fl">60.0</span>) <span class="cf">THEN</span> <span class="st">'maior igual a 60 anos'</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="cf">END</span> <span class="kw">AS</span> `age_cat`,</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>      <span class="cf">CASE</span> <span class="cf">WHEN</span> (`transaction_state` <span class="op">=</span> <span class="st">'FRAUD'</span>) <span class="cf">THEN</span> (`transaction_amount` <span class="op">/</span> <span class="fu">SUM</span>(`transaction_amount`) <span class="kw">OVER</span> ()) <span class="cf">WHEN</span> <span class="kw">NOT</span> (`transaction_state` <span class="op">=</span> <span class="st">'FRAUD'</span>) <span class="cf">THEN</span> <span class="fl">0.0</span> <span class="cf">END</span> <span class="kw">AS</span> `taxa_idade`</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> (</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>      <span class="kw">SELECT</span> `tabela_transactions`.<span class="op">*</span>, `age`, `pais`</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>      <span class="kw">FROM</span> `tabela_transactions`</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>      <span class="kw">LEFT</span> <span class="kw">JOIN</span> `tabela_user`</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>        <span class="kw">ON</span> (`tabela_transactions`.`user_id` <span class="op">=</span> `tabela_user`.`id`)</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>    ) <span class="kw">AS</span> `q01`</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>  ) <span class="kw">AS</span> `q01`</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>) <span class="kw">AS</span> `q01`</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> (`col01` <span class="op">&lt;=</span> <span class="dv">1</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="tabset-1-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-5-tab">
 <p>Imagine que a camada executiva da empresa dona do sistema, precisa criar um Dashboard para monitorar o estado das transações nos últimos 3 dias. Para isso você precisa criar uma query SQL que calcule o número e dinheiro das transações não finalizadas, número e dinheiro de transações finalizadas com sucesso (SUCCESS), o número e dinheiro de transações canceladas (CANCELLED), o número e dinheiro de fraudes (FRAUD), agrupado por país, nos 3 dias anteriores de quando o executivo da empresa consulte seu Dashboard.</p>
@@ -898,7 +930,7 @@ Resposta
 </div>
 <p>A correlação entre duas variáveis pode ser verificada utilizando o teste de Pearson, caso há a suposição de normalidade nos dados. No caso em que a suposição de normalidade não é considerada ou a caracterı́stica dos próprio dados pressupõe isto (escala no mı́nimo ordinal), então pode-se fazer uso de estatı́sticas alternativas como: Teste de correlação por postos de Spearman ou de Kendall.</p>
 <p>Veja que de acordo com o gráfico abaixo que o “Número de aparições Zendaya em filmes por ano” e o “Número de pessoas afogadas em piscinas no Brasil ao ano” estão altamente correlacionados, mas faz senido essa correlçao?</p>
-<p>Na estaística, o nome que damos a essa correlação é <strong>correlação espúria</strong>. Uma correlação espúria é uma relação aparente entre duas variáveis que não possuem uma conexão causal real entre si. Essa relação ilusória pode surgir devido a fatores externos ou coincidências estatísticas, levando a conclusões equivocadas se não forem adequadamente analisadas.</p>
+<p>Na estatística, o nome que damos a essa correlação é <strong>correlação espúria</strong>. Uma correlação espúria é uma relação aparente entre duas variáveis que não possuem uma conexão causal real entre si. Essa relação ilusória pode surgir devido a fatores externos ou coincidências estatísticas, levando a conclusões equivocadas se não forem adequadamente analisadas.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpairs</span>(tabela_5[,<span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>], <span class="at">lower =</span> <span class="fu">list</span>(<span class="at">continuous =</span> <span class="st">"smooth"</span>))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -974,6 +1006,15 @@ Resposta
 
 </div>
 </div>
+<p>Essa é uma questão de viés e variância em modelagem. Essa relação é fácil de ser observada na imagem abaixo.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/vies.jpeg" class="img-fluid figure-img" width="300"></p>
+<figcaption>Andrew Ng</figcaption>
+</figure>
+</div>
+<p>A abordagem Bayesiana evita o overfitting, por mais que esse não seja necessariamente seu objetivo primordial, mas estamos condicionados a utilizar das formas ditas <strong>regularizadoras</strong>. Elas também chamadas de <strong>penalizadoras</strong> e são conhecidas por regressões LASSO e Ridge. É claro que a análise dos valores de VP, FN, VN e FP usando-se uma amostra de teste ou validação é crucial para evitar o overfitting, mas ainda assim, é importante estar atento a amostragem dos dados para compor a amostra de teste ou de validação.</p>
+<p>Acredito que deve haver vários outros métodos mais atualizados que esses mencionados acima, mas os básico as vezes já resolve o problema e também identifica a causa raiz, facilitando assim a procura de outros métodos ao invés de só ir aplicando vários métodos e escolher o que mais proporciona ganhos.</p>
 </div>
 <div id="tabset-4-8" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-8-tab">
 <p>Considere o seguinte modelo de regressão:</p>
@@ -998,6 +1039,7 @@ Resposta
 
 </div>
 </div>
+<p>Neste modelo, temos que a variável idade foi significativa (p-value = 0.023) com sinal positivo, ou seja, quanto maior a idade (aqui é importante ressaltar que se ela estiver categorizada, a interpretação é alterada), maior será a chance do Salário estar acima da média. Para este resultado é pertinente dizer que as empresas associam a idade a um bom salário, ou, assumem que quando o individuo é mais velho, este consequentemente deve ganhar mais em relação aos mais novos.</p>
 </div>
 <div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
 <p>Que acontece com as pessoas que não tem faculdade?</p>
@@ -1014,6 +1056,7 @@ Resposta
 
 </div>
 </div>
+<p>A variável “Têm faculdade” foi significativa (p-value = 0.032) com sinal positivo, o que implica que esta variável auxilia no aumento do salário, em que quanto maior o seu nível de instrução, maior será a chance (600 vezes) do salário estar acima da média daqueles que não têm faculdade e isso pode ser recorrente ao fato desse indivíduo ter mais conhecimento sobre a área. Logo, de acordo com o modelo, aqueles que não têm faculdade estão propícios a receberem um salário abaixo da média em relação a aqueles que possuem faculdade.</p>
 </div>
 <div id="tabset-3-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-3-tab">
 <p>Considere agora que o desvio padrão do coeficiente da variável “Têm Linkedin” é de 47, por tanto o seu p-valor é 0.92 (como visto na equação abaixo). O que isso implica para o modelo em questão? Essa variável é relevante?</p>
@@ -1030,6 +1073,7 @@ Resposta
 
 </div>
 </div>
+<p>Essa variável não é relevante para predizer salários, mas veja que, apesar de não ser significativa, ela é positiva. Podemos iniciar com a problemática de que ter uma conta no linkedin não implica que seu salário será impactado por isso, mas podemos supor que o linkedin te ajuda positivamente em alguns aspectos, menos no salário. Aqui temos uma chance de analisar um pouco mais essa variável.</p>
 </div>
 </div>
 </div>
@@ -1934,7 +1978,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb18-256"><a href="#cb18-256" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-257"><a href="#cb18-257" aria-hidden="true" tabindex="-1"></a><span class="fu"># D</span></span>
 <span id="cb18-258"><a href="#cb18-258" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-259"><a href="#cb18-259" aria-hidden="true" tabindex="-1"></a>Na mesma linha da pergunta anterior, responda qual é a faixa de idade de usuários que mais cometem fraude (em percentagem). Separe as faixas etárias em: (<span class="sc">\&lt;</span>18 anos, 18-30 anos, 30 - 45 anos, 45 - 60 anos, 60 <span class="sc">\&gt;</span> anos) e considere que para responder essa pergunta, você deverá considerar o fato que um usuário pode ter executado várias transações, das quais poucas (ou muitas) podem ter sido fraude entre as demais.</span>
+<span id="cb18-259"><a href="#cb18-259" aria-hidden="true" tabindex="-1"></a>Na mesma linha da pergunta anterior, responda qual é a faixa de idade de usuários que mais cometem fraude (em percentagem). Separe as faixas etárias em: (&lt; 18 anos, 18-30 anos, 30 - 45 anos, 45 - 60 anos, 60 &gt; anos) e considere que para responder essa pergunta, você deverá considerar o fato que um usuário pode ter executado várias transações, das quais poucas (ou muitas) podem ter sido fraude entre as demais.</span>
 <span id="cb18-260"><a href="#cb18-260" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-263"><a href="#cb18-263" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb18-264"><a href="#cb18-264" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
@@ -1944,503 +1988,551 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb18-268"><a href="#cb18-268" aria-hidden="true" tabindex="-1"></a>                                                      age <span class="sc">&gt;=</span> <span class="dv">30</span> <span class="sc">&amp;</span> age <span class="sc">&lt;</span> <span class="dv">45</span> <span class="sc">~</span> <span class="st">"30-44 anos"</span>,</span>
 <span id="cb18-269"><a href="#cb18-269" aria-hidden="true" tabindex="-1"></a>                                                      age <span class="sc">&gt;=</span> <span class="dv">45</span> <span class="sc">&amp;</span> age <span class="sc">&lt;</span> <span class="dv">60</span> <span class="sc">~</span> <span class="st">"45-59 anos"</span>,</span>
 <span id="cb18-270"><a href="#cb18-270" aria-hidden="true" tabindex="-1"></a>                                                      age <span class="sc">&gt;=</span> <span class="dv">60</span>  <span class="sc">~</span> <span class="st">"maior igual a 60 anos"</span>),</span>
-<span id="cb18-271"><a href="#cb18-271" aria-hidden="true" tabindex="-1"></a>                           <span class="at">taxa_idade =</span> dplyr<span class="sc">::</span><span class="fu">if_else</span>(transaction_state <span class="sc">==</span> <span class="st">"FRAUD"</span>, transaction_amount<span class="sc">/</span><span class="fu">sum</span>(transaction_amount), <span class="dv">0</span>))  </span>
-<span id="cb18-272"><a href="#cb18-272" aria-hidden="true" tabindex="-1"></a>          </span>
-<span id="cb18-273"><a href="#cb18-273" aria-hidden="true" tabindex="-1"></a><span class="co"># tabela_C %&gt;%</span></span>
-<span id="cb18-274"><a href="#cb18-274" aria-hidden="true" tabindex="-1"></a><span class="co">#   show_query()</span></span>
-<span id="cb18-275"><a href="#cb18-275" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-276"><a href="#cb18-276" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-277"><a href="#cb18-277" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb18-278"><a href="#cb18-278" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb18-279"><a href="#cb18-279" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb18-280"><a href="#cb18-280" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-281"><a href="#cb18-281" aria-hidden="true" tabindex="-1"></a><span class="in">``` sql</span></span>
-<span id="cb18-282"><a href="#cb18-282" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-283"><a href="#cb18-283" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-284"><a href="#cb18-284" aria-hidden="true" tabindex="-1"></a><span class="fu"># E</span></span>
-<span id="cb18-285"><a href="#cb18-285" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-286"><a href="#cb18-286" aria-hidden="true" tabindex="-1"></a>Imagine que a camada executiva da empresa dona do sistema, precisa criar um Dashboard para monitorar o estado das transações nos últimos 3 dias. Para isso você precisa criar uma query SQL que calcule o número e dinheiro das transações não finalizadas, número e dinheiro de transações finalizadas com sucesso (SUCCESS), o número e dinheiro de transações canceladas (CANCELLED), o número e dinheiro de fraudes (FRAUD), agrupado por país, nos 3 dias anteriores de quando o executivo da empresa consulte seu Dashboard.</span>
-<span id="cb18-287"><a href="#cb18-287" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-290"><a href="#cb18-290" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-291"><a href="#cb18-291" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb18-292"><a href="#cb18-292" aria-hidden="true" tabindex="-1"></a>tabela_E <span class="ot">&lt;-</span> tabela_merge <span class="sc">%&gt;%</span> </span>
-<span id="cb18-293"><a href="#cb18-293" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">tres_n =</span> dplyr<span class="sc">::</span><span class="fu">if_else</span>((lubridate<span class="sc">::</span><span class="fu">today</span>() <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">==</span> data_curta, <span class="dv">1</span>,</span>
-<span id="cb18-294"><a href="#cb18-294" aria-hidden="true" tabindex="-1"></a>                                                    dplyr<span class="sc">::</span><span class="fu">if_else</span>((lubridate<span class="sc">::</span><span class="fu">today</span>() <span class="sc">-</span> <span class="dv">2</span>) <span class="sc">==</span> data_curta, <span class="dv">1</span>,</span>
-<span id="cb18-295"><a href="#cb18-295" aria-hidden="true" tabindex="-1"></a>                                                                   dplyr<span class="sc">::</span><span class="fu">if_else</span>((lubridate<span class="sc">::</span><span class="fu">today</span>() <span class="sc">-</span> <span class="dv">2</span>) <span class="sc">==</span> data_curta,<span class="dv">1</span>,<span class="dv">0</span>)))) <span class="sc">%&gt;%</span> </span>
-<span id="cb18-296"><a href="#cb18-296" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">filter</span>(tres_n <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb18-297"><a href="#cb18-297" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">transaction_state =</span> dplyr<span class="sc">::</span><span class="fu">if_else</span>(transaction_state <span class="sc">==</span> <span class="st">"sucesso"</span>, <span class="st">"SUCCESS"</span>, transaction_state)) <span class="sc">%&gt;%</span> </span>
-<span id="cb18-298"><a href="#cb18-298" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">group_by</span>(pais, transaction_state) <span class="sc">%&gt;%</span> </span>
-<span id="cb18-299"><a href="#cb18-299" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">n_transacoes =</span>  <span class="fu">n</span>(),</span>
-<span id="cb18-300"><a href="#cb18-300" aria-hidden="true" tabindex="-1"></a>                            <span class="at">dinheiro =</span> <span class="fu">sum</span>(transaction_amount))</span>
-<span id="cb18-301"><a href="#cb18-301" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-302"><a href="#cb18-302" aria-hidden="true" tabindex="-1"></a><span class="co"># tabela_E %&gt;%</span></span>
-<span id="cb18-303"><a href="#cb18-303" aria-hidden="true" tabindex="-1"></a><span class="co">#   show_query()</span></span>
-<span id="cb18-304"><a href="#cb18-304" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-305"><a href="#cb18-305" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-306"><a href="#cb18-306" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb18-307"><a href="#cb18-307" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb18-308"><a href="#cb18-308" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb18-309"><a href="#cb18-309" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-310"><a href="#cb18-310" aria-hidden="true" tabindex="-1"></a><span class="in">``` sql</span></span>
-<span id="cb18-311"><a href="#cb18-311" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>SQL<span class="op">&gt;</span></span>
-<span id="cb18-312"><a href="#cb18-312" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb18-313"><a href="#cb18-313" aria-hidden="true" tabindex="-1"></a>  <span class="st">`q01`</span><span class="ch">.</span><span class="op">*</span>,</span>
-<span id="cb18-314"><a href="#cb18-314" aria-hidden="true" tabindex="-1"></a>  <span class="fu">COUNT</span>(<span class="op">*</span>) OVER <span class="st">`win1`</span> <span class="kw">AS</span> <span class="st">`n_transacoes`</span>,</span>
-<span id="cb18-315"><a href="#cb18-315" aria-hidden="true" tabindex="-1"></a>  <span class="fu">SUM</span>(<span class="st">`transaction_amount`</span>) OVER <span class="st">`win1`</span> <span class="kw">AS</span> <span class="st">`dinheiro`</span></span>
-<span id="cb18-316"><a href="#cb18-316" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> (</span>
-<span id="cb18-317"><a href="#cb18-317" aria-hidden="true" tabindex="-1"></a>  <span class="kw">SELECT</span></span>
-<span id="cb18-318"><a href="#cb18-318" aria-hidden="true" tabindex="-1"></a>    <span class="st">`user_id`</span>,</span>
-<span id="cb18-319"><a href="#cb18-319" aria-hidden="true" tabindex="-1"></a>    <span class="st">`transaction_date`</span>,</span>
-<span id="cb18-320"><a href="#cb18-320" aria-hidden="true" tabindex="-1"></a>    <span class="st">`transaction_id`</span>,</span>
-<span id="cb18-321"><a href="#cb18-321" aria-hidden="true" tabindex="-1"></a>    <span class="cf">CASE</span> <span class="cf">WHEN</span> (<span class="st">`transaction_state`</span> <span class="op">=</span> <span class="st">'sucesso'</span>) <span class="cf">THEN</span> <span class="st">'SUCCESS'</span> <span class="cf">WHEN</span> <span class="kw">NOT</span> (<span class="st">`transaction_state`</span> <span class="op">=</span> <span class="st">'sucesso'</span>) <span class="cf">THEN</span> <span class="st">`transaction_state`</span> <span class="cf">END</span> <span class="kw">AS</span> <span class="st">`transaction_state`</span>,</span>
-<span id="cb18-322"><a href="#cb18-322" aria-hidden="true" tabindex="-1"></a>    <span class="st">`transaction_amount`</span>,</span>
-<span id="cb18-323"><a href="#cb18-323" aria-hidden="true" tabindex="-1"></a>    <span class="st">`data_curta`</span>,</span>
-<span id="cb18-324"><a href="#cb18-324" aria-hidden="true" tabindex="-1"></a>    <span class="st">`age`</span>,</span>
-<span id="cb18-325"><a href="#cb18-325" aria-hidden="true" tabindex="-1"></a>    <span class="st">`pais`</span>,</span>
-<span id="cb18-326"><a href="#cb18-326" aria-hidden="true" tabindex="-1"></a>    <span class="st">`tres_n`</span></span>
-<span id="cb18-327"><a href="#cb18-327" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> (</span>
-<span id="cb18-328"><a href="#cb18-328" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span></span>
-<span id="cb18-329"><a href="#cb18-329" aria-hidden="true" tabindex="-1"></a>      <span class="st">`q01`</span><span class="ch">.</span><span class="op">*</span>,</span>
-<span id="cb18-330"><a href="#cb18-330" aria-hidden="true" tabindex="-1"></a>      <span class="cf">CASE</span> <span class="cf">WHEN</span> ((<span class="dt">DATE</span>(<span class="st">'now'</span>) <span class="op">-</span> <span class="fl">1.0</span>) <span class="op">=</span> <span class="st">`data_curta`</span>) <span class="cf">THEN</span> <span class="fl">1.0</span> <span class="cf">WHEN</span> <span class="kw">NOT</span> ((<span class="dt">DATE</span>(<span class="st">'now'</span>) <span class="op">-</span> <span class="fl">1.0</span>) <span class="op">=</span> <span class="st">`data_curta`</span>) <span class="cf">THEN</span> (<span class="cf">CASE</span> <span class="cf">WHEN</span> ((<span class="dt">DATE</span>(<span class="st">'now'</span>) <span class="op">-</span> <span class="fl">2.0</span>) <span class="op">=</span> <span class="st">`data_curta`</span>) <span class="cf">THEN</span> <span class="fl">1.0</span> <span class="cf">WHEN</span> <span class="kw">NOT</span> ((<span class="dt">DATE</span>(<span class="st">'now'</span>) <span class="op">-</span> <span class="fl">2.0</span>) <span class="op">=</span> <span class="st">`data_curta`</span>) <span class="cf">THEN</span> (<span class="cf">CASE</span> <span class="cf">WHEN</span> ((<span class="dt">DATE</span>(<span class="st">'now'</span>) <span class="op">-</span> <span class="fl">2.0</span>) <span class="op">=</span> <span class="st">`data_curta`</span>) <span class="cf">THEN</span> <span class="fl">1.0</span> <span class="cf">WHEN</span> <span class="kw">NOT</span> ((<span class="dt">DATE</span>(<span class="st">'now'</span>) <span class="op">-</span> <span class="fl">2.0</span>) <span class="op">=</span> <span class="st">`data_curta`</span>) <span class="cf">THEN</span> <span class="fl">0.0</span> <span class="cf">END</span>) <span class="cf">END</span>) <span class="cf">END</span> <span class="kw">AS</span> <span class="st">`tres_n`</span></span>
-<span id="cb18-331"><a href="#cb18-331" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> (</span>
-<span id="cb18-332"><a href="#cb18-332" aria-hidden="true" tabindex="-1"></a>      <span class="kw">SELECT</span> <span class="st">`tabela_transactions`</span><span class="ch">.</span><span class="op">*</span>, <span class="st">`age`</span>, <span class="st">`pais`</span></span>
-<span id="cb18-333"><a href="#cb18-333" aria-hidden="true" tabindex="-1"></a>      <span class="kw">FROM</span> <span class="st">`tabela_transactions`</span></span>
-<span id="cb18-334"><a href="#cb18-334" aria-hidden="true" tabindex="-1"></a>      <span class="kw">LEFT</span> <span class="kw">JOIN</span> <span class="st">`tabela_user`</span></span>
-<span id="cb18-335"><a href="#cb18-335" aria-hidden="true" tabindex="-1"></a>        <span class="kw">ON</span> (<span class="st">`tabela_transactions`</span><span class="ch">.</span><span class="st">`user_id`</span> <span class="op">=</span> <span class="st">`tabela_user`</span><span class="ch">.</span><span class="st">`id`</span>)</span>
-<span id="cb18-336"><a href="#cb18-336" aria-hidden="true" tabindex="-1"></a>    ) <span class="kw">AS</span> <span class="st">`q01`</span></span>
-<span id="cb18-337"><a href="#cb18-337" aria-hidden="true" tabindex="-1"></a>  ) <span class="kw">AS</span> <span class="st">`q01`</span></span>
-<span id="cb18-338"><a href="#cb18-338" aria-hidden="true" tabindex="-1"></a>  <span class="kw">WHERE</span> (<span class="st">`tres_n`</span> <span class="op">=</span> <span class="fl">1.0</span>)</span>
-<span id="cb18-339"><a href="#cb18-339" aria-hidden="true" tabindex="-1"></a>) <span class="kw">AS</span> <span class="st">`q01`</span></span>
-<span id="cb18-340"><a href="#cb18-340" aria-hidden="true" tabindex="-1"></a>WINDOW <span class="st">`win1`</span> <span class="kw">AS</span> (PARTITION <span class="kw">BY</span> <span class="st">`pais`</span>, <span class="st">`transaction_state`</span>)</span>
-<span id="cb18-341"><a href="#cb18-341" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-271"><a href="#cb18-271" aria-hidden="true" tabindex="-1"></a>                           <span class="at">taxa_idade =</span> dplyr<span class="sc">::</span><span class="fu">if_else</span>(transaction_state <span class="sc">==</span> <span class="st">"FRAUD"</span>, transaction_amount<span class="sc">/</span><span class="fu">sum</span>(transaction_amount), <span class="dv">0</span>))  <span class="sc">%&gt;%</span> </span>
+<span id="cb18-272"><a href="#cb18-272" aria-hidden="true" tabindex="-1"></a>             dplyr<span class="sc">::</span><span class="fu">slice_max</span>(taxa_idade)</span>
+<span id="cb18-273"><a href="#cb18-273" aria-hidden="true" tabindex="-1"></a>          </span>
+<span id="cb18-274"><a href="#cb18-274" aria-hidden="true" tabindex="-1"></a><span class="co"># tabela_D %&gt;%</span></span>
+<span id="cb18-275"><a href="#cb18-275" aria-hidden="true" tabindex="-1"></a><span class="co">#   show_query()</span></span>
+<span id="cb18-276"><a href="#cb18-276" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-277"><a href="#cb18-277" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-278"><a href="#cb18-278" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb18-279"><a href="#cb18-279" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb18-280"><a href="#cb18-280" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb18-281"><a href="#cb18-281" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-282"><a href="#cb18-282" aria-hidden="true" tabindex="-1"></a><span class="in">``` sql</span></span>
+<span id="cb18-283"><a href="#cb18-283" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb18-284"><a href="#cb18-284" aria-hidden="true" tabindex="-1"></a>  <span class="st">`user_id`</span>,</span>
+<span id="cb18-285"><a href="#cb18-285" aria-hidden="true" tabindex="-1"></a>  <span class="st">`transaction_date`</span>,</span>
+<span id="cb18-286"><a href="#cb18-286" aria-hidden="true" tabindex="-1"></a>  <span class="st">`transaction_id`</span>,</span>
+<span id="cb18-287"><a href="#cb18-287" aria-hidden="true" tabindex="-1"></a>  <span class="st">`transaction_state`</span>,</span>
+<span id="cb18-288"><a href="#cb18-288" aria-hidden="true" tabindex="-1"></a>  <span class="st">`transaction_amount`</span>,</span>
+<span id="cb18-289"><a href="#cb18-289" aria-hidden="true" tabindex="-1"></a>  <span class="st">`data_curta`</span>,</span>
+<span id="cb18-290"><a href="#cb18-290" aria-hidden="true" tabindex="-1"></a>  <span class="st">`age`</span>,</span>
+<span id="cb18-291"><a href="#cb18-291" aria-hidden="true" tabindex="-1"></a>  <span class="st">`pais`</span>,</span>
+<span id="cb18-292"><a href="#cb18-292" aria-hidden="true" tabindex="-1"></a>  <span class="st">`age_cat`</span>,</span>
+<span id="cb18-293"><a href="#cb18-293" aria-hidden="true" tabindex="-1"></a>  <span class="st">`taxa_idade`</span></span>
+<span id="cb18-294"><a href="#cb18-294" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> (</span>
+<span id="cb18-295"><a href="#cb18-295" aria-hidden="true" tabindex="-1"></a>  <span class="kw">SELECT</span> <span class="st">`q01`</span><span class="ch">.</span><span class="op">*</span>, RANK() OVER (<span class="kw">ORDER</span> <span class="kw">BY</span> <span class="st">`taxa_idade`</span> <span class="kw">DESC</span>) <span class="kw">AS</span> <span class="st">`col01`</span></span>
+<span id="cb18-296"><a href="#cb18-296" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> (</span>
+<span id="cb18-297"><a href="#cb18-297" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span></span>
+<span id="cb18-298"><a href="#cb18-298" aria-hidden="true" tabindex="-1"></a>      <span class="st">`q01`</span><span class="ch">.</span><span class="op">*</span>,</span>
+<span id="cb18-299"><a href="#cb18-299" aria-hidden="true" tabindex="-1"></a>      <span class="cf">CASE</span></span>
+<span id="cb18-300"><a href="#cb18-300" aria-hidden="true" tabindex="-1"></a><span class="cf">WHEN</span> (<span class="st">`age`</span> <span class="op">&lt;</span> <span class="fl">18.0</span>) <span class="cf">THEN</span> <span class="st">'menor que 18 anos'</span></span>
+<span id="cb18-301"><a href="#cb18-301" aria-hidden="true" tabindex="-1"></a><span class="cf">WHEN</span> (<span class="st">`age`</span> <span class="op">&gt;=</span> <span class="fl">18.0</span> <span class="kw">AND</span> <span class="st">`age`</span> <span class="op">&lt;</span> <span class="fl">30.0</span>) <span class="cf">THEN</span> <span class="st">'18-29 anos'</span></span>
+<span id="cb18-302"><a href="#cb18-302" aria-hidden="true" tabindex="-1"></a><span class="cf">WHEN</span> (<span class="st">`age`</span> <span class="op">&gt;=</span> <span class="fl">30.0</span> <span class="kw">AND</span> <span class="st">`age`</span> <span class="op">&lt;</span> <span class="fl">45.0</span>) <span class="cf">THEN</span> <span class="st">'30-44 anos'</span></span>
+<span id="cb18-303"><a href="#cb18-303" aria-hidden="true" tabindex="-1"></a><span class="cf">WHEN</span> (<span class="st">`age`</span> <span class="op">&gt;=</span> <span class="fl">45.0</span> <span class="kw">AND</span> <span class="st">`age`</span> <span class="op">&lt;</span> <span class="fl">60.0</span>) <span class="cf">THEN</span> <span class="st">'45-59 anos'</span></span>
+<span id="cb18-304"><a href="#cb18-304" aria-hidden="true" tabindex="-1"></a><span class="cf">WHEN</span> (<span class="st">`age`</span> <span class="op">&gt;=</span> <span class="fl">60.0</span>) <span class="cf">THEN</span> <span class="st">'maior igual a 60 anos'</span></span>
+<span id="cb18-305"><a href="#cb18-305" aria-hidden="true" tabindex="-1"></a><span class="cf">END</span> <span class="kw">AS</span> <span class="st">`age_cat`</span>,</span>
+<span id="cb18-306"><a href="#cb18-306" aria-hidden="true" tabindex="-1"></a>      <span class="cf">CASE</span> <span class="cf">WHEN</span> (<span class="st">`transaction_state`</span> <span class="op">=</span> <span class="st">'FRAUD'</span>) <span class="cf">THEN</span> (<span class="st">`transaction_amount`</span> <span class="op">/</span> <span class="fu">SUM</span>(<span class="st">`transaction_amount`</span>) OVER ()) <span class="cf">WHEN</span> <span class="kw">NOT</span> (<span class="st">`transaction_state`</span> <span class="op">=</span> <span class="st">'FRAUD'</span>) <span class="cf">THEN</span> <span class="fl">0.0</span> <span class="cf">END</span> <span class="kw">AS</span> <span class="st">`taxa_idade`</span></span>
+<span id="cb18-307"><a href="#cb18-307" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> (</span>
+<span id="cb18-308"><a href="#cb18-308" aria-hidden="true" tabindex="-1"></a>      <span class="kw">SELECT</span> <span class="st">`tabela_transactions`</span><span class="ch">.</span><span class="op">*</span>, <span class="st">`age`</span>, <span class="st">`pais`</span></span>
+<span id="cb18-309"><a href="#cb18-309" aria-hidden="true" tabindex="-1"></a>      <span class="kw">FROM</span> <span class="st">`tabela_transactions`</span></span>
+<span id="cb18-310"><a href="#cb18-310" aria-hidden="true" tabindex="-1"></a>      <span class="kw">LEFT</span> <span class="kw">JOIN</span> <span class="st">`tabela_user`</span></span>
+<span id="cb18-311"><a href="#cb18-311" aria-hidden="true" tabindex="-1"></a>        <span class="kw">ON</span> (<span class="st">`tabela_transactions`</span><span class="ch">.</span><span class="st">`user_id`</span> <span class="op">=</span> <span class="st">`tabela_user`</span><span class="ch">.</span><span class="st">`id`</span>)</span>
+<span id="cb18-312"><a href="#cb18-312" aria-hidden="true" tabindex="-1"></a>    ) <span class="kw">AS</span> <span class="st">`q01`</span></span>
+<span id="cb18-313"><a href="#cb18-313" aria-hidden="true" tabindex="-1"></a>  ) <span class="kw">AS</span> <span class="st">`q01`</span></span>
+<span id="cb18-314"><a href="#cb18-314" aria-hidden="true" tabindex="-1"></a>) <span class="kw">AS</span> <span class="st">`q01`</span></span>
+<span id="cb18-315"><a href="#cb18-315" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> (<span class="st">`col01`</span> <span class="op">&lt;=</span> <span class="dv">1</span>)</span>
+<span id="cb18-316"><a href="#cb18-316" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-317"><a href="#cb18-317" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-318"><a href="#cb18-318" aria-hidden="true" tabindex="-1"></a><span class="fu"># E</span></span>
+<span id="cb18-319"><a href="#cb18-319" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-320"><a href="#cb18-320" aria-hidden="true" tabindex="-1"></a>Imagine que a camada executiva da empresa dona do sistema, precisa criar um Dashboard para monitorar o estado das transações nos últimos 3 dias. Para isso você precisa criar uma query SQL que calcule o número e dinheiro das transações não finalizadas, número e dinheiro de transações finalizadas com sucesso (SUCCESS), o número e dinheiro de transações canceladas (CANCELLED), o número e dinheiro de fraudes (FRAUD), agrupado por país, nos 3 dias anteriores de quando o executivo da empresa consulte seu Dashboard.</span>
+<span id="cb18-321"><a href="#cb18-321" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-324"><a href="#cb18-324" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-325"><a href="#cb18-325" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb18-326"><a href="#cb18-326" aria-hidden="true" tabindex="-1"></a>tabela_E <span class="ot">&lt;-</span> tabela_merge <span class="sc">%&gt;%</span> </span>
+<span id="cb18-327"><a href="#cb18-327" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">tres_n =</span> dplyr<span class="sc">::</span><span class="fu">if_else</span>((lubridate<span class="sc">::</span><span class="fu">today</span>() <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">==</span> data_curta, <span class="dv">1</span>,</span>
+<span id="cb18-328"><a href="#cb18-328" aria-hidden="true" tabindex="-1"></a>                                                    dplyr<span class="sc">::</span><span class="fu">if_else</span>((lubridate<span class="sc">::</span><span class="fu">today</span>() <span class="sc">-</span> <span class="dv">2</span>) <span class="sc">==</span> data_curta, <span class="dv">1</span>,</span>
+<span id="cb18-329"><a href="#cb18-329" aria-hidden="true" tabindex="-1"></a>                                                                   dplyr<span class="sc">::</span><span class="fu">if_else</span>((lubridate<span class="sc">::</span><span class="fu">today</span>() <span class="sc">-</span> <span class="dv">2</span>) <span class="sc">==</span> data_curta,<span class="dv">1</span>,<span class="dv">0</span>)))) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-330"><a href="#cb18-330" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">filter</span>(tres_n <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-331"><a href="#cb18-331" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">transaction_state =</span> dplyr<span class="sc">::</span><span class="fu">if_else</span>(transaction_state <span class="sc">==</span> <span class="st">"sucesso"</span>, <span class="st">"SUCCESS"</span>, transaction_state)) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-332"><a href="#cb18-332" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">group_by</span>(pais, transaction_state) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-333"><a href="#cb18-333" aria-hidden="true" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">n_transacoes =</span>  <span class="fu">n</span>(),</span>
+<span id="cb18-334"><a href="#cb18-334" aria-hidden="true" tabindex="-1"></a>                            <span class="at">dinheiro =</span> <span class="fu">sum</span>(transaction_amount))</span>
+<span id="cb18-335"><a href="#cb18-335" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-336"><a href="#cb18-336" aria-hidden="true" tabindex="-1"></a><span class="co"># tabela_E %&gt;%</span></span>
+<span id="cb18-337"><a href="#cb18-337" aria-hidden="true" tabindex="-1"></a><span class="co">#   show_query()</span></span>
+<span id="cb18-338"><a href="#cb18-338" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-339"><a href="#cb18-339" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-340"><a href="#cb18-340" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb18-341"><a href="#cb18-341" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
 <span id="cb18-342"><a href="#cb18-342" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb18-343"><a href="#cb18-343" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-344"><a href="#cb18-344" aria-hidden="true" tabindex="-1"></a><span class="fu"># Tarefa 02: Python</span></span>
-<span id="cb18-345"><a href="#cb18-345" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-348"><a href="#cb18-348" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-349"><a href="#cb18-349" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb18-350"><a href="#cb18-350" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reticulate)</span>
-<span id="cb18-351"><a href="#cb18-351" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-352"><a href="#cb18-352" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-353"><a href="#cb18-353" aria-hidden="true" tabindex="-1"></a>Numa tribo ancestral e muito desenvolvida, orientada principalmente por uma cultura lógica e matemática, os nativos estão interessados no estudo das linguagens de outras tribos e civilizações.</span>
-<span id="cb18-354"><a href="#cb18-354" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-355"><a href="#cb18-355" aria-hidden="true" tabindex="-1"></a>Durante seus estudos, estes perceberam que as linguagens dessas outras civilizações são compostas por um conjunto de símbolos (letras do alfabeto) que são agrupados e combinados para representar conceitos (palavras). Assim mesmo, estes também sabem que cada civilização possui um alfabeto específico.</span>
-<span id="cb18-356"><a href="#cb18-356" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-357"><a href="#cb18-357" aria-hidden="true" tabindex="-1"></a>Na tentativa da tribo de avançar nos seus estudos, estes desejam saber qual seria o número de palavras possíveis a serem criadas em função do tamanho da palavra e o conjunto de símbolos (alfabeto) da civilização em estudo, independentemente se essas "palavras" representam algum significado ou não.</span>
-<span id="cb18-358"><a href="#cb18-358" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-359"><a href="#cb18-359" aria-hidden="true" tabindex="-1"></a>::: panel-tabset</span>
-<span id="cb18-360"><a href="#cb18-360" aria-hidden="true" tabindex="-1"></a><span class="fu"># A</span></span>
-<span id="cb18-361"><a href="#cb18-361" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-362"><a href="#cb18-362" aria-hidden="true" tabindex="-1"></a>Você, que compartilha os atributos da tribo enquanto as capacidades analíticas e lógicas, precisa ajudá-la escrevendo um algoritmo para fazer o cálculo descrito acima, considerando que tribo oferecerá para você o alfabeto da civilização e o tamanho da palavra/combinação. Seu algoritmo deveria ser capaz de calcular que o número total de palavras possíveis (independente se tem significado ou não) é de 16.</span>
-<span id="cb18-363"><a href="#cb18-363" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-364"><a href="#cb18-364" aria-hidden="true" tabindex="-1"></a>OBS: NÃO PRECISA ESCREVER A LISTA DAS PALAVRAS, A TRIBO SÓ PRECISA DO NÚMERO!</span>
-<span id="cb18-365"><a href="#cb18-365" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-366"><a href="#cb18-366" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb18-367"><a href="#cb18-367" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb18-368"><a href="#cb18-368" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-369"><a href="#cb18-369" aria-hidden="true" tabindex="-1"></a>Esse é um claro problema de análise combinatória com reposição/reposição.</span>
-<span id="cb18-370"><a href="#cb18-370" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb18-371"><a href="#cb18-371" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-374"><a href="#cb18-374" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb18-375"><a href="#cb18-375" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itertools <span class="im">import</span> combinations_with_replacement,chain</span>
-<span id="cb18-376"><a href="#cb18-376" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-377"><a href="#cb18-377" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtem todas as combinações de [1, 2, 3] e tamanho 2</span></span>
-<span id="cb18-378"><a href="#cb18-378" aria-hidden="true" tabindex="-1"></a>comb_A <span class="op">=</span> combinations_with_replacement([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>], <span class="dv">2</span>)</span>
-<span id="cb18-379"><a href="#cb18-379" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(<span class="bu">list</span>(comb_A)))</span>
-<span id="cb18-380"><a href="#cb18-380" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-381"><a href="#cb18-381" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-382"><a href="#cb18-382" aria-hidden="true" tabindex="-1"></a><span class="fu"># B</span></span>
-<span id="cb18-383"><a href="#cb18-383" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-384"><a href="#cb18-384" aria-hidden="true" tabindex="-1"></a>Para ajudar a tribo ainda mais! Você deverá modificar seu algoritmo (ou talvez escrever um novo) para fazer o mesmo cálculo, só que agora, as palavras não podem ter símbolos repetidos.</span>
-<span id="cb18-385"><a href="#cb18-385" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-386"><a href="#cb18-386" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb18-387"><a href="#cb18-387" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb18-344"><a href="#cb18-344" aria-hidden="true" tabindex="-1"></a><span class="in">``` sql</span></span>
+<span id="cb18-345"><a href="#cb18-345" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>SQL<span class="op">&gt;</span></span>
+<span id="cb18-346"><a href="#cb18-346" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb18-347"><a href="#cb18-347" aria-hidden="true" tabindex="-1"></a>  <span class="st">`q01`</span><span class="ch">.</span><span class="op">*</span>,</span>
+<span id="cb18-348"><a href="#cb18-348" aria-hidden="true" tabindex="-1"></a>  <span class="fu">COUNT</span>(<span class="op">*</span>) OVER <span class="st">`win1`</span> <span class="kw">AS</span> <span class="st">`n_transacoes`</span>,</span>
+<span id="cb18-349"><a href="#cb18-349" aria-hidden="true" tabindex="-1"></a>  <span class="fu">SUM</span>(<span class="st">`transaction_amount`</span>) OVER <span class="st">`win1`</span> <span class="kw">AS</span> <span class="st">`dinheiro`</span></span>
+<span id="cb18-350"><a href="#cb18-350" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> (</span>
+<span id="cb18-351"><a href="#cb18-351" aria-hidden="true" tabindex="-1"></a>  <span class="kw">SELECT</span></span>
+<span id="cb18-352"><a href="#cb18-352" aria-hidden="true" tabindex="-1"></a>    <span class="st">`user_id`</span>,</span>
+<span id="cb18-353"><a href="#cb18-353" aria-hidden="true" tabindex="-1"></a>    <span class="st">`transaction_date`</span>,</span>
+<span id="cb18-354"><a href="#cb18-354" aria-hidden="true" tabindex="-1"></a>    <span class="st">`transaction_id`</span>,</span>
+<span id="cb18-355"><a href="#cb18-355" aria-hidden="true" tabindex="-1"></a>    <span class="cf">CASE</span> <span class="cf">WHEN</span> (<span class="st">`transaction_state`</span> <span class="op">=</span> <span class="st">'sucesso'</span>) <span class="cf">THEN</span> <span class="st">'SUCCESS'</span> <span class="cf">WHEN</span> <span class="kw">NOT</span> (<span class="st">`transaction_state`</span> <span class="op">=</span> <span class="st">'sucesso'</span>) <span class="cf">THEN</span> <span class="st">`transaction_state`</span> <span class="cf">END</span> <span class="kw">AS</span> <span class="st">`transaction_state`</span>,</span>
+<span id="cb18-356"><a href="#cb18-356" aria-hidden="true" tabindex="-1"></a>    <span class="st">`transaction_amount`</span>,</span>
+<span id="cb18-357"><a href="#cb18-357" aria-hidden="true" tabindex="-1"></a>    <span class="st">`data_curta`</span>,</span>
+<span id="cb18-358"><a href="#cb18-358" aria-hidden="true" tabindex="-1"></a>    <span class="st">`age`</span>,</span>
+<span id="cb18-359"><a href="#cb18-359" aria-hidden="true" tabindex="-1"></a>    <span class="st">`pais`</span>,</span>
+<span id="cb18-360"><a href="#cb18-360" aria-hidden="true" tabindex="-1"></a>    <span class="st">`tres_n`</span></span>
+<span id="cb18-361"><a href="#cb18-361" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span> (</span>
+<span id="cb18-362"><a href="#cb18-362" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span></span>
+<span id="cb18-363"><a href="#cb18-363" aria-hidden="true" tabindex="-1"></a>      <span class="st">`q01`</span><span class="ch">.</span><span class="op">*</span>,</span>
+<span id="cb18-364"><a href="#cb18-364" aria-hidden="true" tabindex="-1"></a>      <span class="cf">CASE</span> <span class="cf">WHEN</span> ((<span class="dt">DATE</span>(<span class="st">'now'</span>) <span class="op">-</span> <span class="fl">1.0</span>) <span class="op">=</span> <span class="st">`data_curta`</span>) <span class="cf">THEN</span> <span class="fl">1.0</span> <span class="cf">WHEN</span> <span class="kw">NOT</span> ((<span class="dt">DATE</span>(<span class="st">'now'</span>) <span class="op">-</span> <span class="fl">1.0</span>) <span class="op">=</span> <span class="st">`data_curta`</span>) <span class="cf">THEN</span> (<span class="cf">CASE</span> <span class="cf">WHEN</span> ((<span class="dt">DATE</span>(<span class="st">'now'</span>) <span class="op">-</span> <span class="fl">2.0</span>) <span class="op">=</span> <span class="st">`data_curta`</span>) <span class="cf">THEN</span> <span class="fl">1.0</span> <span class="cf">WHEN</span> <span class="kw">NOT</span> ((<span class="dt">DATE</span>(<span class="st">'now'</span>) <span class="op">-</span> <span class="fl">2.0</span>) <span class="op">=</span> <span class="st">`data_curta`</span>) <span class="cf">THEN</span> (<span class="cf">CASE</span> <span class="cf">WHEN</span> ((<span class="dt">DATE</span>(<span class="st">'now'</span>) <span class="op">-</span> <span class="fl">2.0</span>) <span class="op">=</span> <span class="st">`data_curta`</span>) <span class="cf">THEN</span> <span class="fl">1.0</span> <span class="cf">WHEN</span> <span class="kw">NOT</span> ((<span class="dt">DATE</span>(<span class="st">'now'</span>) <span class="op">-</span> <span class="fl">2.0</span>) <span class="op">=</span> <span class="st">`data_curta`</span>) <span class="cf">THEN</span> <span class="fl">0.0</span> <span class="cf">END</span>) <span class="cf">END</span>) <span class="cf">END</span> <span class="kw">AS</span> <span class="st">`tres_n`</span></span>
+<span id="cb18-365"><a href="#cb18-365" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FROM</span> (</span>
+<span id="cb18-366"><a href="#cb18-366" aria-hidden="true" tabindex="-1"></a>      <span class="kw">SELECT</span> <span class="st">`tabela_transactions`</span><span class="ch">.</span><span class="op">*</span>, <span class="st">`age`</span>, <span class="st">`pais`</span></span>
+<span id="cb18-367"><a href="#cb18-367" aria-hidden="true" tabindex="-1"></a>      <span class="kw">FROM</span> <span class="st">`tabela_transactions`</span></span>
+<span id="cb18-368"><a href="#cb18-368" aria-hidden="true" tabindex="-1"></a>      <span class="kw">LEFT</span> <span class="kw">JOIN</span> <span class="st">`tabela_user`</span></span>
+<span id="cb18-369"><a href="#cb18-369" aria-hidden="true" tabindex="-1"></a>        <span class="kw">ON</span> (<span class="st">`tabela_transactions`</span><span class="ch">.</span><span class="st">`user_id`</span> <span class="op">=</span> <span class="st">`tabela_user`</span><span class="ch">.</span><span class="st">`id`</span>)</span>
+<span id="cb18-370"><a href="#cb18-370" aria-hidden="true" tabindex="-1"></a>    ) <span class="kw">AS</span> <span class="st">`q01`</span></span>
+<span id="cb18-371"><a href="#cb18-371" aria-hidden="true" tabindex="-1"></a>  ) <span class="kw">AS</span> <span class="st">`q01`</span></span>
+<span id="cb18-372"><a href="#cb18-372" aria-hidden="true" tabindex="-1"></a>  <span class="kw">WHERE</span> (<span class="st">`tres_n`</span> <span class="op">=</span> <span class="fl">1.0</span>)</span>
+<span id="cb18-373"><a href="#cb18-373" aria-hidden="true" tabindex="-1"></a>) <span class="kw">AS</span> <span class="st">`q01`</span></span>
+<span id="cb18-374"><a href="#cb18-374" aria-hidden="true" tabindex="-1"></a>WINDOW <span class="st">`win1`</span> <span class="kw">AS</span> (PARTITION <span class="kw">BY</span> <span class="st">`pais`</span>, <span class="st">`transaction_state`</span>)</span>
+<span id="cb18-375"><a href="#cb18-375" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-376"><a href="#cb18-376" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb18-377"><a href="#cb18-377" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-378"><a href="#cb18-378" aria-hidden="true" tabindex="-1"></a><span class="fu"># Tarefa 02: Python</span></span>
+<span id="cb18-379"><a href="#cb18-379" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-382"><a href="#cb18-382" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-383"><a href="#cb18-383" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb18-384"><a href="#cb18-384" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reticulate)</span>
+<span id="cb18-385"><a href="#cb18-385" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-386"><a href="#cb18-386" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-387"><a href="#cb18-387" aria-hidden="true" tabindex="-1"></a>Numa tribo ancestral e muito desenvolvida, orientada principalmente por uma cultura lógica e matemática, os nativos estão interessados no estudo das linguagens de outras tribos e civilizações.</span>
 <span id="cb18-388"><a href="#cb18-388" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-389"><a href="#cb18-389" aria-hidden="true" tabindex="-1"></a>Esse também é um claro problema de análise combinatória, mas, nesse caso, é um problema em que **não há reposição**.</span>
-<span id="cb18-390"><a href="#cb18-390" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb18-391"><a href="#cb18-391" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-394"><a href="#cb18-394" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb18-395"><a href="#cb18-395" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itertools <span class="im">import</span> combinations</span>
-<span id="cb18-396"><a href="#cb18-396" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-397"><a href="#cb18-397" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtem todas as permutações de {@,d,2,b}  </span></span>
-<span id="cb18-398"><a href="#cb18-398" aria-hidden="true" tabindex="-1"></a>comb_B <span class="op">=</span> combinations([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>], <span class="dv">2</span>)</span>
+<span id="cb18-389"><a href="#cb18-389" aria-hidden="true" tabindex="-1"></a>Durante seus estudos, estes perceberam que as linguagens dessas outras civilizações são compostas por um conjunto de símbolos (letras do alfabeto) que são agrupados e combinados para representar conceitos (palavras). Assim mesmo, estes também sabem que cada civilização possui um alfabeto específico.</span>
+<span id="cb18-390"><a href="#cb18-390" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-391"><a href="#cb18-391" aria-hidden="true" tabindex="-1"></a>Na tentativa da tribo de avançar nos seus estudos, estes desejam saber qual seria o número de palavras possíveis a serem criadas em função do tamanho da palavra e o conjunto de símbolos (alfabeto) da civilização em estudo, independentemente se essas "palavras" representam algum significado ou não.</span>
+<span id="cb18-392"><a href="#cb18-392" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-393"><a href="#cb18-393" aria-hidden="true" tabindex="-1"></a>::: panel-tabset</span>
+<span id="cb18-394"><a href="#cb18-394" aria-hidden="true" tabindex="-1"></a><span class="fu"># A</span></span>
+<span id="cb18-395"><a href="#cb18-395" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-396"><a href="#cb18-396" aria-hidden="true" tabindex="-1"></a>Você, que compartilha os atributos da tribo enquanto as capacidades analíticas e lógicas, precisa ajudá-la escrevendo um algoritmo para fazer o cálculo descrito acima, considerando que tribo oferecerá para você o alfabeto da civilização e o tamanho da palavra/combinação. Seu algoritmo deveria ser capaz de calcular que o número total de palavras possíveis (independente se tem significado ou não) é de 16.</span>
+<span id="cb18-397"><a href="#cb18-397" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-398"><a href="#cb18-398" aria-hidden="true" tabindex="-1"></a>OBS: NÃO PRECISA ESCREVER A LISTA DAS PALAVRAS, A TRIBO SÓ PRECISA DO NÚMERO!</span>
 <span id="cb18-399"><a href="#cb18-399" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-400"><a href="#cb18-400" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(<span class="bu">list</span>(comb_B)))</span>
-<span id="cb18-401"><a href="#cb18-401" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-402"><a href="#cb18-402" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb18-403"><a href="#cb18-403" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-404"><a href="#cb18-404" aria-hidden="true" tabindex="-1"></a><span class="fu"># Tarefa 03: Estatística e Machine Learning</span></span>
+<span id="cb18-400"><a href="#cb18-400" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb18-401"><a href="#cb18-401" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb18-402"><a href="#cb18-402" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-403"><a href="#cb18-403" aria-hidden="true" tabindex="-1"></a>Esse é um claro problema de análise combinatória com reposição/reposição.</span>
+<span id="cb18-404"><a href="#cb18-404" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb18-405"><a href="#cb18-405" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-406"><a href="#cb18-406" aria-hidden="true" tabindex="-1"></a>::: panel-tabset</span>
-<span id="cb18-407"><a href="#cb18-407" aria-hidden="true" tabindex="-1"></a><span class="fu"># 1</span></span>
-<span id="cb18-408"><a href="#cb18-408" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-409"><a href="#cb18-409" aria-hidden="true" tabindex="-1"></a>Dado um dataset das estaturas (em centímetros) de 13 indivíduos:</span>
+<span id="cb18-408"><a href="#cb18-408" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb18-409"><a href="#cb18-409" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itertools <span class="im">import</span> combinations_with_replacement,chain</span>
 <span id="cb18-410"><a href="#cb18-410" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-411"><a href="#cb18-411" aria-hidden="true" tabindex="-1"></a>Dataset = {175, 166, 183, 193, 155, 177, 173, 171, 162, 185, 176, 161, 188}</span>
-<span id="cb18-412"><a href="#cb18-412" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-413"><a href="#cb18-413" aria-hidden="true" tabindex="-1"></a>Calcule:</span>
-<span id="cb18-414"><a href="#cb18-414" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-415"><a href="#cb18-415" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>a média</span>
-<span id="cb18-416"><a href="#cb18-416" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>a mediana</span>
-<span id="cb18-417"><a href="#cb18-417" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>20 percentil</span>
-<span id="cb18-418"><a href="#cb18-418" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>80 percentil</span>
-<span id="cb18-419"><a href="#cb18-419" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>desvio padrão</span>
-<span id="cb18-420"><a href="#cb18-420" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-421"><a href="#cb18-421" aria-hidden="true" tabindex="-1"></a>Considerando os dados, responda a que distribuição (paramétrica) os dados se aproximam.</span>
+<span id="cb18-411"><a href="#cb18-411" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtem todas as combinações de [1, 2, 3] e tamanho 2</span></span>
+<span id="cb18-412"><a href="#cb18-412" aria-hidden="true" tabindex="-1"></a>comb_A <span class="op">=</span> combinations_with_replacement([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>], <span class="dv">2</span>)</span>
+<span id="cb18-413"><a href="#cb18-413" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(<span class="bu">list</span>(comb_A)))</span>
+<span id="cb18-414"><a href="#cb18-414" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-415"><a href="#cb18-415" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-416"><a href="#cb18-416" aria-hidden="true" tabindex="-1"></a><span class="fu"># B</span></span>
+<span id="cb18-417"><a href="#cb18-417" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-418"><a href="#cb18-418" aria-hidden="true" tabindex="-1"></a>Para ajudar a tribo ainda mais! Você deverá modificar seu algoritmo (ou talvez escrever um novo) para fazer o mesmo cálculo, só que agora, as palavras não podem ter símbolos repetidos.</span>
+<span id="cb18-419"><a href="#cb18-419" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-420"><a href="#cb18-420" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb18-421"><a href="#cb18-421" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
 <span id="cb18-422"><a href="#cb18-422" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-423"><a href="#cb18-423" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb18-424"><a href="#cb18-424" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb18-425"><a href="#cb18-425" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb18-426"><a href="#cb18-426" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-429"><a href="#cb18-429" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-430"><a href="#cb18-430" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb18-431"><a href="#cb18-431" aria-hidden="true" tabindex="-1"></a>dataset <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
-<span id="cb18-432"><a href="#cb18-432" aria-hidden="true" tabindex="-1"></a>                         <span class="sc">~</span>altura, </span>
-<span id="cb18-433"><a href="#cb18-433" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">175</span>,</span>
-<span id="cb18-434"><a href="#cb18-434" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">166</span>,</span>
-<span id="cb18-435"><a href="#cb18-435" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">183</span>,</span>
-<span id="cb18-436"><a href="#cb18-436" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">193</span>,</span>
-<span id="cb18-437"><a href="#cb18-437" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">155</span>,</span>
-<span id="cb18-438"><a href="#cb18-438" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">177</span>,</span>
-<span id="cb18-439"><a href="#cb18-439" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">173</span>,</span>
-<span id="cb18-440"><a href="#cb18-440" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">171</span>,</span>
-<span id="cb18-441"><a href="#cb18-441" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">162</span>,</span>
-<span id="cb18-442"><a href="#cb18-442" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">185</span>, </span>
-<span id="cb18-443"><a href="#cb18-443" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">176</span>, </span>
-<span id="cb18-444"><a href="#cb18-444" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">161</span>, </span>
-<span id="cb18-445"><a href="#cb18-445" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">188</span>,</span>
-<span id="cb18-446"><a href="#cb18-446" aria-hidden="true" tabindex="-1"></a>                         )</span>
-<span id="cb18-447"><a href="#cb18-447" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-423"><a href="#cb18-423" aria-hidden="true" tabindex="-1"></a>Esse também é um claro problema de análise combinatória, mas, nesse caso, é um problema em que **não há reposição**.</span>
+<span id="cb18-424"><a href="#cb18-424" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb18-425"><a href="#cb18-425" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-428"><a href="#cb18-428" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb18-429"><a href="#cb18-429" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itertools <span class="im">import</span> combinations</span>
+<span id="cb18-430"><a href="#cb18-430" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-431"><a href="#cb18-431" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtem todas as permutações de {@,d,2,b}  </span></span>
+<span id="cb18-432"><a href="#cb18-432" aria-hidden="true" tabindex="-1"></a>comb_B <span class="op">=</span> combinations([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>], <span class="dv">2</span>)</span>
+<span id="cb18-433"><a href="#cb18-433" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-434"><a href="#cb18-434" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(<span class="bu">list</span>(comb_B)))</span>
+<span id="cb18-435"><a href="#cb18-435" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-436"><a href="#cb18-436" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb18-437"><a href="#cb18-437" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-438"><a href="#cb18-438" aria-hidden="true" tabindex="-1"></a><span class="fu"># Tarefa 03: Estatística e Machine Learning</span></span>
+<span id="cb18-439"><a href="#cb18-439" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-440"><a href="#cb18-440" aria-hidden="true" tabindex="-1"></a>::: panel-tabset</span>
+<span id="cb18-441"><a href="#cb18-441" aria-hidden="true" tabindex="-1"></a><span class="fu"># 1</span></span>
+<span id="cb18-442"><a href="#cb18-442" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-443"><a href="#cb18-443" aria-hidden="true" tabindex="-1"></a>Dado um dataset das estaturas (em centímetros) de 13 indivíduos:</span>
+<span id="cb18-444"><a href="#cb18-444" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-445"><a href="#cb18-445" aria-hidden="true" tabindex="-1"></a>Dataset = {175, 166, 183, 193, 155, 177, 173, 171, 162, 185, 176, 161, 188}</span>
+<span id="cb18-446"><a href="#cb18-446" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-447"><a href="#cb18-447" aria-hidden="true" tabindex="-1"></a>Calcule:</span>
 <span id="cb18-448"><a href="#cb18-448" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-451"><a href="#cb18-451" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-452"><a href="#cb18-452" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb18-453"><a href="#cb18-453" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb18-454"><a href="#cb18-454" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb18-455"><a href="#cb18-455" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb18-456"><a href="#cb18-456" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
-<span id="cb18-457"><a href="#cb18-457" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-458"><a href="#cb18-458" aria-hidden="true" tabindex="-1"></a>summarise_dataset <span class="ot">&lt;-</span> dataset <span class="sc">%&gt;%</span> </span>
-<span id="cb18-459"><a href="#cb18-459" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">vinte_percentil =</span> <span class="fu">quantile</span>(altura, <span class="at">probs =</span> <span class="fl">0.20</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb18-460"><a href="#cb18-460" aria-hidden="true" tabindex="-1"></a>                   <span class="at">mean =</span> <span class="fu">mean</span>(altura, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb18-461"><a href="#cb18-461" aria-hidden="true" tabindex="-1"></a>                   <span class="at">median =</span> <span class="fu">median</span>(altura, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb18-462"><a href="#cb18-462" aria-hidden="true" tabindex="-1"></a>                   <span class="at">oitenta_percentil =</span> <span class="fu">quantile</span>(altura, <span class="at">probs =</span> <span class="fl">0.80</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb18-463"><a href="#cb18-463" aria-hidden="true" tabindex="-1"></a>                   <span class="at">desvio_padrao =</span> <span class="fu">sd</span>(altura, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb18-464"><a href="#cb18-464" aria-hidden="true" tabindex="-1"></a>                   ) </span>
-<span id="cb18-465"><a href="#cb18-465" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-466"><a href="#cb18-466" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(summarise_dataset)</span>
-<span id="cb18-467"><a href="#cb18-467" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-468"><a href="#cb18-468" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-469"><a href="#cb18-469" aria-hidden="true" tabindex="-1"></a>De acordo com o gráfico abaixo, a distribuição da variável **altura** pode ser descrita por uma normal, mas para fins de decisão, deve-se munir de testes paramétricos ou não paramétricos. Veja que sua variabilidade indica que os valores observados tendem a estar distantes da média – ou seja, a distribuição é mais “espalhada”.</span>
-<span id="cb18-470"><a href="#cb18-470" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-473"><a href="#cb18-473" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-474"><a href="#cb18-474" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb18-475"><a href="#cb18-475" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb18-476"><a href="#cb18-476" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-477"><a href="#cb18-477" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">ggplot</span>(dataset) <span class="sc">+</span></span>
-<span id="cb18-478"><a href="#cb18-478" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">x =</span> altura) <span class="sc">+</span></span>
-<span id="cb18-479"><a href="#cb18-479" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_density</span>(<span class="at">adjust =</span> <span class="dv">1</span>L, <span class="at">fill =</span> <span class="st">"#EF562D"</span>) <span class="sc">+</span></span>
-<span id="cb18-480"><a href="#cb18-480" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Altura (cm)"</span>, </span>
-<span id="cb18-481"><a href="#cb18-481" aria-hidden="true" tabindex="-1"></a>                <span class="at">title =</span> <span class="st">"Densidade: Altura (cm)"</span>) <span class="sc">+</span></span>
-<span id="cb18-482"><a href="#cb18-482" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fl">174.23</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">show.legend =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
-<span id="cb18-483"><a href="#cb18-483" aria-hidden="true" tabindex="-1"></a>    ggplot2<span class="sc">::</span><span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fl">174.23</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">show.legend =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
-<span id="cb18-484"><a href="#cb18-484" aria-hidden="true" tabindex="-1"></a>    ggplot2<span class="sc">::</span><span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">175</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">show.legend =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
-<span id="cb18-485"><a href="#cb18-485" aria-hidden="true" tabindex="-1"></a>    ggplot2<span class="sc">::</span><span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fl">163.6</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">show.legend =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
-<span id="cb18-486"><a href="#cb18-486" aria-hidden="true" tabindex="-1"></a>    ggplot2<span class="sc">::</span><span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fl">184.2</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">show.legend =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
-<span id="cb18-487"><a href="#cb18-487" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb18-488"><a href="#cb18-488" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">theme_gray</span>()</span>
-<span id="cb18-489"><a href="#cb18-489" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-490"><a href="#cb18-490" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-493"><a href="#cb18-493" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-494"><a href="#cb18-494" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(dataset<span class="sc">$</span>altura)</span>
-<span id="cb18-495"><a href="#cb18-495" aria-hidden="true" tabindex="-1"></a><span class="fu">qqline</span>(dataset<span class="sc">$</span>altura, <span class="at">col=</span><span class="dv">2</span>)</span>
-<span id="cb18-496"><a href="#cb18-496" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-497"><a href="#cb18-497" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-498"><a href="#cb18-498" aria-hidden="true" tabindex="-1"></a><span class="fu"># 2</span></span>
+<span id="cb18-449"><a href="#cb18-449" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>a média</span>
+<span id="cb18-450"><a href="#cb18-450" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>a mediana</span>
+<span id="cb18-451"><a href="#cb18-451" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>20 percentil</span>
+<span id="cb18-452"><a href="#cb18-452" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>80 percentil</span>
+<span id="cb18-453"><a href="#cb18-453" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>desvio padrão</span>
+<span id="cb18-454"><a href="#cb18-454" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-455"><a href="#cb18-455" aria-hidden="true" tabindex="-1"></a>Considerando os dados, responda a que distribuição (paramétrica) os dados se aproximam.</span>
+<span id="cb18-456"><a href="#cb18-456" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-457"><a href="#cb18-457" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb18-458"><a href="#cb18-458" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb18-459"><a href="#cb18-459" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb18-460"><a href="#cb18-460" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-463"><a href="#cb18-463" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-464"><a href="#cb18-464" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb18-465"><a href="#cb18-465" aria-hidden="true" tabindex="-1"></a>dataset <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
+<span id="cb18-466"><a href="#cb18-466" aria-hidden="true" tabindex="-1"></a>                         <span class="sc">~</span>altura, </span>
+<span id="cb18-467"><a href="#cb18-467" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">175</span>,</span>
+<span id="cb18-468"><a href="#cb18-468" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">166</span>,</span>
+<span id="cb18-469"><a href="#cb18-469" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">183</span>,</span>
+<span id="cb18-470"><a href="#cb18-470" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">193</span>,</span>
+<span id="cb18-471"><a href="#cb18-471" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">155</span>,</span>
+<span id="cb18-472"><a href="#cb18-472" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">177</span>,</span>
+<span id="cb18-473"><a href="#cb18-473" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">173</span>,</span>
+<span id="cb18-474"><a href="#cb18-474" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">171</span>,</span>
+<span id="cb18-475"><a href="#cb18-475" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">162</span>,</span>
+<span id="cb18-476"><a href="#cb18-476" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">185</span>, </span>
+<span id="cb18-477"><a href="#cb18-477" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">176</span>, </span>
+<span id="cb18-478"><a href="#cb18-478" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">161</span>, </span>
+<span id="cb18-479"><a href="#cb18-479" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">188</span>,</span>
+<span id="cb18-480"><a href="#cb18-480" aria-hidden="true" tabindex="-1"></a>                         )</span>
+<span id="cb18-481"><a href="#cb18-481" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-482"><a href="#cb18-482" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-485"><a href="#cb18-485" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-486"><a href="#cb18-486" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb18-487"><a href="#cb18-487" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb18-488"><a href="#cb18-488" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb18-489"><a href="#cb18-489" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb18-490"><a href="#cb18-490" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb18-491"><a href="#cb18-491" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-492"><a href="#cb18-492" aria-hidden="true" tabindex="-1"></a>summarise_dataset <span class="ot">&lt;-</span> dataset <span class="sc">%&gt;%</span> </span>
+<span id="cb18-493"><a href="#cb18-493" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">vinte_percentil =</span> <span class="fu">quantile</span>(altura, <span class="at">probs =</span> <span class="fl">0.20</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb18-494"><a href="#cb18-494" aria-hidden="true" tabindex="-1"></a>                   <span class="at">mean =</span> <span class="fu">mean</span>(altura, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb18-495"><a href="#cb18-495" aria-hidden="true" tabindex="-1"></a>                   <span class="at">median =</span> <span class="fu">median</span>(altura, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb18-496"><a href="#cb18-496" aria-hidden="true" tabindex="-1"></a>                   <span class="at">oitenta_percentil =</span> <span class="fu">quantile</span>(altura, <span class="at">probs =</span> <span class="fl">0.80</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb18-497"><a href="#cb18-497" aria-hidden="true" tabindex="-1"></a>                   <span class="at">desvio_padrao =</span> <span class="fu">sd</span>(altura, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb18-498"><a href="#cb18-498" aria-hidden="true" tabindex="-1"></a>                   ) </span>
 <span id="cb18-499"><a href="#cb18-499" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-500"><a href="#cb18-500" aria-hidden="true" tabindex="-1"></a>Com suas próprias palavras, explique em que consiste o teorema central do limite, e se possível, mencione a sua importância no campo da inferência estatística.</span>
-<span id="cb18-501"><a href="#cb18-501" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-502"><a href="#cb18-502" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb18-503"><a href="#cb18-503" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb18-504"><a href="#cb18-504" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb18-505"><a href="#cb18-505" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-506"><a href="#cb18-506" aria-hidden="true" tabindex="-1"></a>O Teorema do limite central (TLC) basicamente demonstra a **tendência** de aproximação das variáveis aleatórias com a distribuição normal, em que a aproximação da distribuição Normal melhora na medida que se fizesse a média do lançamento de mais dados. Esse comportamento pode ser visualizado na imagem abaixo. Na estatística, há provas que um n igual a 30 é suficientemente grande para que essa amostra seja descrita com uma distribuição normal e, por isso, é fácil encontrar análises clássicas com todos os pressupostos violados por seus pesquisadores devido a esta pressuposição do n igual a 30.</span>
-<span id="cb18-507"><a href="#cb18-507" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-508"><a href="#cb18-508" aria-hidden="true" tabindex="-1"></a><span class="al">![Teorema do Limite Central](img/img213.png)</span>{fig-align="center" width="300"}</span>
-<span id="cb18-509"><a href="#cb18-509" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-510"><a href="#cb18-510" aria-hidden="true" tabindex="-1"></a><span class="fu"># 3</span></span>
-<span id="cb18-511"><a href="#cb18-511" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-512"><a href="#cb18-512" aria-hidden="true" tabindex="-1"></a>Suponha que numa escola, 2 grupos diferentes de estudantes (Grupo A e Grupo B) fazem o mesmo teste de matemáticas. As pontuações para cada grupo são dados pelos seguintes datasets:</span>
-<span id="cb18-513"><a href="#cb18-513" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-514"><a href="#cb18-514" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Grupo A: {80, 85, 88, 90, 92, 75, 78}</span>
-<span id="cb18-515"><a href="#cb18-515" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Grupo B: {75, 78, 82, 85, 87, 93, 99}</span>
-<span id="cb18-516"><a href="#cb18-516" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-517"><a href="#cb18-517" aria-hidden="true" tabindex="-1"></a>Elabore um teste de hipótese para determinar se existe uma diferença estatisticamente significativa entre a média das pontuações dos dois grupos com uma confiança de 95%.</span>
-<span id="cb18-518"><a href="#cb18-518" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-519"><a href="#cb18-519" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb18-520"><a href="#cb18-520" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb18-521"><a href="#cb18-521" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb18-522"><a href="#cb18-522" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-525"><a href="#cb18-525" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-526"><a href="#cb18-526" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb18-527"><a href="#cb18-527" aria-hidden="true" tabindex="-1"></a>tabela_estudantes <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
-<span id="cb18-528"><a href="#cb18-528" aria-hidden="true" tabindex="-1"></a>                         <span class="sc">~</span>nota, <span class="sc">~</span>grupo, </span>
-<span id="cb18-529"><a href="#cb18-529" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">80</span>, <span class="st">"A"</span>, </span>
-<span id="cb18-530"><a href="#cb18-530" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">85</span>, <span class="st">"A"</span>,</span>
-<span id="cb18-531"><a href="#cb18-531" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">88</span>, <span class="st">"A"</span>,</span>
-<span id="cb18-532"><a href="#cb18-532" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">90</span>, <span class="st">"A"</span>,</span>
-<span id="cb18-533"><a href="#cb18-533" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">92</span>, <span class="st">"A"</span>,</span>
-<span id="cb18-534"><a href="#cb18-534" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">75</span>, <span class="st">"A"</span>,</span>
-<span id="cb18-535"><a href="#cb18-535" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">78</span>, <span class="st">"A"</span>,</span>
-<span id="cb18-536"><a href="#cb18-536" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">75</span>, <span class="st">"B"</span>,</span>
-<span id="cb18-537"><a href="#cb18-537" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">78</span>, <span class="st">"B"</span>,</span>
-<span id="cb18-538"><a href="#cb18-538" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">82</span>, <span class="st">"B"</span>,</span>
-<span id="cb18-539"><a href="#cb18-539" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">85</span>, <span class="st">"B"</span>,</span>
-<span id="cb18-540"><a href="#cb18-540" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">87</span>, <span class="st">"B"</span>,</span>
-<span id="cb18-541"><a href="#cb18-541" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">93</span>, <span class="st">"B"</span>,</span>
-<span id="cb18-542"><a href="#cb18-542" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">99</span>, <span class="st">"B"</span>,</span>
-<span id="cb18-543"><a href="#cb18-543" aria-hidden="true" tabindex="-1"></a>                         ) <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">grupo =</span> <span class="fu">factor</span>(grupo, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>)))</span>
-<span id="cb18-544"><a href="#cb18-544" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-500"><a href="#cb18-500" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(summarise_dataset)</span>
+<span id="cb18-501"><a href="#cb18-501" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-502"><a href="#cb18-502" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-503"><a href="#cb18-503" aria-hidden="true" tabindex="-1"></a>De acordo com o gráfico abaixo, a distribuição da variável **altura** pode ser descrita por uma normal, mas para fins de decisão, deve-se munir de testes paramétricos ou não paramétricos. Veja que sua variabilidade indica que os valores observados tendem a estar distantes da média – ou seja, a distribuição é mais “espalhada”.</span>
+<span id="cb18-504"><a href="#cb18-504" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-507"><a href="#cb18-507" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-508"><a href="#cb18-508" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb18-509"><a href="#cb18-509" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb18-510"><a href="#cb18-510" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-511"><a href="#cb18-511" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">ggplot</span>(dataset) <span class="sc">+</span></span>
+<span id="cb18-512"><a href="#cb18-512" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">x =</span> altura) <span class="sc">+</span></span>
+<span id="cb18-513"><a href="#cb18-513" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_density</span>(<span class="at">adjust =</span> <span class="dv">1</span>L, <span class="at">fill =</span> <span class="st">"#EF562D"</span>) <span class="sc">+</span></span>
+<span id="cb18-514"><a href="#cb18-514" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Altura (cm)"</span>, </span>
+<span id="cb18-515"><a href="#cb18-515" aria-hidden="true" tabindex="-1"></a>                <span class="at">title =</span> <span class="st">"Densidade: Altura (cm)"</span>) <span class="sc">+</span></span>
+<span id="cb18-516"><a href="#cb18-516" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fl">174.23</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">show.legend =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb18-517"><a href="#cb18-517" aria-hidden="true" tabindex="-1"></a>    ggplot2<span class="sc">::</span><span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fl">174.23</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">show.legend =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb18-518"><a href="#cb18-518" aria-hidden="true" tabindex="-1"></a>    ggplot2<span class="sc">::</span><span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">175</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">show.legend =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb18-519"><a href="#cb18-519" aria-hidden="true" tabindex="-1"></a>    ggplot2<span class="sc">::</span><span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fl">163.6</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">show.legend =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb18-520"><a href="#cb18-520" aria-hidden="true" tabindex="-1"></a>    ggplot2<span class="sc">::</span><span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fl">184.2</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">show.legend =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb18-521"><a href="#cb18-521" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb18-522"><a href="#cb18-522" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">theme_gray</span>()</span>
+<span id="cb18-523"><a href="#cb18-523" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-524"><a href="#cb18-524" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-527"><a href="#cb18-527" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-528"><a href="#cb18-528" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(dataset<span class="sc">$</span>altura)</span>
+<span id="cb18-529"><a href="#cb18-529" aria-hidden="true" tabindex="-1"></a><span class="fu">qqline</span>(dataset<span class="sc">$</span>altura, <span class="at">col=</span><span class="dv">2</span>)</span>
+<span id="cb18-530"><a href="#cb18-530" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-531"><a href="#cb18-531" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-532"><a href="#cb18-532" aria-hidden="true" tabindex="-1"></a><span class="fu"># 2</span></span>
+<span id="cb18-533"><a href="#cb18-533" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-534"><a href="#cb18-534" aria-hidden="true" tabindex="-1"></a>Com suas próprias palavras, explique em que consiste o teorema central do limite, e se possível, mencione a sua importância no campo da inferência estatística.</span>
+<span id="cb18-535"><a href="#cb18-535" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-536"><a href="#cb18-536" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb18-537"><a href="#cb18-537" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb18-538"><a href="#cb18-538" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb18-539"><a href="#cb18-539" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-540"><a href="#cb18-540" aria-hidden="true" tabindex="-1"></a>O Teorema do limite central (TLC) basicamente demonstra a **tendência** de aproximação das variáveis aleatórias com a distribuição normal, em que a aproximação da distribuição Normal melhora na medida que se fizesse a média do lançamento de mais dados. Esse comportamento pode ser visualizado na imagem abaixo. Na estatística, há provas que um n igual a 30 é suficientemente grande para que essa amostra seja descrita com uma distribuição normal e, por isso, é fácil encontrar análises clássicas com todos os pressupostos violados por seus pesquisadores devido a esta pressuposição do n igual a 30.</span>
+<span id="cb18-541"><a href="#cb18-541" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-542"><a href="#cb18-542" aria-hidden="true" tabindex="-1"></a><span class="al">![Teorema do Limite Central](img/img213.png)</span>{fig-align="center" width="300"}</span>
+<span id="cb18-543"><a href="#cb18-543" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-544"><a href="#cb18-544" aria-hidden="true" tabindex="-1"></a><span class="fu"># 3</span></span>
 <span id="cb18-545"><a href="#cb18-545" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-546"><a href="#cb18-546" aria-hidden="true" tabindex="-1"></a>**Antes de qualquer levantamento de hipótese, é bom analisar as medidas de tendência central de cada grupo e também graficamente** e, de acordo com a tabela abaixo, não há muitas evidências de que essa média entre os grupos seja diferente, mas é evidente que o **grupo B** tem uma variabilidade maior em relação as notas (desvio padrão = 8.363754).</span>
+<span id="cb18-546"><a href="#cb18-546" aria-hidden="true" tabindex="-1"></a>Suponha que numa escola, 2 grupos diferentes de estudantes (Grupo A e Grupo B) fazem o mesmo teste de matemáticas. As pontuações para cada grupo são dados pelos seguintes datasets:</span>
 <span id="cb18-547"><a href="#cb18-547" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-550"><a href="#cb18-550" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-551"><a href="#cb18-551" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb18-548"><a href="#cb18-548" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Grupo A: {80, 85, 88, 90, 92, 75, 78}</span>
+<span id="cb18-549"><a href="#cb18-549" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Grupo B: {75, 78, 82, 85, 87, 93, 99}</span>
+<span id="cb18-550"><a href="#cb18-550" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-551"><a href="#cb18-551" aria-hidden="true" tabindex="-1"></a>Elabore um teste de hipótese para determinar se existe uma diferença estatisticamente significativa entre a média das pontuações dos dois grupos com uma confiança de 95%.</span>
 <span id="cb18-552"><a href="#cb18-552" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-553"><a href="#cb18-553" aria-hidden="true" tabindex="-1"></a>summarise_estudantes <span class="ot">&lt;-</span> tabela_estudantes <span class="sc">%&gt;%</span> </span>
-<span id="cb18-554"><a href="#cb18-554" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(grupo) <span class="sc">%&gt;%</span> </span>
-<span id="cb18-555"><a href="#cb18-555" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">vinte_percentil =</span> <span class="fu">quantile</span>(nota, <span class="at">probs =</span> <span class="fl">0.20</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb18-556"><a href="#cb18-556" aria-hidden="true" tabindex="-1"></a>                   <span class="at">mean =</span> <span class="fu">round</span>(<span class="fu">mean</span>(nota, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),<span class="dv">2</span>),</span>
-<span id="cb18-557"><a href="#cb18-557" aria-hidden="true" tabindex="-1"></a>                   <span class="at">median =</span> <span class="fu">median</span>(nota, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb18-558"><a href="#cb18-558" aria-hidden="true" tabindex="-1"></a>                   <span class="at">oitenta_percentil =</span> <span class="fu">quantile</span>(nota, <span class="at">probs =</span> <span class="fl">0.80</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb18-559"><a href="#cb18-559" aria-hidden="true" tabindex="-1"></a>                   <span class="at">desvio_padrao =</span> <span class="fu">round</span>(<span class="fu">sd</span>(nota, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),<span class="dv">2</span>)</span>
-<span id="cb18-560"><a href="#cb18-560" aria-hidden="true" tabindex="-1"></a>                   ) </span>
-<span id="cb18-561"><a href="#cb18-561" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-562"><a href="#cb18-562" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(summarise_dataset)</span>
-<span id="cb18-563"><a href="#cb18-563" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-566"><a href="#cb18-566" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-567"><a href="#cb18-567" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb18-568"><a href="#cb18-568" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb18-569"><a href="#cb18-569" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-570"><a href="#cb18-570" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(tabela_estudantes) <span class="sc">+</span></span>
-<span id="cb18-571"><a href="#cb18-571" aria-hidden="true" tabindex="-1"></a> <span class="fu">aes</span>(<span class="at">x =</span> nota, <span class="at">y =</span> grupo, <span class="at">fill =</span> grupo) <span class="sc">+</span></span>
-<span id="cb18-572"><a href="#cb18-572" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
-<span id="cb18-573"><a href="#cb18-573" aria-hidden="true" tabindex="-1"></a> <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="at">A =</span> <span class="st">"#FFF5EB"</span>, </span>
-<span id="cb18-574"><a href="#cb18-574" aria-hidden="true" tabindex="-1"></a><span class="at">B =</span> <span class="st">"#E56B0D"</span>)) <span class="sc">+</span></span>
-<span id="cb18-575"><a href="#cb18-575" aria-hidden="true" tabindex="-1"></a> <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Nota"</span>, <span class="at">y =</span> <span class="st">"Grupo"</span>) <span class="sc">+</span></span>
-<span id="cb18-576"><a href="#cb18-576" aria-hidden="true" tabindex="-1"></a> <span class="fu">theme_gray</span>() <span class="sc">+</span></span>
-<span id="cb18-577"><a href="#cb18-577" aria-hidden="true" tabindex="-1"></a> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>, <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, </span>
-<span id="cb18-578"><a href="#cb18-578" aria-hidden="true" tabindex="-1"></a> <span class="at">hjust =</span> <span class="dv">0</span>))</span>
-<span id="cb18-579"><a href="#cb18-579" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-580"><a href="#cb18-580" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-581"><a href="#cb18-581" aria-hidden="true" tabindex="-1"></a>É importante ressaltar que a verificação dos pressupostos é de extrema relevância para que os insights e conclusões sejam verdadeiramente corretos. Neste casso, estamos **supondo ** que as duas amostras são independentes e, em caso de teste de médias, usaríamos o teste t independente que apresenta dois **pressupostos**:</span>
-<span id="cb18-582"><a href="#cb18-582" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-583"><a href="#cb18-583" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Normalidade da variável dependente de cada grupo**</span>
-<span id="cb18-584"><a href="#cb18-584" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Homogeneidade de variâncias (ou seja, grupos com variâncias homogêneas)**</span>
-<span id="cb18-585"><a href="#cb18-585" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-586"><a href="#cb18-586" aria-hidden="true" tabindex="-1"></a><span class="fu">### Normalidade</span></span>
-<span id="cb18-587"><a href="#cb18-587" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-588"><a href="#cb18-588" aria-hidden="true" tabindex="-1"></a>Para verificar a normalidade dos dados, é recomendável utilizar o teste de **Shapiro WIlk** quando o número de amostra é menor que 50. A estatı́stica T (ou T ) é basicamente o quadrado de um coeficiente de correlação, onde o coeficiente de correlação de Pearson é calculado entre a estatı́stica ordenada X i na amostra e o escore ai , que representa o que a estatı́stica ordenada deveria parecer se a população é Normal. Portanto, as hipóteses levantadas são:</span>
-<span id="cb18-589"><a href="#cb18-589" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-590"><a href="#cb18-590" aria-hidden="true" tabindex="-1"></a>$H_{0}$ : F(x) é função de distribuição normal;</span>
-<span id="cb18-591"><a href="#cb18-591" aria-hidden="true" tabindex="-1"></a>$H_{1}$ : F(x) não é função de distribuição normal;</span>
-<span id="cb18-592"><a href="#cb18-592" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-595"><a href="#cb18-595" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-596"><a href="#cb18-596" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb18-597"><a href="#cb18-597" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb18-598"><a href="#cb18-598" aria-hidden="true" tabindex="-1"></a>teste_shapiro <span class="ot">&lt;-</span> tabela_estudantes <span class="sc">%&gt;%</span> </span>
-<span id="cb18-599"><a href="#cb18-599" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(grupo) <span class="sc">%&gt;%</span> </span>
-<span id="cb18-600"><a href="#cb18-600" aria-hidden="true" tabindex="-1"></a>  rstatix<span class="sc">::</span><span class="fu">shapiro_test</span>(nota)</span>
-<span id="cb18-601"><a href="#cb18-601" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-602"><a href="#cb18-602" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(teste_shapiro)</span>
-<span id="cb18-603"><a href="#cb18-603" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-604"><a href="#cb18-604" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-605"><a href="#cb18-605" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-606"><a href="#cb18-606" aria-hidden="true" tabindex="-1"></a>Veja que de acordo com o teste de Shapiro Wilk, ao nível de 95% de significância, **não rejeita-se a hipótese nula**, ou seja, a variável **notas** é descrita por uma distribuição normal.</span>
-<span id="cb18-607"><a href="#cb18-607" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-608"><a href="#cb18-608" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-609"><a href="#cb18-609" aria-hidden="true" tabindex="-1"></a><span class="fu">### Variância</span></span>
-<span id="cb18-610"><a href="#cb18-610" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-611"><a href="#cb18-611" aria-hidden="true" tabindex="-1"></a>O segundo pressuposto pode ser avaliado pelo **teste de Levene**, em que as hipóteses são:</span>
-<span id="cb18-612"><a href="#cb18-612" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-613"><a href="#cb18-613" aria-hidden="true" tabindex="-1"></a>$H_{0}$ : Os grupos apresentam variâncias homogêneas;</span>
-<span id="cb18-614"><a href="#cb18-614" aria-hidden="true" tabindex="-1"></a>$H_{1}$ : Os grupos não apresentam variâncias homogêneas;</span>
-<span id="cb18-615"><a href="#cb18-615" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-618"><a href="#cb18-618" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-619"><a href="#cb18-619" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb18-620"><a href="#cb18-620" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-621"><a href="#cb18-621" aria-hidden="true" tabindex="-1"></a>teste_levene <span class="ot">&lt;-</span> car<span class="sc">::</span><span class="fu">leveneTest</span>(nota <span class="sc">~</span> grupo, <span class="at">data =</span> tabela_estudantes, <span class="at">center =</span> mean)</span>
-<span id="cb18-622"><a href="#cb18-622" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-623"><a href="#cb18-623" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(teste_levene)</span>
-<span id="cb18-624"><a href="#cb18-624" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-625"><a href="#cb18-625" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-626"><a href="#cb18-626" aria-hidden="true" tabindex="-1"></a>Logo, ao nível de 95% de significância, **não rejeitamos a hipótese nula**, ou seja, os grupos apresentam variâncias homogêneas e assim podemos seguir com o teste t independente.</span>
-<span id="cb18-627"><a href="#cb18-627" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-628"><a href="#cb18-628" aria-hidden="true" tabindex="-1"></a>Seguindo os passos para elaboração de um teste de hipótese:</span>
-<span id="cb18-629"><a href="#cb18-629" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-630"><a href="#cb18-630" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Enunciar as Hipóteses:</span>
-<span id="cb18-631"><a href="#cb18-631" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-632"><a href="#cb18-632" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$H_{0}$ : Não há diferença média entre os grupos; </span>
-<span id="cb18-633"><a href="#cb18-633" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$H_{1}$ : Há diferença média entre os grupos;</span>
-<span id="cb18-634"><a href="#cb18-634" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-635"><a href="#cb18-635" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Fixar o nı́vel de significância $\alpha$) do teste:</span>
-<span id="cb18-636"><a href="#cb18-636" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-637"><a href="#cb18-637" aria-hidden="true" tabindex="-1"></a>**No nosso caso, o nível de significância será 95%.**</span>
+<span id="cb18-553"><a href="#cb18-553" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb18-554"><a href="#cb18-554" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb18-555"><a href="#cb18-555" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb18-556"><a href="#cb18-556" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-559"><a href="#cb18-559" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-560"><a href="#cb18-560" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb18-561"><a href="#cb18-561" aria-hidden="true" tabindex="-1"></a>tabela_estudantes <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
+<span id="cb18-562"><a href="#cb18-562" aria-hidden="true" tabindex="-1"></a>                         <span class="sc">~</span>nota, <span class="sc">~</span>grupo, </span>
+<span id="cb18-563"><a href="#cb18-563" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">80</span>, <span class="st">"A"</span>, </span>
+<span id="cb18-564"><a href="#cb18-564" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">85</span>, <span class="st">"A"</span>,</span>
+<span id="cb18-565"><a href="#cb18-565" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">88</span>, <span class="st">"A"</span>,</span>
+<span id="cb18-566"><a href="#cb18-566" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">90</span>, <span class="st">"A"</span>,</span>
+<span id="cb18-567"><a href="#cb18-567" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">92</span>, <span class="st">"A"</span>,</span>
+<span id="cb18-568"><a href="#cb18-568" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">75</span>, <span class="st">"A"</span>,</span>
+<span id="cb18-569"><a href="#cb18-569" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">78</span>, <span class="st">"A"</span>,</span>
+<span id="cb18-570"><a href="#cb18-570" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">75</span>, <span class="st">"B"</span>,</span>
+<span id="cb18-571"><a href="#cb18-571" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">78</span>, <span class="st">"B"</span>,</span>
+<span id="cb18-572"><a href="#cb18-572" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">82</span>, <span class="st">"B"</span>,</span>
+<span id="cb18-573"><a href="#cb18-573" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">85</span>, <span class="st">"B"</span>,</span>
+<span id="cb18-574"><a href="#cb18-574" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">87</span>, <span class="st">"B"</span>,</span>
+<span id="cb18-575"><a href="#cb18-575" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">93</span>, <span class="st">"B"</span>,</span>
+<span id="cb18-576"><a href="#cb18-576" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">99</span>, <span class="st">"B"</span>,</span>
+<span id="cb18-577"><a href="#cb18-577" aria-hidden="true" tabindex="-1"></a>                         ) <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">grupo =</span> <span class="fu">factor</span>(grupo, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>)))</span>
+<span id="cb18-578"><a href="#cb18-578" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-579"><a href="#cb18-579" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-580"><a href="#cb18-580" aria-hidden="true" tabindex="-1"></a>**Antes de qualquer levantamento de hipótese, é bom analisar as medidas de tendência central de cada grupo e também graficamente** e, de acordo com a tabela abaixo, não há muitas evidências de que essa média entre os grupos seja diferente, mas é evidente que o **grupo B** tem uma variabilidade maior em relação as notas (desvio padrão = 8.363754).</span>
+<span id="cb18-581"><a href="#cb18-581" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-584"><a href="#cb18-584" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-585"><a href="#cb18-585" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb18-586"><a href="#cb18-586" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-587"><a href="#cb18-587" aria-hidden="true" tabindex="-1"></a>summarise_estudantes <span class="ot">&lt;-</span> tabela_estudantes <span class="sc">%&gt;%</span> </span>
+<span id="cb18-588"><a href="#cb18-588" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(grupo) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-589"><a href="#cb18-589" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">vinte_percentil =</span> <span class="fu">quantile</span>(nota, <span class="at">probs =</span> <span class="fl">0.20</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb18-590"><a href="#cb18-590" aria-hidden="true" tabindex="-1"></a>                   <span class="at">mean =</span> <span class="fu">round</span>(<span class="fu">mean</span>(nota, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),<span class="dv">2</span>),</span>
+<span id="cb18-591"><a href="#cb18-591" aria-hidden="true" tabindex="-1"></a>                   <span class="at">median =</span> <span class="fu">median</span>(nota, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb18-592"><a href="#cb18-592" aria-hidden="true" tabindex="-1"></a>                   <span class="at">oitenta_percentil =</span> <span class="fu">quantile</span>(nota, <span class="at">probs =</span> <span class="fl">0.80</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb18-593"><a href="#cb18-593" aria-hidden="true" tabindex="-1"></a>                   <span class="at">desvio_padrao =</span> <span class="fu">round</span>(<span class="fu">sd</span>(nota, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),<span class="dv">2</span>)</span>
+<span id="cb18-594"><a href="#cb18-594" aria-hidden="true" tabindex="-1"></a>                   ) </span>
+<span id="cb18-595"><a href="#cb18-595" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-596"><a href="#cb18-596" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(summarise_dataset)</span>
+<span id="cb18-597"><a href="#cb18-597" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-600"><a href="#cb18-600" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-601"><a href="#cb18-601" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb18-602"><a href="#cb18-602" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb18-603"><a href="#cb18-603" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-604"><a href="#cb18-604" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(tabela_estudantes) <span class="sc">+</span></span>
+<span id="cb18-605"><a href="#cb18-605" aria-hidden="true" tabindex="-1"></a> <span class="fu">aes</span>(<span class="at">x =</span> nota, <span class="at">y =</span> grupo, <span class="at">fill =</span> grupo) <span class="sc">+</span></span>
+<span id="cb18-606"><a href="#cb18-606" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb18-607"><a href="#cb18-607" aria-hidden="true" tabindex="-1"></a> <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="at">A =</span> <span class="st">"#FFF5EB"</span>, </span>
+<span id="cb18-608"><a href="#cb18-608" aria-hidden="true" tabindex="-1"></a><span class="at">B =</span> <span class="st">"#E56B0D"</span>)) <span class="sc">+</span></span>
+<span id="cb18-609"><a href="#cb18-609" aria-hidden="true" tabindex="-1"></a> <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Nota"</span>, <span class="at">y =</span> <span class="st">"Grupo"</span>) <span class="sc">+</span></span>
+<span id="cb18-610"><a href="#cb18-610" aria-hidden="true" tabindex="-1"></a> <span class="fu">theme_gray</span>() <span class="sc">+</span></span>
+<span id="cb18-611"><a href="#cb18-611" aria-hidden="true" tabindex="-1"></a> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>, <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, </span>
+<span id="cb18-612"><a href="#cb18-612" aria-hidden="true" tabindex="-1"></a> <span class="at">hjust =</span> <span class="dv">0</span>))</span>
+<span id="cb18-613"><a href="#cb18-613" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-614"><a href="#cb18-614" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-615"><a href="#cb18-615" aria-hidden="true" tabindex="-1"></a>É importante ressaltar que a verificação dos pressupostos é de extrema relevância para que os insights e conclusões sejam verdadeiramente corretos. Neste casso, estamos **supondo ** que as duas amostras são independentes e, em caso de teste de médias, usaríamos o teste t independente que apresenta dois **pressupostos**:</span>
+<span id="cb18-616"><a href="#cb18-616" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-617"><a href="#cb18-617" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Normalidade da variável dependente de cada grupo**</span>
+<span id="cb18-618"><a href="#cb18-618" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Homogeneidade de variâncias (ou seja, grupos com variâncias homogêneas)**</span>
+<span id="cb18-619"><a href="#cb18-619" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-620"><a href="#cb18-620" aria-hidden="true" tabindex="-1"></a><span class="fu">### Normalidade</span></span>
+<span id="cb18-621"><a href="#cb18-621" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-622"><a href="#cb18-622" aria-hidden="true" tabindex="-1"></a>Para verificar a normalidade dos dados, é recomendável utilizar o teste de **Shapiro WIlk** quando o número de amostra é menor que 50. A estatı́stica T (ou T ) é basicamente o quadrado de um coeficiente de correlação, onde o coeficiente de correlação de Pearson é calculado entre a estatı́stica ordenada X i na amostra e o escore ai , que representa o que a estatı́stica ordenada deveria parecer se a população é Normal. Portanto, as hipóteses levantadas são:</span>
+<span id="cb18-623"><a href="#cb18-623" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-624"><a href="#cb18-624" aria-hidden="true" tabindex="-1"></a>$H_{0}$ : F(x) é função de distribuição normal;</span>
+<span id="cb18-625"><a href="#cb18-625" aria-hidden="true" tabindex="-1"></a>$H_{1}$ : F(x) não é função de distribuição normal;</span>
+<span id="cb18-626"><a href="#cb18-626" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-629"><a href="#cb18-629" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-630"><a href="#cb18-630" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb18-631"><a href="#cb18-631" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb18-632"><a href="#cb18-632" aria-hidden="true" tabindex="-1"></a>teste_shapiro <span class="ot">&lt;-</span> tabela_estudantes <span class="sc">%&gt;%</span> </span>
+<span id="cb18-633"><a href="#cb18-633" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(grupo) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-634"><a href="#cb18-634" aria-hidden="true" tabindex="-1"></a>  rstatix<span class="sc">::</span><span class="fu">shapiro_test</span>(nota)</span>
+<span id="cb18-635"><a href="#cb18-635" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-636"><a href="#cb18-636" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(teste_shapiro)</span>
+<span id="cb18-637"><a href="#cb18-637" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb18-638"><a href="#cb18-638" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-639"><a href="#cb18-639" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\alpha$ : Erro tipo I: Rejeitar $H_{0}$  quando é verdadeira.</span>
-<span id="cb18-640"><a href="#cb18-640" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-639"><a href="#cb18-639" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-640"><a href="#cb18-640" aria-hidden="true" tabindex="-1"></a>Veja que de acordo com o teste de Shapiro Wilk, ao nível de 95% de significância, **não rejeita-se a hipótese nula**, ou seja, a variável **notas** é descrita por uma distribuição normal.</span>
 <span id="cb18-641"><a href="#cb18-641" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-642"><a href="#cb18-642" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Escolha da Estatı́stica teste adequada:</span>
-<span id="cb18-643"><a href="#cb18-643" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-644"><a href="#cb18-644" aria-hidden="true" tabindex="-1"></a>Para responder a essa pergunta, usaremos o teste-t independente. Note que queremos comparar as notas (variáveis numéricas) de dois grupos independentes de alunos (A x B).</span>
-<span id="cb18-645"><a href="#cb18-645" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-646"><a href="#cb18-646" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Obtenção dos valores crı́ticos e Obtenção da Estatı́stica calculada:</span>
-<span id="cb18-647"><a href="#cb18-647" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-650"><a href="#cb18-650" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-651"><a href="#cb18-651" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb18-652"><a href="#cb18-652" aria-hidden="true" tabindex="-1"></a>teste_t <span class="ot">&lt;-</span> stats<span class="sc">::</span><span class="fu">t.test</span>(nota <span class="sc">~</span> grupo, tabela_estudantes, <span class="at">var.equal=</span><span class="cn">TRUE</span>)</span>
-<span id="cb18-653"><a href="#cb18-653" aria-hidden="true" tabindex="-1"></a>teste_t</span>
-<span id="cb18-654"><a href="#cb18-654" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-655"><a href="#cb18-655" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-656"><a href="#cb18-656" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Conclusão e tomada de decisão</span>
-<span id="cb18-657"><a href="#cb18-657" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-658"><a href="#cb18-658" aria-hidden="true" tabindex="-1"></a>O teste resulta em um valor de t (no caso, t = -0.3935) e um valor de p (p-value) que é calculado com base nesse valor de t e nos graus de liberdade (df, do inglês degrees of freedom). Nesse caso, o valor de p é: 0.7008, um valor superior ao nível de significância 0.05. Como p &gt; 0.05, não vamos rejeitar a $H_{0}$ e considerar que os dois grupos que apresentam notas, em média, não são estatisticamente diferentes. Veja que o IC 95% para a diferença entre médias inclui o zero: <span class="co">[</span><span class="ot">-10.27; 7.12</span><span class="co">]</span>.</span>
+<span id="cb18-642"><a href="#cb18-642" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-643"><a href="#cb18-643" aria-hidden="true" tabindex="-1"></a><span class="fu">### Variância</span></span>
+<span id="cb18-644"><a href="#cb18-644" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-645"><a href="#cb18-645" aria-hidden="true" tabindex="-1"></a>O segundo pressuposto pode ser avaliado pelo **teste de Levene**, em que as hipóteses são:</span>
+<span id="cb18-646"><a href="#cb18-646" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-647"><a href="#cb18-647" aria-hidden="true" tabindex="-1"></a>$H_{0}$ : Os grupos apresentam variâncias homogêneas;</span>
+<span id="cb18-648"><a href="#cb18-648" aria-hidden="true" tabindex="-1"></a>$H_{1}$ : Os grupos não apresentam variâncias homogêneas;</span>
+<span id="cb18-649"><a href="#cb18-649" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-652"><a href="#cb18-652" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-653"><a href="#cb18-653" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb18-654"><a href="#cb18-654" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-655"><a href="#cb18-655" aria-hidden="true" tabindex="-1"></a>teste_levene <span class="ot">&lt;-</span> car<span class="sc">::</span><span class="fu">leveneTest</span>(nota <span class="sc">~</span> grupo, <span class="at">data =</span> tabela_estudantes, <span class="at">center =</span> mean)</span>
+<span id="cb18-656"><a href="#cb18-656" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-657"><a href="#cb18-657" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(teste_levene)</span>
+<span id="cb18-658"><a href="#cb18-658" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb18-659"><a href="#cb18-659" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-660"><a href="#cb18-660" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-661"><a href="#cb18-661" aria-hidden="true" tabindex="-1"></a><span class="fu"># 4</span></span>
-<span id="cb18-662"><a href="#cb18-662" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-663"><a href="#cb18-663" aria-hidden="true" tabindex="-1"></a>Determine a hipótese nula (Ho) e hipótese alternativa (Ha) do seguinte cenário: Uma empresa afirma que o tempo médio dos seus produtos é menos de 4 dias. Você, conta com uma amostra dessas entregas para validar estadísticamente essa afirmação.</span>
-<span id="cb18-664"><a href="#cb18-664" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-665"><a href="#cb18-665" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb18-666"><a href="#cb18-666" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb18-667"><a href="#cb18-667" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb18-660"><a href="#cb18-660" aria-hidden="true" tabindex="-1"></a>Logo, ao nível de 95% de significância, **não rejeitamos a hipótese nula**, ou seja, os grupos apresentam variâncias homogêneas e assim podemos seguir com o teste t independente.</span>
+<span id="cb18-661"><a href="#cb18-661" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-662"><a href="#cb18-662" aria-hidden="true" tabindex="-1"></a>Seguindo os passos para elaboração de um teste de hipótese:</span>
+<span id="cb18-663"><a href="#cb18-663" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-664"><a href="#cb18-664" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Enunciar as Hipóteses:</span>
+<span id="cb18-665"><a href="#cb18-665" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-666"><a href="#cb18-666" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$H_{0}$ : Não há diferença média entre os grupos; </span>
+<span id="cb18-667"><a href="#cb18-667" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$H_{1}$ : Há diferença média entre os grupos;</span>
 <span id="cb18-668"><a href="#cb18-668" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-669"><a href="#cb18-669" aria-hidden="true" tabindex="-1"></a>Não é possível avaliar os pressupostos dessa amostra, mas considerando que esse tempo médio seja em dias (inteiros), o teste paramétrico sobre uma média populacional, a hipótese nula utilizada seria:</span>
+<span id="cb18-669"><a href="#cb18-669" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Fixar o nı́vel de significância $\alpha$) do teste:</span>
 <span id="cb18-670"><a href="#cb18-670" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-671"><a href="#cb18-671" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-672"><a href="#cb18-672" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$H_{0}$ : $\mu$ = 4;</span>
-<span id="cb18-673"><a href="#cb18-673" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$H_{1}$ : $\mu$ $\neq$ 4;</span>
+<span id="cb18-671"><a href="#cb18-671" aria-hidden="true" tabindex="-1"></a>**No nosso caso, o nível de significância será 95%.**</span>
+<span id="cb18-672"><a href="#cb18-672" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-673"><a href="#cb18-673" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\alpha$ : Erro tipo I: Rejeitar $H_{0}$  quando é verdadeira.</span>
 <span id="cb18-674"><a href="#cb18-674" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-675"><a href="#cb18-675" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-676"><a href="#cb18-676" aria-hidden="true" tabindex="-1"></a><span class="fu"># 5</span></span>
+<span id="cb18-676"><a href="#cb18-676" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Escolha da Estatı́stica teste adequada:</span>
 <span id="cb18-677"><a href="#cb18-677" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-678"><a href="#cb18-678" aria-hidden="true" tabindex="-1"></a>Calcule o coeficiente de correlação de pearson das variáveis "Número de aparições Zendaya em filmes por ano" e "Número de pessoas afogadas em piscinas no Brasil ao ano". Em base nos seus resultados, considera que a variável "Número de aparições Zendaya em filmes por ano" é um bom preditor do número de pessoas afogadas no Brasil? Justifique a sua resposta.</span>
+<span id="cb18-678"><a href="#cb18-678" aria-hidden="true" tabindex="-1"></a>Para responder a essa pergunta, usaremos o teste-t independente. Note que queremos comparar as notas (variáveis numéricas) de dois grupos independentes de alunos (A x B).</span>
 <span id="cb18-679"><a href="#cb18-679" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-680"><a href="#cb18-680" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb18-681"><a href="#cb18-681" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb18-682"><a href="#cb18-682" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb18-683"><a href="#cb18-683" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-686"><a href="#cb18-686" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-687"><a href="#cb18-687" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb18-688"><a href="#cb18-688" aria-hidden="true" tabindex="-1"></a>tabela_5 <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
-<span id="cb18-689"><a href="#cb18-689" aria-hidden="true" tabindex="-1"></a>                         <span class="sc">~</span>ano, <span class="sc">~</span>zendaya, <span class="sc">~</span>piscina, </span>
-<span id="cb18-690"><a href="#cb18-690" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"2015"</span>, <span class="st">"4"</span>, <span class="st">"107"</span>,</span>
-<span id="cb18-691"><a href="#cb18-691" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"2016"</span>, <span class="st">"7"</span>, <span class="st">"146"</span>,</span>
-<span id="cb18-692"><a href="#cb18-692" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"2017"</span>, <span class="st">"16"</span>, <span class="st">"178"</span>,</span>
-<span id="cb18-693"><a href="#cb18-693" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"2018"</span>, <span class="st">"21"</span>, <span class="st">"199"</span>,</span>
-<span id="cb18-694"><a href="#cb18-694" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"2019"</span>, <span class="st">"26"</span>, <span class="st">"221"</span>,</span>
-<span id="cb18-695"><a href="#cb18-695" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"2020"</span>, <span class="st">"2"</span>, <span class="st">"114"</span>,</span>
-<span id="cb18-696"><a href="#cb18-696" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"2021"</span>, <span class="st">"6"</span>, <span class="st">"133"</span>,</span>
-<span id="cb18-697"><a href="#cb18-697" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"2022"</span>, <span class="st">"12"</span>, <span class="st">"159"</span>,</span>
-<span id="cb18-698"><a href="#cb18-698" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"2023"</span>, <span class="st">"16"</span>, <span class="st">"183"</span>,</span>
-<span id="cb18-699"><a href="#cb18-699" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"2024"</span>, <span class="st">"32"</span>, <span class="st">"215"</span>,</span>
-<span id="cb18-700"><a href="#cb18-700" aria-hidden="true" tabindex="-1"></a>                         ) <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">zendaya =</span> base<span class="sc">::</span><span class="fu">as.numeric</span>(zendaya),</span>
-<span id="cb18-701"><a href="#cb18-701" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">piscina =</span> base<span class="sc">::</span><span class="fu">as.numeric</span>(piscina),</span>
-<span id="cb18-702"><a href="#cb18-702" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">ano =</span> <span class="fu">as.factor</span>(ano))</span>
-<span id="cb18-703"><a href="#cb18-703" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-680"><a href="#cb18-680" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Obtenção dos valores crı́ticos e Obtenção da Estatı́stica calculada:</span>
+<span id="cb18-681"><a href="#cb18-681" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-684"><a href="#cb18-684" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-685"><a href="#cb18-685" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb18-686"><a href="#cb18-686" aria-hidden="true" tabindex="-1"></a>teste_t <span class="ot">&lt;-</span> stats<span class="sc">::</span><span class="fu">t.test</span>(nota <span class="sc">~</span> grupo, tabela_estudantes, <span class="at">var.equal=</span><span class="cn">TRUE</span>)</span>
+<span id="cb18-687"><a href="#cb18-687" aria-hidden="true" tabindex="-1"></a>teste_t</span>
+<span id="cb18-688"><a href="#cb18-688" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-689"><a href="#cb18-689" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-690"><a href="#cb18-690" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Conclusão e tomada de decisão</span>
+<span id="cb18-691"><a href="#cb18-691" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-692"><a href="#cb18-692" aria-hidden="true" tabindex="-1"></a>O teste resulta em um valor de t (no caso, t = -0.3935) e um valor de p (p-value) que é calculado com base nesse valor de t e nos graus de liberdade (df, do inglês degrees of freedom). Nesse caso, o valor de p é: 0.7008, um valor superior ao nível de significância 0.05. Como p &gt; 0.05, não vamos rejeitar a $H_{0}$ e considerar que os dois grupos que apresentam notas, em média, não são estatisticamente diferentes. Veja que o IC 95% para a diferença entre médias inclui o zero: <span class="co">[</span><span class="ot">-10.27; 7.12</span><span class="co">]</span>.</span>
+<span id="cb18-693"><a href="#cb18-693" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-694"><a href="#cb18-694" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-695"><a href="#cb18-695" aria-hidden="true" tabindex="-1"></a><span class="fu"># 4</span></span>
+<span id="cb18-696"><a href="#cb18-696" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-697"><a href="#cb18-697" aria-hidden="true" tabindex="-1"></a>Determine a hipótese nula (Ho) e hipótese alternativa (Ha) do seguinte cenário: Uma empresa afirma que o tempo médio dos seus produtos é menos de 4 dias. Você, conta com uma amostra dessas entregas para validar estadísticamente essa afirmação.</span>
+<span id="cb18-698"><a href="#cb18-698" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-699"><a href="#cb18-699" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb18-700"><a href="#cb18-700" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb18-701"><a href="#cb18-701" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb18-702"><a href="#cb18-702" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-703"><a href="#cb18-703" aria-hidden="true" tabindex="-1"></a>Não é possível avaliar os pressupostos dessa amostra, mas considerando que esse tempo médio seja em dias (inteiros), o teste paramétrico sobre uma média populacional, a hipótese nula utilizada seria:</span>
 <span id="cb18-704"><a href="#cb18-704" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-705"><a href="#cb18-705" aria-hidden="true" tabindex="-1"></a>A correlação entre duas variáveis pode ser verificada utilizando o teste de Pearson, caso há a suposição de normalidade nos dados. No caso em que a suposição de normalidade não é considerada ou a caracterı́stica dos próprio dados pressupõe isto (escala no mı́nimo ordinal), então pode-se fazer uso de estatı́sticas alternativas como: Teste de correlação por postos de Spearman ou de Kendall.</span>
-<span id="cb18-706"><a href="#cb18-706" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-707"><a href="#cb18-707" aria-hidden="true" tabindex="-1"></a>Veja que de acordo com o gráfico abaixo que o "Número de aparições Zendaya em filmes por ano" e o "Número de pessoas afogadas em piscinas no Brasil ao ano" estão altamente correlacionados, mas faz senido essa correlçao?</span>
+<span id="cb18-705"><a href="#cb18-705" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-706"><a href="#cb18-706" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$H_{0}$ : $\mu$ = 4;</span>
+<span id="cb18-707"><a href="#cb18-707" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$H_{1}$ : $\mu$ $\neq$ 4;</span>
 <span id="cb18-708"><a href="#cb18-708" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-709"><a href="#cb18-709" aria-hidden="true" tabindex="-1"></a>Na estaística, o nome que damos a essa correlação é **correlação espúria**. Uma correlação espúria é uma relação aparente entre duas variáveis que não possuem uma conexão causal real entre si. Essa relação ilusória pode surgir devido a fatores externos ou coincidências estatísticas, levando a conclusões equivocadas se não forem adequadamente analisadas.</span>
-<span id="cb18-710"><a href="#cb18-710" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-713"><a href="#cb18-713" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-714"><a href="#cb18-714" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
-<span id="cb18-715"><a href="#cb18-715" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpairs</span>(tabela_5[,<span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>], <span class="at">lower =</span> <span class="fu">list</span>(<span class="at">continuous =</span> <span class="st">"smooth"</span>))</span>
-<span id="cb18-716"><a href="#cb18-716" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-709"><a href="#cb18-709" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-710"><a href="#cb18-710" aria-hidden="true" tabindex="-1"></a><span class="fu"># 5</span></span>
+<span id="cb18-711"><a href="#cb18-711" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-712"><a href="#cb18-712" aria-hidden="true" tabindex="-1"></a>Calcule o coeficiente de correlação de pearson das variáveis "Número de aparições Zendaya em filmes por ano" e "Número de pessoas afogadas em piscinas no Brasil ao ano". Em base nos seus resultados, considera que a variável "Número de aparições Zendaya em filmes por ano" é um bom preditor do número de pessoas afogadas no Brasil? Justifique a sua resposta.</span>
+<span id="cb18-713"><a href="#cb18-713" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-714"><a href="#cb18-714" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb18-715"><a href="#cb18-715" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb18-716"><a href="#cb18-716" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb18-717"><a href="#cb18-717" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-718"><a href="#cb18-718" aria-hidden="true" tabindex="-1"></a>A hipótese levantada é:</span>
-<span id="cb18-719"><a href="#cb18-719" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-720"><a href="#cb18-720" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$H_{0}$ : $\rho$ = 0;</span>
-<span id="cb18-721"><a href="#cb18-721" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$H_{1}$ : $\rho$ $\neq$ 0;</span>
-<span id="cb18-722"><a href="#cb18-722" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-723"><a href="#cb18-723" aria-hidden="true" tabindex="-1"></a>Vamos considerar o nível de significância a 95%. O teste de correção de Pearson é dados por,</span>
-<span id="cb18-724"><a href="#cb18-724" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-727"><a href="#cb18-727" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb18-728"><a href="#cb18-728" aria-hidden="true" tabindex="-1"></a>stats<span class="sc">::</span><span class="fu">cor.test</span>(tabela_5<span class="sc">$</span>zendaya, tabela_5<span class="sc">$</span>piscina,</span>
-<span id="cb18-729"><a href="#cb18-729" aria-hidden="true" tabindex="-1"></a>                <span class="at">method =</span> <span class="st">"pearson"</span>)</span>
-<span id="cb18-730"><a href="#cb18-730" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb18-731"><a href="#cb18-731" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-732"><a href="#cb18-732" aria-hidden="true" tabindex="-1"></a>Ou seja, ao nível de 95% de significância, há correlação entre as variáveis analisadas, como explicado acima, essa correlação é denominada por correlação espúria.</span>
-<span id="cb18-733"><a href="#cb18-733" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-734"><a href="#cb18-734" aria-hidden="true" tabindex="-1"></a><span class="fu"># 6</span></span>
-<span id="cb18-735"><a href="#cb18-735" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-736"><a href="#cb18-736" aria-hidden="true" tabindex="-1"></a>Explique a diferença entre amostragem estratificada e amostragem randômica ou aleatória. Discuta quais são as vantagens e desvantagens de cada uma e dê exemplos de casos onde uma abordagem é mais adequada que a outra.</span>
-<span id="cb18-737"><a href="#cb18-737" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-738"><a href="#cb18-738" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb18-739"><a href="#cb18-739" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb18-740"><a href="#cb18-740" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb18-741"><a href="#cb18-741" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-742"><a href="#cb18-742" aria-hidden="true" tabindex="-1"></a>A **amostragem aleatória simples** é um método de seleção de n unidades de N, de modo que cada uma das $C_{n}$ amostras distintas tenha uma chance igual de ser sorteada. Na prática, uma amostra aleatória simples é extraída unidade por unidade. As unidades da população são numeradas de 1 a N. Uma série de números aleatórios entre 1 e N é então sorteada, seja por meio de uma tabela de números aleatórios ou por meio de um programa de computador que produz tal tabela. Em qualquer sorteio o processo utilizado deve dar uma chance igual de seleção a qualquer número da população ainda não sorteado. As unidades que contêm esses n números constituem a amostra. É facilmente verificado que todas as amostras distintas de $C_{n}$ têm chances iguais de serem selecionadas por este método. Considere uma amostra distinta, ou seja, um conjunto de n unidades especificadas. No primeiro sorteio, a probabilidade de que alguma das n unidades especificadas seja selecionada é n/ N. No segundo sorteio, a probabilidade de que alguma das unidades especificadas restantes (n -1) seja sorteada é (n -1)/( N-1), e assim por diante.</span>
-<span id="cb18-743"><a href="#cb18-743" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-744"><a href="#cb18-744" aria-hidden="true" tabindex="-1"></a>Como um número sorteado é removido da população em todos os sorteios subsequentes, esse método também é chamado de amostragem aleatória sem reposição. A amostragem aleatória com reposição é inteiramente viável: em qualquer sorteio, todos os N membros da população têm a mesma chance de serem sorteados, independentemente da frequência com que já tenham sido sorteados. As fórmulas para as variâncias e variâncias estimadas das estimativas feitas a partir da amostra são muitas vezes mais simples quando a amostragem é com reposição do que quando é sem reposição. Por esta razão, a amostragem com reposição é por vezes utilizada nos planos amostrais mais complexos, embora à primeira vista pareça pouco sentido ter a mesma unidade duas ou mais vezes na amostra.</span>
-<span id="cb18-745"><a href="#cb18-745" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-746"><a href="#cb18-746" aria-hidden="true" tabindex="-1"></a>Na **amostragem estratificada**, a população de N unidades é primeiro dividida em subpopulações de unidades $N_{1}, N_{2}, \cdots, N_{L}$, respectivamente. Essas subpopulações não se sobrepõem e juntas compreendem toda a população, de modo que $N_{1} + N_{2} + \cdots + N_{L} = N$. As subpopulações são chamadas de estratos. Para obter todos os benefícios da estratificação, os valores do $N_{h}$ devem ser conhecidos. Determinados os estratos, de cada um é retirada uma amostra, sendo os sorteios feitos de forma independente nos diferentes estratos. Os tamanhos das amostras dentro dos estratos são indicados por $n_{1}, n_{2}, \cdots, n_{L}$ respectivamente. Se uma amostra aleatória simples for retirada em cada estrato, todo o procedimento é descrito como amostragem aleatória estratificada. A estratificação é uma técnica comum. Há muitas razões para isto, os principais são os seguintes.</span>
-<span id="cb18-747"><a href="#cb18-747" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-748"><a href="#cb18-748" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Se forem necessários dados de precisão conhecida para certas subdivisões do população, é aconselhável tratar cada subdivisão como uma “população” por direito próprio.</span>
-<span id="cb18-749"><a href="#cb18-749" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-750"><a href="#cb18-750" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Os problemas de amostragem podem diferir acentuadamente em diferentes partes da população. No caso das populações humanas, as pessoas que vivem em instituições (por exemplo, hotéis, hospitais, prisões) são frequentemente colocadas num estrato diferente das pessoas que vivem em casas normais porque uma abordagem diferente à amostragem é apropriada para as duas situações. Na amostragem de empresas, podemos possuir uma lista das grandes empresas, que são colocadas num estrato separado. Algum tipo de amostragem de área pode ter que ser usado para as empresas menores.</span>
+<span id="cb18-720"><a href="#cb18-720" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-721"><a href="#cb18-721" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb18-722"><a href="#cb18-722" aria-hidden="true" tabindex="-1"></a>tabela_5 <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
+<span id="cb18-723"><a href="#cb18-723" aria-hidden="true" tabindex="-1"></a>                         <span class="sc">~</span>ano, <span class="sc">~</span>zendaya, <span class="sc">~</span>piscina, </span>
+<span id="cb18-724"><a href="#cb18-724" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"2015"</span>, <span class="st">"4"</span>, <span class="st">"107"</span>,</span>
+<span id="cb18-725"><a href="#cb18-725" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"2016"</span>, <span class="st">"7"</span>, <span class="st">"146"</span>,</span>
+<span id="cb18-726"><a href="#cb18-726" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"2017"</span>, <span class="st">"16"</span>, <span class="st">"178"</span>,</span>
+<span id="cb18-727"><a href="#cb18-727" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"2018"</span>, <span class="st">"21"</span>, <span class="st">"199"</span>,</span>
+<span id="cb18-728"><a href="#cb18-728" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"2019"</span>, <span class="st">"26"</span>, <span class="st">"221"</span>,</span>
+<span id="cb18-729"><a href="#cb18-729" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"2020"</span>, <span class="st">"2"</span>, <span class="st">"114"</span>,</span>
+<span id="cb18-730"><a href="#cb18-730" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"2021"</span>, <span class="st">"6"</span>, <span class="st">"133"</span>,</span>
+<span id="cb18-731"><a href="#cb18-731" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"2022"</span>, <span class="st">"12"</span>, <span class="st">"159"</span>,</span>
+<span id="cb18-732"><a href="#cb18-732" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"2023"</span>, <span class="st">"16"</span>, <span class="st">"183"</span>,</span>
+<span id="cb18-733"><a href="#cb18-733" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"2024"</span>, <span class="st">"32"</span>, <span class="st">"215"</span>,</span>
+<span id="cb18-734"><a href="#cb18-734" aria-hidden="true" tabindex="-1"></a>                         ) <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">zendaya =</span> base<span class="sc">::</span><span class="fu">as.numeric</span>(zendaya),</span>
+<span id="cb18-735"><a href="#cb18-735" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">piscina =</span> base<span class="sc">::</span><span class="fu">as.numeric</span>(piscina),</span>
+<span id="cb18-736"><a href="#cb18-736" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">ano =</span> <span class="fu">as.factor</span>(ano))</span>
+<span id="cb18-737"><a href="#cb18-737" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb18-738"><a href="#cb18-738" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-739"><a href="#cb18-739" aria-hidden="true" tabindex="-1"></a>A correlação entre duas variáveis pode ser verificada utilizando o teste de Pearson, caso há a suposição de normalidade nos dados. No caso em que a suposição de normalidade não é considerada ou a caracterı́stica dos próprio dados pressupõe isto (escala no mı́nimo ordinal), então pode-se fazer uso de estatı́sticas alternativas como: Teste de correlação por postos de Spearman ou de Kendall.</span>
+<span id="cb18-740"><a href="#cb18-740" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-741"><a href="#cb18-741" aria-hidden="true" tabindex="-1"></a>Veja que de acordo com o gráfico abaixo que o "Número de aparições Zendaya em filmes por ano" e o "Número de pessoas afogadas em piscinas no Brasil ao ano" estão altamente correlacionados, mas faz senido essa correlçao?</span>
+<span id="cb18-742"><a href="#cb18-742" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-743"><a href="#cb18-743" aria-hidden="true" tabindex="-1"></a>Na estatística, o nome que damos a essa correlação é **correlação espúria**. Uma correlação espúria é uma relação aparente entre duas variáveis que não possuem uma conexão causal real entre si. Essa relação ilusória pode surgir devido a fatores externos ou coincidências estatísticas, levando a conclusões equivocadas se não forem adequadamente analisadas.</span>
+<span id="cb18-744"><a href="#cb18-744" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-747"><a href="#cb18-747" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-748"><a href="#cb18-748" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
+<span id="cb18-749"><a href="#cb18-749" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpairs</span>(tabela_5[,<span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>], <span class="at">lower =</span> <span class="fu">list</span>(<span class="at">continuous =</span> <span class="st">"smooth"</span>))</span>
+<span id="cb18-750"><a href="#cb18-750" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb18-751"><a href="#cb18-751" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-752"><a href="#cb18-752" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>A estratificação pode produzir um ganho de precisão nas estimativas das características de toda a população. Pode ser possível dividir uma população heterogênea em subpopulações, cada uma das quais internamente homogênea. Isto é sugerido pelo nome estratos, com a implicação de uma divisão em camadas. Se cada estrato for homogêneo, no sentido de que as medidas variam pouco de uma unidade para outra, uma estimativa precisa da média de qualquer estrato pode ser obtida a partir de uma pequena amostra desse estrato. Estas estimativas podem então ser combinadas numa estimativa precisa para toda a população.</span>
+<span id="cb18-752"><a href="#cb18-752" aria-hidden="true" tabindex="-1"></a>A hipótese levantada é:</span>
 <span id="cb18-753"><a href="#cb18-753" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-754"><a href="#cb18-754" aria-hidden="true" tabindex="-1"></a><span class="fu"># 7</span></span>
-<span id="cb18-755"><a href="#cb18-755" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-756"><a href="#cb18-756" aria-hidden="true" tabindex="-1"></a>Se você treina um modelo de Machine Learning (ou estadístico), como você identificaria se seu modelo tem uma alta variância (overfitting) ou um alto viés (bias, ou underfitting). Caso seu modelo apresenta alta variância, como você resolveria esse problema?</span>
-<span id="cb18-757"><a href="#cb18-757" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-758"><a href="#cb18-758" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb18-759"><a href="#cb18-759" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb18-760"><a href="#cb18-760" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb18-761"><a href="#cb18-761" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-762"><a href="#cb18-762" aria-hidden="true" tabindex="-1"></a><span class="fu"># 8</span></span>
-<span id="cb18-763"><a href="#cb18-763" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-764"><a href="#cb18-764" aria-hidden="true" tabindex="-1"></a>Considere o seguinte modelo de regressão:</span>
+<span id="cb18-754"><a href="#cb18-754" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$H_{0}$ : $\rho$ = 0;</span>
+<span id="cb18-755"><a href="#cb18-755" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$H_{1}$ : $\rho$ $\neq$ 0;</span>
+<span id="cb18-756"><a href="#cb18-756" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-757"><a href="#cb18-757" aria-hidden="true" tabindex="-1"></a>Vamos considerar o nível de significância a 95%. O teste de correção de Pearson é dados por,</span>
+<span id="cb18-758"><a href="#cb18-758" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-761"><a href="#cb18-761" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb18-762"><a href="#cb18-762" aria-hidden="true" tabindex="-1"></a>stats<span class="sc">::</span><span class="fu">cor.test</span>(tabela_5<span class="sc">$</span>zendaya, tabela_5<span class="sc">$</span>piscina,</span>
+<span id="cb18-763"><a href="#cb18-763" aria-hidden="true" tabindex="-1"></a>                <span class="at">method =</span> <span class="st">"pearson"</span>)</span>
+<span id="cb18-764"><a href="#cb18-764" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb18-765"><a href="#cb18-765" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-766"><a href="#cb18-766" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Salário = 1200 + 500.Idade + 600.Têm Faculdade + 50.Têm Linkedin</span>
+<span id="cb18-766"><a href="#cb18-766" aria-hidden="true" tabindex="-1"></a>Ou seja, ao nível de 95% de significância, há correlação entre as variáveis analisadas, como explicado acima, essa correlação é denominada por correlação espúria.</span>
 <span id="cb18-767"><a href="#cb18-767" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-768"><a href="#cb18-768" aria-hidden="true" tabindex="-1"></a>::: panel-tabset</span>
+<span id="cb18-768"><a href="#cb18-768" aria-hidden="true" tabindex="-1"></a><span class="fu"># 6</span></span>
 <span id="cb18-769"><a href="#cb18-769" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-770"><a href="#cb18-770" aria-hidden="true" tabindex="-1"></a><span class="fu"># A</span></span>
-<span id="cb18-771"><a href="#cb18-771" aria-hidden="true" tabindex="-1"></a>Interprete o efeito da Idade na variável salário. </span>
-<span id="cb18-772"><a href="#cb18-772" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-773"><a href="#cb18-773" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb18-774"><a href="#cb18-774" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb18-775"><a href="#cb18-775" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb18-776"><a href="#cb18-776" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-777"><a href="#cb18-777" aria-hidden="true" tabindex="-1"></a><span class="fu"># B</span></span>
-<span id="cb18-778"><a href="#cb18-778" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-779"><a href="#cb18-779" aria-hidden="true" tabindex="-1"></a>Que acontece com as pessoas que não tem faculdade? </span>
-<span id="cb18-780"><a href="#cb18-780" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-781"><a href="#cb18-781" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb18-782"><a href="#cb18-782" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb18-783"><a href="#cb18-783" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb18-784"><a href="#cb18-784" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-785"><a href="#cb18-785" aria-hidden="true" tabindex="-1"></a><span class="fu"># C</span></span>
-<span id="cb18-786"><a href="#cb18-786" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-787"><a href="#cb18-787" aria-hidden="true" tabindex="-1"></a>Considere agora que o desvio padrão do coeficiente da variável "Têm Linkedin" é de 47, por tanto o seu p-valor é 0.92 (como visto na equação abaixo). O que isso implica para o modelo em questão? Essa variável é relevante?</span>
-<span id="cb18-788"><a href="#cb18-788" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-789"><a href="#cb18-789" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb18-790"><a href="#cb18-790" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb18-791"><a href="#cb18-791" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb18-792"><a href="#cb18-792" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-793"><a href="#cb18-793" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb18-794"><a href="#cb18-794" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-770"><a href="#cb18-770" aria-hidden="true" tabindex="-1"></a>Explique a diferença entre amostragem estratificada e amostragem randômica ou aleatória. Discuta quais são as vantagens e desvantagens de cada uma e dê exemplos de casos onde uma abordagem é mais adequada que a outra.</span>
+<span id="cb18-771"><a href="#cb18-771" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-772"><a href="#cb18-772" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb18-773"><a href="#cb18-773" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb18-774"><a href="#cb18-774" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb18-775"><a href="#cb18-775" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-776"><a href="#cb18-776" aria-hidden="true" tabindex="-1"></a>A **amostragem aleatória simples** é um método de seleção de n unidades de N, de modo que cada uma das $C_{n}$ amostras distintas tenha uma chance igual de ser sorteada. Na prática, uma amostra aleatória simples é extraída unidade por unidade. As unidades da população são numeradas de 1 a N. Uma série de números aleatórios entre 1 e N é então sorteada, seja por meio de uma tabela de números aleatórios ou por meio de um programa de computador que produz tal tabela. Em qualquer sorteio o processo utilizado deve dar uma chance igual de seleção a qualquer número da população ainda não sorteado. As unidades que contêm esses n números constituem a amostra. É facilmente verificado que todas as amostras distintas de $C_{n}$ têm chances iguais de serem selecionadas por este método. Considere uma amostra distinta, ou seja, um conjunto de n unidades especificadas. No primeiro sorteio, a probabilidade de que alguma das n unidades especificadas seja selecionada é n/ N. No segundo sorteio, a probabilidade de que alguma das unidades especificadas restantes (n -1) seja sorteada é (n -1)/( N-1), e assim por diante.</span>
+<span id="cb18-777"><a href="#cb18-777" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-778"><a href="#cb18-778" aria-hidden="true" tabindex="-1"></a>Como um número sorteado é removido da população em todos os sorteios subsequentes, esse método também é chamado de amostragem aleatória sem reposição. A amostragem aleatória com reposição é inteiramente viável: em qualquer sorteio, todos os N membros da população têm a mesma chance de serem sorteados, independentemente da frequência com que já tenham sido sorteados. As fórmulas para as variâncias e variâncias estimadas das estimativas feitas a partir da amostra são muitas vezes mais simples quando a amostragem é com reposição do que quando é sem reposição. Por esta razão, a amostragem com reposição é por vezes utilizada nos planos amostrais mais complexos, embora à primeira vista pareça pouco sentido ter a mesma unidade duas ou mais vezes na amostra.</span>
+<span id="cb18-779"><a href="#cb18-779" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-780"><a href="#cb18-780" aria-hidden="true" tabindex="-1"></a>Na **amostragem estratificada**, a população de N unidades é primeiro dividida em subpopulações de unidades $N_{1}, N_{2}, \cdots, N_{L}$, respectivamente. Essas subpopulações não se sobrepõem e juntas compreendem toda a população, de modo que $N_{1} + N_{2} + \cdots + N_{L} = N$. As subpopulações são chamadas de estratos. Para obter todos os benefícios da estratificação, os valores do $N_{h}$ devem ser conhecidos. Determinados os estratos, de cada um é retirada uma amostra, sendo os sorteios feitos de forma independente nos diferentes estratos. Os tamanhos das amostras dentro dos estratos são indicados por $n_{1}, n_{2}, \cdots, n_{L}$ respectivamente. Se uma amostra aleatória simples for retirada em cada estrato, todo o procedimento é descrito como amostragem aleatória estratificada. A estratificação é uma técnica comum. Há muitas razões para isto, os principais são os seguintes.</span>
+<span id="cb18-781"><a href="#cb18-781" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-782"><a href="#cb18-782" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Se forem necessários dados de precisão conhecida para certas subdivisões do população, é aconselhável tratar cada subdivisão como uma “população” por direito próprio.</span>
+<span id="cb18-783"><a href="#cb18-783" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-784"><a href="#cb18-784" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Os problemas de amostragem podem diferir acentuadamente em diferentes partes da população. No caso das populações humanas, as pessoas que vivem em instituições (por exemplo, hotéis, hospitais, prisões) são frequentemente colocadas num estrato diferente das pessoas que vivem em casas normais porque uma abordagem diferente à amostragem é apropriada para as duas situações. Na amostragem de empresas, podemos possuir uma lista das grandes empresas, que são colocadas num estrato separado. Algum tipo de amostragem de área pode ter que ser usado para as empresas menores.</span>
+<span id="cb18-785"><a href="#cb18-785" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-786"><a href="#cb18-786" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>A estratificação pode produzir um ganho de precisão nas estimativas das características de toda a população. Pode ser possível dividir uma população heterogênea em subpopulações, cada uma das quais internamente homogênea. Isto é sugerido pelo nome estratos, com a implicação de uma divisão em camadas. Se cada estrato for homogêneo, no sentido de que as medidas variam pouco de uma unidade para outra, uma estimativa precisa da média de qualquer estrato pode ser obtida a partir de uma pequena amostra desse estrato. Estas estimativas podem então ser combinadas numa estimativa precisa para toda a população.</span>
+<span id="cb18-787"><a href="#cb18-787" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-788"><a href="#cb18-788" aria-hidden="true" tabindex="-1"></a><span class="fu"># 7</span></span>
+<span id="cb18-789"><a href="#cb18-789" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-790"><a href="#cb18-790" aria-hidden="true" tabindex="-1"></a>Se você treina um modelo de Machine Learning (ou estadístico), como você identificaria se seu modelo tem uma alta variância (overfitting) ou um alto viés (bias, ou underfitting). Caso seu modelo apresenta alta variância, como você resolveria esse problema?</span>
+<span id="cb18-791"><a href="#cb18-791" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-792"><a href="#cb18-792" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb18-793"><a href="#cb18-793" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb18-794"><a href="#cb18-794" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb18-795"><a href="#cb18-795" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-796"><a href="#cb18-796" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-796"><a href="#cb18-796" aria-hidden="true" tabindex="-1"></a>Essa é uma questão de viés e variância em modelagem. Essa relação é fácil de ser observada na imagem abaixo.</span>
 <span id="cb18-797"><a href="#cb18-797" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-798"><a href="#cb18-798" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-798"><a href="#cb18-798" aria-hidden="true" tabindex="-1"></a><span class="al">![Andrew Ng](img/vies.jpeg)</span>{fig-align="center" width="300"}</span>
 <span id="cb18-799"><a href="#cb18-799" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-800"><a href="#cb18-800" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-801"><a href="#cb18-801" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb18-801"><a href="#cb18-801" aria-hidden="true" tabindex="-1"></a>A abordagem Bayesiana evita o overfitting, por mais que esse não seja necessariamente seu objetivo primordial, mas estamos condicionados a utilizar das formas ditas **regularizadoras**. Elas também chamadas de **penalizadoras** e são conhecidas por regressões LASSO e Ridge. É claro que a análise dos valores de VP, FN, VN e FP usando-se uma amostra de teste ou validação é crucial para evitar o overfitting, mas ainda assim, é importante estar atento a amostragem dos dados para compor a amostra de teste ou de validação.</span>
+<span id="cb18-802"><a href="#cb18-802" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-803"><a href="#cb18-803" aria-hidden="true" tabindex="-1"></a>Acredito que deve haver vários outros métodos mais atualizados que esses mencionados acima, mas os básico as vezes já resolve o problema e também identifica a causa raiz, facilitando assim a procura de outros métodos ao invés de só ir aplicando vários métodos e escolher o que mais proporciona ganhos.</span>
+<span id="cb18-804"><a href="#cb18-804" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-805"><a href="#cb18-805" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-806"><a href="#cb18-806" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-807"><a href="#cb18-807" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-808"><a href="#cb18-808" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-809"><a href="#cb18-809" aria-hidden="true" tabindex="-1"></a><span class="fu"># 8</span></span>
+<span id="cb18-810"><a href="#cb18-810" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-811"><a href="#cb18-811" aria-hidden="true" tabindex="-1"></a>Considere o seguinte modelo de regressão:</span>
+<span id="cb18-812"><a href="#cb18-812" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-813"><a href="#cb18-813" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Salário = 1200 + 500.Idade + 600.Têm Faculdade + 50.Têm Linkedin</span>
+<span id="cb18-814"><a href="#cb18-814" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-815"><a href="#cb18-815" aria-hidden="true" tabindex="-1"></a>::: panel-tabset</span>
+<span id="cb18-816"><a href="#cb18-816" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-817"><a href="#cb18-817" aria-hidden="true" tabindex="-1"></a><span class="fu"># A</span></span>
+<span id="cb18-818"><a href="#cb18-818" aria-hidden="true" tabindex="-1"></a>Interprete o efeito da Idade na variável salário. </span>
+<span id="cb18-819"><a href="#cb18-819" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-820"><a href="#cb18-820" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb18-821"><a href="#cb18-821" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb18-822"><a href="#cb18-822" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb18-823"><a href="#cb18-823" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-824"><a href="#cb18-824" aria-hidden="true" tabindex="-1"></a>Neste modelo, temos que a variável idade foi significativa (p-value = 0.023) com sinal positivo, ou seja, quanto maior a idade (aqui é importante ressaltar que se ela estiver categorizada, a interpretação é alterada), maior será a chance do Salário estar acima da média. Para este resultado é pertinente dizer que as empresas associam a idade a um bom salário, ou, assumem que quando o individuo é mais velho, este consequentemente deve ganhar mais em relação aos mais novos.</span>
+<span id="cb18-825"><a href="#cb18-825" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-826"><a href="#cb18-826" aria-hidden="true" tabindex="-1"></a><span class="fu"># B</span></span>
+<span id="cb18-827"><a href="#cb18-827" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-828"><a href="#cb18-828" aria-hidden="true" tabindex="-1"></a>Que acontece com as pessoas que não tem faculdade? </span>
+<span id="cb18-829"><a href="#cb18-829" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-830"><a href="#cb18-830" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb18-831"><a href="#cb18-831" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb18-832"><a href="#cb18-832" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb18-833"><a href="#cb18-833" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-834"><a href="#cb18-834" aria-hidden="true" tabindex="-1"></a>A variável "Têm faculdade" foi significativa (p-value = 0.032) com sinal positivo, o que implica que esta variável auxilia no aumento do salário, em que quanto maior o seu nível de instrução, maior será a chance (600 vezes) do salário estar acima da média daqueles que não têm faculdade e isso pode ser recorrente ao fato desse indivíduo ter mais conhecimento sobre a área. Logo, de acordo com o modelo, aqueles que não têm faculdade estão propícios a receberem um salário abaixo da média em relação a aqueles que possuem faculdade.</span>
+<span id="cb18-835"><a href="#cb18-835" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-836"><a href="#cb18-836" aria-hidden="true" tabindex="-1"></a><span class="fu"># C</span></span>
+<span id="cb18-837"><a href="#cb18-837" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-838"><a href="#cb18-838" aria-hidden="true" tabindex="-1"></a>Considere agora que o desvio padrão do coeficiente da variável "Têm Linkedin" é de 47, por tanto o seu p-valor é 0.92 (como visto na equação abaixo). O que isso implica para o modelo em questão? Essa variável é relevante?</span>
+<span id="cb18-839"><a href="#cb18-839" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-840"><a href="#cb18-840" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb18-841"><a href="#cb18-841" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb18-842"><a href="#cb18-842" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb18-843"><a href="#cb18-843" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-844"><a href="#cb18-844" aria-hidden="true" tabindex="-1"></a>Essa variável não é relevante para predizer salários, mas veja que, apesar de não ser significativa, ela é positiva. Podemos iniciar com a problemática de que ter uma conta no linkedin não implica que seu salário será impactado por isso, mas podemos supor que o linkedin te ajuda positivamente em alguns aspectos, menos no salário. Aqui temos uma chance de analisar um pouco mais essa variável.</span>
+<span id="cb18-845"><a href="#cb18-845" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-846"><a href="#cb18-846" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb18-847"><a href="#cb18-847" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-848"><a href="#cb18-848" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-849"><a href="#cb18-849" aria-hidden="true" tabindex="-1"></a>:::</span>
 </code><button title="Copiar para a área de transferência" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

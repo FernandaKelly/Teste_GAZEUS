@@ -236,7 +236,7 @@ WHERE (`col01` <= 1)
 
 # D
 
-Na mesma linha da pergunta anterior, responda qual é a faixa de idade de usuários que mais cometem fraude (em percentagem). Separe as faixas etárias em: (\<18 anos, 18-30 anos, 30 - 45 anos, 45 - 60 anos, 60 \> anos) e considere que para responder essa pergunta, você deverá considerar o fato que um usuário pode ter executado várias transações, das quais poucas (ou muitas) podem ter sido fraude entre as demais.
+Na mesma linha da pergunta anterior, responda qual é a faixa de idade de usuários que mais cometem fraude (em percentagem). Separe as faixas etárias em: (< 18 anos, 18-30 anos, 30 - 45 anos, 45 - 60 anos, 60 > anos) e considere que para responder essa pergunta, você deverá considerar o fato que um usuário pode ter executado várias transações, das quais poucas (ou muitas) podem ter sido fraude entre as demais.
 
 ```{r}
 #| echo: false
@@ -246,9 +246,10 @@ tabela_D <- tabela_merge %>%
                                                       age >= 30 & age < 45 ~ "30-44 anos",
                                                       age >= 45 & age < 60 ~ "45-59 anos",
                                                       age >= 60  ~ "maior igual a 60 anos"),
-                           taxa_idade = dplyr::if_else(transaction_state == "FRAUD", transaction_amount/sum(transaction_amount), 0))  
+                           taxa_idade = dplyr::if_else(transaction_state == "FRAUD", transaction_amount/sum(transaction_amount), 0))  %>% 
+             dplyr::slice_max(taxa_idade)
           
-# tabela_C %>%
+# tabela_D %>%
 #   show_query()
 ```
 
@@ -257,6 +258,39 @@ tabela_D <- tabela_merge %>%
 :::
 
 ``` sql
+SELECT
+  `user_id`,
+  `transaction_date`,
+  `transaction_id`,
+  `transaction_state`,
+  `transaction_amount`,
+  `data_curta`,
+  `age`,
+  `pais`,
+  `age_cat`,
+  `taxa_idade`
+FROM (
+  SELECT `q01`.*, RANK() OVER (ORDER BY `taxa_idade` DESC) AS `col01`
+  FROM (
+    SELECT
+      `q01`.*,
+      CASE
+WHEN (`age` < 18.0) THEN 'menor que 18 anos'
+WHEN (`age` >= 18.0 AND `age` < 30.0) THEN '18-29 anos'
+WHEN (`age` >= 30.0 AND `age` < 45.0) THEN '30-44 anos'
+WHEN (`age` >= 45.0 AND `age` < 60.0) THEN '45-59 anos'
+WHEN (`age` >= 60.0) THEN 'maior igual a 60 anos'
+END AS `age_cat`,
+      CASE WHEN (`transaction_state` = 'FRAUD') THEN (`transaction_amount` / SUM(`transaction_amount`) OVER ()) WHEN NOT (`transaction_state` = 'FRAUD') THEN 0.0 END AS `taxa_idade`
+    FROM (
+      SELECT `tabela_transactions`.*, `age`, `pais`
+      FROM `tabela_transactions`
+      LEFT JOIN `tabela_user`
+        ON (`tabela_transactions`.`user_id` = `tabela_user`.`id`)
+    ) AS `q01`
+  ) AS `q01`
+) AS `q01`
+WHERE (`col01` <= 1)
 ```
 
 # E
@@ -654,7 +688,7 @@ A correlação entre duas variáveis pode ser verificada utilizando o teste de P
 
 Veja que de acordo com o gráfico abaixo que o "Número de aparições Zendaya em filmes por ano" e o "Número de pessoas afogadas em piscinas no Brasil ao ano" estão altamente correlacionados, mas faz senido essa correlçao?
 
-Na estaística, o nome que damos a essa correlação é **correlação espúria**. Uma correlação espúria é uma relação aparente entre duas variáveis que não possuem uma conexão causal real entre si. Essa relação ilusória pode surgir devido a fatores externos ou coincidências estatísticas, levando a conclusões equivocadas se não forem adequadamente analisadas.
+Na estatística, o nome que damos a essa correlação é **correlação espúria**. Uma correlação espúria é uma relação aparente entre duas variáveis que não possuem uma conexão causal real entre si. Essa relação ilusória pode surgir devido a fatores externos ou coincidências estatísticas, levando a conclusões equivocadas se não forem adequadamente analisadas.
 
 ```{r}
 library(GGally)
@@ -703,7 +737,19 @@ Se você treina um modelo de Machine Learning (ou estadístico), como você iden
 # Resposta
 :::
 
-Essa é uma questão de viés e variância em modelagem. 
+Essa é uma questão de viés e variância em modelagem. Essa relação é fácil de ser observada na imagem abaixo.
+
+![Andrew Ng](img/vies.jpeg){fig-align="center" width="300"}
+
+
+A abordagem Bayesiana evita o overfitting, por mais que esse não seja necessariamente seu objetivo primordial, mas estamos condicionados a utilizar das formas ditas **regularizadoras**. Elas também chamadas de **penalizadoras** e são conhecidas por regressões LASSO e Ridge. É claro que a análise dos valores de VP, FN, VN e FP usando-se uma amostra de teste ou validação é crucial para evitar o overfitting, mas ainda assim, é importante estar atento a amostragem dos dados para compor a amostra de teste ou de validação.
+
+Acredito que deve haver vários outros métodos mais atualizados que esses mencionados acima, mas os básico as vezes já resolve o problema e também identifica a causa raiz, facilitando assim a procura de outros métodos ao invés de só ir aplicando vários métodos e escolher o que mais proporciona ganhos.
+
+
+
+
+
 # 8
 
 Considere o seguinte modelo de regressão:
