@@ -1,7 +1,7 @@
 ---
 title: "Teste Técnico" # Título do relatório
 subtitle: "**Posição de Data Analyst Jr - Buraco Jogatina**"
-author: "Fernanda Kelly R. Silva" # Autor(a)
+author: "Fernanda Kelly R. Silva | www.fernandakellyrs.com" # Autor(a)
 lang: pt 
 date: "`r format(Sys.Date())`" 
 date-format: short 
