@@ -339,6 +339,7 @@ OBS: NÃO PRECISA ESCREVER A LISTA DAS PALAVRAS, A TRIBO SÓ PRECISA DO NÚMERO!
 
 ::: callout-tip
 # Resposta
+
 Esse é um claro problema de análise combinatória com reposição/reposição.
 :::
 
@@ -356,6 +357,7 @@ Para ajudar a tribo ainda mais! Você deverá modificar seu algoritmo (ou talvez
 
 ::: callout-tip
 # Resposta
+
 Esse também é um claro problema de análise combinatória, mas, nesse caso, é um problema em que **não há reposição**.
 :::
 
@@ -367,7 +369,6 @@ comb_B = combinations([1, 2, 3], 2)
 
 print(len(list(comb_B)))
 ```
-
 :::
 
 # Tarefa 03: Estatística e Machine Learning
@@ -381,11 +382,11 @@ Dataset = {175, 166, 183, 193, 155, 177, 173, 171, 162, 185, 176, 161, 188}
 
 Calcule:
 
-- a média
-- a mediana
-- 20 percentil
-- 80 percentil
-- desvio padrão
+-   a média
+-   a mediana
+-   20 percentil
+-   80 percentil
+-   desvio padrão
 
 Considerando os dados, responda a que distribuição (paramétrica) os dados se aproximam.
 
@@ -430,8 +431,7 @@ summarise_dataset <- dataset %>%
 
 knitr::kable(summarise_dataset)
 ```
-
-De acordo com o gráfico abaixo, a distribuição da variável **altura** pode ser descrita por uma normal, mas para fins de decisão, deve-se munir de testes paramétricos ou não paramétricos.
+De acordo com o gráfico abaixo, a distribuição da variável **altura** pode ser descrita por uma normal, mas para fins de decisão, deve-se munir de testes paramétricos ou não paramétricos. Veja que sua variabilidade indica que os valores observados tendem a estar distantes da média – ou seja, a distribuição é mais “espalhada”. 
 
 ```{r}
 #| echo: false
@@ -458,6 +458,10 @@ Com suas próprias palavras, explique em que consiste o teorema central do limit
 ::: callout-tip
 # Resposta
 :::
+
+O Teorema do limite central (TLC) basicamente demonstra a **tendência** de aproximação das variáveis aleatórias com a distribuição normal, em que a aproximação da distribuição Normal melhora na medida que se fizesse a média do lançamento de mais dados. Esse comportamento pode ser visualizado na imagem abaixo.
+
+![Teorema do Limite Central](img/img213.png){fig-align="center" width="300"}
 
 # 3
 
