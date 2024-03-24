@@ -742,13 +742,9 @@ Essa é uma questão de viés e variância em modelagem. Essa relação é fáci
 ![Andrew Ng](img/vies.jpeg){fig-align="center" width="300"}
 
 
-A abordagem Bayesiana evita o overfitting, por mais que esse não seja necessariamente seu objetivo primordial, mas estamos condicionados a utilizar das formas ditas **regularizadoras**. Elas também chamadas de **penalizadoras** e são conhecidas por regressões LASSO e Ridge. É claro que a análise dos valores de VP, FN, VN e FP usando-se uma amostra de teste ou validação é crucial para evitar o overfitting, mas ainda assim, é importante estar atento a amostragem dos dados para compor a amostra de teste ou de validação.
+A abordagem Bayesiana evita o overfitting, por mais que esse não seja necessariamente seu objetivo primordial, mas estamos condicionados a utilizar das formas ditas **regularizadoras**. Elas também chamadas de **penalizadoras** e são conhecidas por regressões LASSO, Ridge e Elastic-Net. É claro que a análise dos valores de VP, FN, VN e FP usando-se uma amostra de teste ou validação é crucial para evitar o overfitting, mas ainda assim, é importante estar atento a amostragem dos dados para compor a amostra de teste ou de validação.
 
 Acredito que deve haver vários outros métodos mais atualizados que esses mencionados acima, mas os básico as vezes já resolve o problema e também identifica a causa raiz, facilitando assim a procura de outros métodos ao invés de só ir aplicando vários métodos e escolher o que mais proporciona ganhos.
-
-
-
-
 
 # 8
 
