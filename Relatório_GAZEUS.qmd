@@ -319,6 +319,11 @@ WINDOW `win1` AS (PARTITION BY `pais`, `transaction_state`)
 
 # Tarefa 02: Python
 
+```{r}
+#| echo: false
+library(reticulate)
+```
+
 Numa tribo ancestral e muito desenvolvida, orientada principalmente por uma cultura lógica e matemática, os nativos estão interessados no estudo das linguagens de outras tribos e civilizações.
 
 Durante seus estudos, estes perceberam que as linguagens dessas outras civilizações são compostas por um conjunto de símbolos (letras do alfabeto) que são agrupados e combinados para representar conceitos (palavras). Assim mesmo, estes também sabem que cada civilização possui um alfabeto específico.
@@ -374,11 +379,77 @@ Dado um dataset das estaturas (em centímetros) de 13 indivíduos:
 
 Dataset = {175, 166, 183, 193, 155, 177, 173, 171, 162, 185, 176, 161, 188}
 
-Calcule a média, a mediana, 20 percentil, 80 percentil e desvio padrão. Considerando os dados, responda a que distribuição (paramétrica) os dados se aproximam.
+Calcule:
+
+- a média
+- a mediana
+- 20 percentil
+- 80 percentil
+- desvio padrão
+
+Considerando os dados, responda a que distribuição (paramétrica) os dados se aproximam.
 
 ::: callout-tip
 # Resposta
 :::
+
+```{r}
+#| echo: false
+dataset <- tibble::tribble(
+                         ~altura, 
+                         175,
+                         166,
+                         183,
+                         193,
+                         155,
+                         177,
+                         173,
+                         171,
+                         162,
+                         185, 
+                         176, 
+                         161, 
+                         188,
+                         )
+```
+
+```{r}
+#| echo: false
+library(ggplot2)
+library(dplyr)
+library(tidyverse)
+library(knitr)
+
+summarise_dataset <- dataset %>% 
+  dplyr::summarise(vinte_percentil = quantile(altura, probs = 0.20, na.rm = TRUE),
+                   mean = mean(altura, na.rm = TRUE),
+                   median = median(altura, na.rm = TRUE),
+                   oitenta_percentil = quantile(altura, probs = 0.80, na.rm = TRUE),
+                   desvio_padrao = sd(altura, na.rm = TRUE)
+                   ) 
+
+knitr::kable(summarise_dataset)
+```
+
+De acordo com o gráfico abaixo, a distribuição da variável **altura** pode ser descrita por uma normal, mas para fins de decisão, deve-se munir de testes paramétricos ou não paramétricos.
+
+```{r}
+#| echo: false
+library(ggplot2)
+
+  ggplot2::ggplot(dataset) +
+  ggplot2::aes(x = altura) +
+  ggplot2::geom_density(adjust = 1L, fill = "#EF562D") +
+  ggplot2::labs(x = "Altura (cm)", 
+                title = "Densidade: Altura (cm)") +
+  ggplot2::geom_vline(xintercept = 174.23, linetype = "dashed", show.legend = TRUE) +
+    ggplot2::geom_vline(xintercept = 174.23, linetype = "dashed", show.legend = TRUE) +
+    ggplot2::geom_vline(xintercept = 175, linetype = "dashed", show.legend = TRUE) +
+    ggplot2::geom_vline(xintercept = 163.6, linetype = "dashed", show.legend = TRUE) +
+    ggplot2::geom_vline(xintercept = 184.2, linetype = "dashed", show.legend = TRUE) +
+  
+  ggplot2::theme_gray()
+```
 
 # 2
 
