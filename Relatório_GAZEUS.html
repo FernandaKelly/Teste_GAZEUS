@@ -173,8 +173,8 @@ window.Quarto = {
 <li>transaction_amount: Valor da transação em USD</li>
 </ul>
 <p>Com estes dados disponíveis, precisamos gerar queries SQL para responder às seguintes perguntas. <strong>Para fins didáticos, criei esses bancos de dados para simular a resolução das questões.</strong></p>
-<section id="tabela_transactions" class="level2">
-<h2 class="anchored" data-anchor-id="tabela_transactions">tabela_transactions</h2>
+<section id="tabela_transactions" class="level3">
+<h3 class="anchored" data-anchor-id="tabela_transactions">tabela_transactions</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(tabela_transactions)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -275,8 +275,8 @@ window.Quarto = {
 </div>
 </div>
 </section>
-<section id="tabela_user" class="level2">
-<h2 class="anchored" data-anchor-id="tabela_user">tabela_user</h2>
+<section id="tabela_user" class="level3">
+<h3 class="anchored" data-anchor-id="tabela_user">tabela_user</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(tabela_user)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -683,7 +683,7 @@ Resposta
 
 </div>
 </div>
-<p>O Teorema do limite central (TLC) basicamente demonstra a <strong>tendência</strong> de aproximação das variáveis aleatórias com a distribuição normal, em que a aproximação da distribuição Normal melhora na medida que se fizesse a média do lançamento de mais dados. Esse comportamento pode ser visualizado na imagem abaixo.</p>
+<p>O Teorema do limite central (TLC) basicamente demonstra a <strong>tendência</strong> de aproximação das variáveis aleatórias com a distribuição normal, em que a aproximação da distribuição Normal melhora na medida que se fizesse a média do lançamento de mais dados. Esse comportamento pode ser visualizado na imagem abaixo. Na estatística, há provas que um n igual a 30 é suficientemente grande para que essa amostra seja descrita com uma distribuição normal e, por isso, é fácil encontrar análises clássicas com todos os pressupostos violados por seus pesquisadores devido a esta pressuposição do n igual a 30.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="img/img213.png" class="img-fluid figure-img" width="300"></p>
@@ -711,7 +711,7 @@ Resposta
 
 </div>
 </div>
-<p>Antes de qualquer levantamento de hipótese, é bom analisar as medidas de tendência central de cada grupo e também graficamente. De acordo com a tabela abaixo, não há muitas evidências de que essa média entre os grupos seja diferente, mas vamos para o teste.</p>
+<p><strong>Antes de qualquer levantamento de hipótese, é bom analisar as medidas de tendência central de cada grupo e também graficamente</strong> e, de acordo com a tabela abaixo, não há muitas evidências de que essa média entre os grupos seja diferente, mas é evidente que o <strong>grupo B</strong> tem uma variabilidade maior em relação as notas (desvio padrão = 8.363754).</p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
@@ -737,17 +737,6 @@ Resposta
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(tabela_estudantes) <span class="sc">+</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a> <span class="fu">aes</span>(<span class="at">x =</span> nota, <span class="at">y =</span> grupo, <span class="at">fill =</span> grupo) <span class="sc">+</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a> <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="at">A =</span> <span class="st">"#FFF5EB"</span>, </span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="at">B =</span> <span class="st">"#E56B0D"</span>)) <span class="sc">+</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a> <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Nota"</span>, <span class="at">y =</span> <span class="st">"Grupo"</span>) <span class="sc">+</span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a> <span class="fu">theme_gray</span>() <span class="sc">+</span></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>, <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, </span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a> <span class="at">hjust =</span> <span class="dv">0</span>))</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -756,25 +745,120 @@ Resposta
 </div>
 </div>
 </div>
-<p>Seguindo os passo para elaboração de um teste de hipótese:</p>
+<p>É importante ressaltar que a verificação dos pressupostos é de extrema relevância para que os insights e conclusões sejam verdadeiramente corretos. Neste casso, estamos <strong>supondo </strong> que as duas amostras são independentes e, em caso de teste de médias, usaríamos o teste t independente que apresenta dois <strong>pressupostos</strong>:</p>
+<ul>
+<li><strong>Normalidade da variável dependente de cada grupo</strong></li>
+<li><strong>Homogeneidade de variâncias (ou seja, grupos com variâncias homogêneas)</strong></li>
+</ul>
+<section id="normalidade" class="level3">
+<h3 class="anchored" data-anchor-id="normalidade">Normalidade</h3>
+<p>Para verificar a normalidade dos dados, é recomendável utilizar o teste de <strong>Shapiro WIlk</strong> quando o número de amostra é menor que 50. A estatı́stica T (ou T ) é basicamente o quadrado de um coeficiente de correlação, onde o coeficiente de correlação de Pearson é calculado entre a estatı́stica ordenada X i na amostra e o escore ai , que representa o que a estatı́stica ordenada deveria parecer se a população é Normal. Portanto, as hipóteses levantadas são:</p>
+<p><span class="math inline">\(H_{0}\)</span> : F(x) é função de distribuição normal; <span class="math inline">\(H_{1}\)</span> : F(x) não é função de distribuição normal;</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">grupo</th>
+<th style="text-align: left;">variable</th>
+<th style="text-align: right;">statistic</th>
+<th style="text-align: right;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">A</td>
+<td style="text-align: left;">nota</td>
+<td style="text-align: right;">0.9434822</td>
+<td style="text-align: right;">0.6702574</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">B</td>
+<td style="text-align: left;">nota</td>
+<td style="text-align: right;">0.9727151</td>
+<td style="text-align: right;">0.9172920</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Veja que de acordo com o teste de Shapiro Wilk, ao nível de 95% de significância, <strong>não rejeita-se a hipótese nula</strong>, ou seja, a variável <strong>notas</strong> é descrita por uma distribuição normal.</p>
+</section>
+<section id="variância" class="level3">
+<h3 class="anchored" data-anchor-id="variância">Variância</h3>
+<p>O segundo pressuposto pode ser avaliado pelo <strong>teste de Levene</strong>, em que as hipóteses são:</p>
+<p><span class="math inline">\(H_{0}\)</span> : Os grupos apresentam variâncias homogêneas; <span class="math inline">\(H_{1}\)</span> : Os grupos não apresentam variâncias homogêneas;</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Df</th>
+<th style="text-align: right;">F value</th>
+<th style="text-align: right;">Pr(&gt;F)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">group</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2060638</td>
+<td style="text-align: right;">0.657971</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Logo, ao nível de 95% de significância, <strong>não rejeitamos a hipótese nula</strong>, ou seja, os grupos apresentam variâncias homogêneas e assim podemos seguir com o teste t independente.</p>
+<p>Seguindo os passos para elaboração de um teste de hipótese:</p>
 <ol type="1">
 <li>Enunciar as Hipóteses:</li>
 </ol>
-<p><span class="math inline">\(H_{0}\)</span> : Não há diferença média entre os grupos; <span class="math inline">\(H_{1}\)</span> : Há diferença média entre os grupos;</p>
+<ul>
+<li><span class="math inline">\(H_{0}\)</span> : Não há diferença média entre os grupos;</li>
+<li><span class="math inline">\(H_{1}\)</span> : Há diferença média entre os grupos;</li>
+</ul>
 <ol start="2" type="1">
 <li>Fixar o nı́vel de significância <span class="math inline">\(\alpha\)</span>) do teste:</li>
 </ol>
-<p><span class="math inline">\(\alpha\)</span> : Erro tipo I: Rejeitar <span class="math inline">\(H_{0}\)</span> quando é verdadeira;</p>
 <p><strong>No nosso caso, o nível de significância será 95%.</strong></p>
+<ul>
+<li><span class="math inline">\(\alpha\)</span> : Erro tipo I: Rejeitar <span class="math inline">\(H_{0}\)</span> quando é verdadeira.</li>
+</ul>
 <ol start="3" type="1">
 <li>Escolha da Estatı́stica teste adequada:</li>
 </ol>
-<p>A estatística de teste adequada para este caso (amostras independentes) é o teste de médias</p>
+<p>Para responder a essa pergunta, usaremos o teste-t independente. Note que queremos comparar as notas (variáveis numéricas) de dois grupos independentes de alunos (A x B).</p>
 <ol start="4" type="1">
-<li><p>Obtenção dos valores crı́ticos:</p></li>
-<li><p>Obtenção da Estatı́stica calculad:</p></li>
-<li><p>Conclusão e tomada de decisão</p></li>
+<li>Obtenção dos valores crı́ticos e Obtenção da Estatı́stica calculada:</li>
 </ol>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Two Sample t-test
+
+data:  nota by grupo
+t = -0.39353, df = 12, p-value = 0.7008
+alternative hypothesis: true difference in means between group A and group B is not equal to 0
+95 percent confidence interval:
+ -10.271845   7.128988
+sample estimates:
+mean in group A mean in group B 
+       84.00000        85.57143 </code></pre>
+</div>
+</div>
+<ol start="6" type="1">
+<li>Conclusão e tomada de decisão</li>
+</ol>
+<p>O teste resulta em um valor de t (no caso, t = -0.3935) e um valor de p (p-value) que é calculado com base nesse valor de t e nos graus de liberdade (df, do inglês degrees of freedom). Nesse caso, o valor de p é: 0.7008, um valor superior ao nível de significância 0.05. Como p &gt; 0.05, não vamos rejeitar a <span class="math inline">\(H_{0}\)</span> e considerar que os dois grupos que apresentam notas, em média, não são estatisticamente diferentes. Veja que o IC 95% para a diferença entre médias inclui o zero: [-10.27; 7.12].</p>
+</section>
 </div>
 <div id="tabset-3-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-4-tab">
 <p>Determine a hipótese nula (Ho) e hipótese alternativa (Ha) do seguinte cenário: Uma empresa afirma que o tempo médio dos seus produtos é menos de 4 dias. Você, conta com uma amostra dessas entregas para validar estadísticamente essa afirmação.</p>
@@ -791,6 +875,11 @@ Resposta
 
 </div>
 </div>
+<p>Não é possível avaliar os pressupostos dessa amostra, mas considerando que esse tempo médio seja em dias (inteiros), o teste paramétrico sobre uma média populacional, a hipótese nula utilizada seria:</p>
+<ul>
+<li><span class="math inline">\(H_{0}\)</span> : <span class="math inline">\(\mu\)</span> = 4;</li>
+<li><span class="math inline">\(H_{1}\)</span> : <span class="math inline">\(\mu\)</span> <span class="math inline">\(\neq\)</span> 4;</li>
+</ul>
 </div>
 <div id="tabset-3-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-5-tab">
 <p>Calcule o coeficiente de correlação de pearson das variáveis “Número de aparições Zendaya em filmes por ano” e “Número de pessoas afogadas em piscinas no Brasil ao ano”. Em base nos seus resultados, considera que a variável “Número de aparições Zendaya em filmes por ano” é um bom preditor do número de pessoas afogadas no Brasil? Justifique a sua resposta.</p>
@@ -1571,7 +1660,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb15-49"><a href="#cb15-49" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-50"><a href="#cb15-50" aria-hidden="true" tabindex="-1"></a>Com estes dados disponíveis, precisamos gerar queries SQL para responder às seguintes perguntas. **Para fins didáticos, criei esses bancos de dados para simular a resolução das questões.**</span>
 <span id="cb15-51"><a href="#cb15-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-52"><a href="#cb15-52" aria-hidden="true" tabindex="-1"></a><span class="fu">## tabela_transactions</span></span>
+<span id="cb15-52"><a href="#cb15-52" aria-hidden="true" tabindex="-1"></a><span class="fu">### tabela_transactions</span></span>
 <span id="cb15-53"><a href="#cb15-53" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-56"><a href="#cb15-56" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb15-57"><a href="#cb15-57" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
@@ -1595,7 +1684,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb15-77"><a href="#cb15-77" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(tabela_transactions)</span>
 <span id="cb15-78"><a href="#cb15-78" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb15-79"><a href="#cb15-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-80"><a href="#cb15-80" aria-hidden="true" tabindex="-1"></a><span class="fu">## tabela_user</span></span>
+<span id="cb15-80"><a href="#cb15-80" aria-hidden="true" tabindex="-1"></a><span class="fu">### tabela_user</span></span>
 <span id="cb15-81"><a href="#cb15-81" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-84"><a href="#cb15-84" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb15-85"><a href="#cb15-85" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
@@ -1989,7 +2078,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb15-503"><a href="#cb15-503" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
 <span id="cb15-504"><a href="#cb15-504" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb15-505"><a href="#cb15-505" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-506"><a href="#cb15-506" aria-hidden="true" tabindex="-1"></a>O Teorema do limite central (TLC) basicamente demonstra a **tendência** de aproximação das variáveis aleatórias com a distribuição normal, em que a aproximação da distribuição Normal melhora na medida que se fizesse a média do lançamento de mais dados. Esse comportamento pode ser visualizado na imagem abaixo.</span>
+<span id="cb15-506"><a href="#cb15-506" aria-hidden="true" tabindex="-1"></a>O Teorema do limite central (TLC) basicamente demonstra a **tendência** de aproximação das variáveis aleatórias com a distribuição normal, em que a aproximação da distribuição Normal melhora na medida que se fizesse a média do lançamento de mais dados. Esse comportamento pode ser visualizado na imagem abaixo. Na estatística, há provas que um n igual a 30 é suficientemente grande para que essa amostra seja descrita com uma distribuição normal e, por isso, é fácil encontrar análises clássicas com todos os pressupostos violados por seus pesquisadores devido a esta pressuposição do n igual a 30.</span>
 <span id="cb15-507"><a href="#cb15-507" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-508"><a href="#cb15-508" aria-hidden="true" tabindex="-1"></a><span class="al">![Teorema do Limite Central](img/img213.png)</span>{fig-align="center" width="300"}</span>
 <span id="cb15-509"><a href="#cb15-509" aria-hidden="true" tabindex="-1"></a></span>
@@ -2024,10 +2113,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb15-540"><a href="#cb15-540" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">87</span>, <span class="st">"B"</span>,</span>
 <span id="cb15-541"><a href="#cb15-541" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">93</span>, <span class="st">"B"</span>,</span>
 <span id="cb15-542"><a href="#cb15-542" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">99</span>, <span class="st">"B"</span>,</span>
-<span id="cb15-543"><a href="#cb15-543" aria-hidden="true" tabindex="-1"></a>                         ) </span>
+<span id="cb15-543"><a href="#cb15-543" aria-hidden="true" tabindex="-1"></a>                         ) <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">grupo =</span> <span class="fu">factor</span>(grupo, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>)))</span>
 <span id="cb15-544"><a href="#cb15-544" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb15-545"><a href="#cb15-545" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-546"><a href="#cb15-546" aria-hidden="true" tabindex="-1"></a>Antes de qualquer levantamento de hipótese, é bom analisar as medidas de tendência central de cada grupo e também graficamente. De acordo com a tabela abaixo, não há muitas evidências de que essa média entre os grupos seja diferente, mas vamos para o teste.</span>
+<span id="cb15-546"><a href="#cb15-546" aria-hidden="true" tabindex="-1"></a>**Antes de qualquer levantamento de hipótese, é bom analisar as medidas de tendência central de cada grupo e também graficamente** e, de acordo com a tabela abaixo, não há muitas evidências de que essa média entre os grupos seja diferente, mas é evidente que o **grupo B** tem uma variabilidade maior em relação as notas (desvio padrão = 8.363754).</span>
 <span id="cb15-547"><a href="#cb15-547" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-550"><a href="#cb15-550" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb15-551"><a href="#cb15-551" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
@@ -2035,99 +2124,154 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb15-553"><a href="#cb15-553" aria-hidden="true" tabindex="-1"></a>summarise_estudantes <span class="ot">&lt;-</span> tabela_estudantes <span class="sc">%&gt;%</span> </span>
 <span id="cb15-554"><a href="#cb15-554" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(grupo) <span class="sc">%&gt;%</span> </span>
 <span id="cb15-555"><a href="#cb15-555" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">vinte_percentil =</span> <span class="fu">quantile</span>(nota, <span class="at">probs =</span> <span class="fl">0.20</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb15-556"><a href="#cb15-556" aria-hidden="true" tabindex="-1"></a>                   <span class="at">mean =</span> <span class="fu">mean</span>(nota, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb15-556"><a href="#cb15-556" aria-hidden="true" tabindex="-1"></a>                   <span class="at">mean =</span> <span class="fu">round</span>(<span class="fu">mean</span>(nota, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),<span class="dv">2</span>),</span>
 <span id="cb15-557"><a href="#cb15-557" aria-hidden="true" tabindex="-1"></a>                   <span class="at">median =</span> <span class="fu">median</span>(nota, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
 <span id="cb15-558"><a href="#cb15-558" aria-hidden="true" tabindex="-1"></a>                   <span class="at">oitenta_percentil =</span> <span class="fu">quantile</span>(nota, <span class="at">probs =</span> <span class="fl">0.80</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb15-559"><a href="#cb15-559" aria-hidden="true" tabindex="-1"></a>                   <span class="at">desvio_padrao =</span> <span class="fu">sd</span>(nota, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb15-559"><a href="#cb15-559" aria-hidden="true" tabindex="-1"></a>                   <span class="at">desvio_padrao =</span> <span class="fu">round</span>(<span class="fu">sd</span>(nota, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),<span class="dv">2</span>)</span>
 <span id="cb15-560"><a href="#cb15-560" aria-hidden="true" tabindex="-1"></a>                   ) </span>
 <span id="cb15-561"><a href="#cb15-561" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-562"><a href="#cb15-562" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(summarise_dataset)</span>
 <span id="cb15-563"><a href="#cb15-563" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb15-566"><a href="#cb15-566" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb15-567"><a href="#cb15-567" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb15-568"><a href="#cb15-568" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-569"><a href="#cb15-569" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(tabela_estudantes) <span class="sc">+</span></span>
-<span id="cb15-570"><a href="#cb15-570" aria-hidden="true" tabindex="-1"></a> <span class="fu">aes</span>(<span class="at">x =</span> nota, <span class="at">y =</span> grupo, <span class="at">fill =</span> grupo) <span class="sc">+</span></span>
-<span id="cb15-571"><a href="#cb15-571" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
-<span id="cb15-572"><a href="#cb15-572" aria-hidden="true" tabindex="-1"></a> <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="at">A =</span> <span class="st">"#FFF5EB"</span>, </span>
-<span id="cb15-573"><a href="#cb15-573" aria-hidden="true" tabindex="-1"></a><span class="at">B =</span> <span class="st">"#E56B0D"</span>)) <span class="sc">+</span></span>
-<span id="cb15-574"><a href="#cb15-574" aria-hidden="true" tabindex="-1"></a> <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Nota"</span>, <span class="at">y =</span> <span class="st">"Grupo"</span>) <span class="sc">+</span></span>
-<span id="cb15-575"><a href="#cb15-575" aria-hidden="true" tabindex="-1"></a> <span class="fu">theme_gray</span>() <span class="sc">+</span></span>
-<span id="cb15-576"><a href="#cb15-576" aria-hidden="true" tabindex="-1"></a> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>, <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, </span>
-<span id="cb15-577"><a href="#cb15-577" aria-hidden="true" tabindex="-1"></a> <span class="at">hjust =</span> <span class="dv">0</span>))</span>
-<span id="cb15-578"><a href="#cb15-578" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-579"><a href="#cb15-579" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-580"><a href="#cb15-580" aria-hidden="true" tabindex="-1"></a>Seguindo os passo para elaboração de um teste de hipótese:</span>
-<span id="cb15-581"><a href="#cb15-581" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-582"><a href="#cb15-582" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Enunciar as Hipóteses:</span>
-<span id="cb15-583"><a href="#cb15-583" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-584"><a href="#cb15-584" aria-hidden="true" tabindex="-1"></a>$H_{0}$ : Não há diferença média entre os grupos; </span>
-<span id="cb15-585"><a href="#cb15-585" aria-hidden="true" tabindex="-1"></a>$H_{1}$ : Há diferença média entre os grupos;</span>
-<span id="cb15-586"><a href="#cb15-586" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-587"><a href="#cb15-587" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Fixar o nı́vel de significância $\alpha$) do teste:</span>
-<span id="cb15-588"><a href="#cb15-588" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-589"><a href="#cb15-589" aria-hidden="true" tabindex="-1"></a>$\alpha$ : Erro tipo I: Rejeitar $H_{0}$  quando é verdadeira;</span>
-<span id="cb15-590"><a href="#cb15-590" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-591"><a href="#cb15-591" aria-hidden="true" tabindex="-1"></a>**No nosso caso, o nível de significância será 95%.**</span>
+<span id="cb15-567"><a href="#cb15-567" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb15-568"><a href="#cb15-568" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb15-569"><a href="#cb15-569" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-570"><a href="#cb15-570" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(tabela_estudantes) <span class="sc">+</span></span>
+<span id="cb15-571"><a href="#cb15-571" aria-hidden="true" tabindex="-1"></a> <span class="fu">aes</span>(<span class="at">x =</span> nota, <span class="at">y =</span> grupo, <span class="at">fill =</span> grupo) <span class="sc">+</span></span>
+<span id="cb15-572"><a href="#cb15-572" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb15-573"><a href="#cb15-573" aria-hidden="true" tabindex="-1"></a> <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="at">A =</span> <span class="st">"#FFF5EB"</span>, </span>
+<span id="cb15-574"><a href="#cb15-574" aria-hidden="true" tabindex="-1"></a><span class="at">B =</span> <span class="st">"#E56B0D"</span>)) <span class="sc">+</span></span>
+<span id="cb15-575"><a href="#cb15-575" aria-hidden="true" tabindex="-1"></a> <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Nota"</span>, <span class="at">y =</span> <span class="st">"Grupo"</span>) <span class="sc">+</span></span>
+<span id="cb15-576"><a href="#cb15-576" aria-hidden="true" tabindex="-1"></a> <span class="fu">theme_gray</span>() <span class="sc">+</span></span>
+<span id="cb15-577"><a href="#cb15-577" aria-hidden="true" tabindex="-1"></a> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>, <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, </span>
+<span id="cb15-578"><a href="#cb15-578" aria-hidden="true" tabindex="-1"></a> <span class="at">hjust =</span> <span class="dv">0</span>))</span>
+<span id="cb15-579"><a href="#cb15-579" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-580"><a href="#cb15-580" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-581"><a href="#cb15-581" aria-hidden="true" tabindex="-1"></a>É importante ressaltar que a verificação dos pressupostos é de extrema relevância para que os insights e conclusões sejam verdadeiramente corretos. Neste casso, estamos **supondo ** que as duas amostras são independentes e, em caso de teste de médias, usaríamos o teste t independente que apresenta dois **pressupostos**:</span>
+<span id="cb15-582"><a href="#cb15-582" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-583"><a href="#cb15-583" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Normalidade da variável dependente de cada grupo**</span>
+<span id="cb15-584"><a href="#cb15-584" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Homogeneidade de variâncias (ou seja, grupos com variâncias homogêneas)**</span>
+<span id="cb15-585"><a href="#cb15-585" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-586"><a href="#cb15-586" aria-hidden="true" tabindex="-1"></a><span class="fu">### Normalidade</span></span>
+<span id="cb15-587"><a href="#cb15-587" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-588"><a href="#cb15-588" aria-hidden="true" tabindex="-1"></a>Para verificar a normalidade dos dados, é recomendável utilizar o teste de **Shapiro WIlk** quando o número de amostra é menor que 50. A estatı́stica T (ou T ) é basicamente o quadrado de um coeficiente de correlação, onde o coeficiente de correlação de Pearson é calculado entre a estatı́stica ordenada X i na amostra e o escore ai , que representa o que a estatı́stica ordenada deveria parecer se a população é Normal. Portanto, as hipóteses levantadas são:</span>
+<span id="cb15-589"><a href="#cb15-589" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-590"><a href="#cb15-590" aria-hidden="true" tabindex="-1"></a>$H_{0}$ : F(x) é função de distribuição normal;</span>
+<span id="cb15-591"><a href="#cb15-591" aria-hidden="true" tabindex="-1"></a>$H_{1}$ : F(x) não é função de distribuição normal;</span>
 <span id="cb15-592"><a href="#cb15-592" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-593"><a href="#cb15-593" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Escolha da Estatı́stica teste adequada:</span>
-<span id="cb15-594"><a href="#cb15-594" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-595"><a href="#cb15-595" aria-hidden="true" tabindex="-1"></a>A estatística de teste adequada para este caso (amostras independentes) é o teste de médias</span>
-<span id="cb15-596"><a href="#cb15-596" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-597"><a href="#cb15-597" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Obtenção dos valores crı́ticos:</span>
-<span id="cb15-598"><a href="#cb15-598" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-599"><a href="#cb15-599" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Obtenção da Estatı́stica calculad:</span>
-<span id="cb15-600"><a href="#cb15-600" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-601"><a href="#cb15-601" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Conclusão e tomada de decisão</span>
-<span id="cb15-602"><a href="#cb15-602" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-603"><a href="#cb15-603" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-595"><a href="#cb15-595" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-596"><a href="#cb15-596" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb15-597"><a href="#cb15-597" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb15-598"><a href="#cb15-598" aria-hidden="true" tabindex="-1"></a>teste_shapiro <span class="ot">&lt;-</span> tabela_estudantes <span class="sc">%&gt;%</span> </span>
+<span id="cb15-599"><a href="#cb15-599" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(grupo) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-600"><a href="#cb15-600" aria-hidden="true" tabindex="-1"></a>  rstatix<span class="sc">::</span><span class="fu">shapiro_test</span>(nota)</span>
+<span id="cb15-601"><a href="#cb15-601" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-602"><a href="#cb15-602" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(teste_shapiro)</span>
+<span id="cb15-603"><a href="#cb15-603" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb15-604"><a href="#cb15-604" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-605"><a href="#cb15-605" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-606"><a href="#cb15-606" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-607"><a href="#cb15-607" aria-hidden="true" tabindex="-1"></a><span class="fu"># 4</span></span>
+<span id="cb15-606"><a href="#cb15-606" aria-hidden="true" tabindex="-1"></a>Veja que de acordo com o teste de Shapiro Wilk, ao nível de 95% de significância, **não rejeita-se a hipótese nula**, ou seja, a variável **notas** é descrita por uma distribuição normal.</span>
+<span id="cb15-607"><a href="#cb15-607" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-608"><a href="#cb15-608" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-609"><a href="#cb15-609" aria-hidden="true" tabindex="-1"></a>Determine a hipótese nula (Ho) e hipótese alternativa (Ha) do seguinte cenário: Uma empresa afirma que o tempo médio dos seus produtos é menos de 4 dias. Você, conta com uma amostra dessas entregas para validar estadísticamente essa afirmação.</span>
+<span id="cb15-609"><a href="#cb15-609" aria-hidden="true" tabindex="-1"></a><span class="fu">### Variância</span></span>
 <span id="cb15-610"><a href="#cb15-610" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-611"><a href="#cb15-611" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb15-612"><a href="#cb15-612" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb15-613"><a href="#cb15-613" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb15-614"><a href="#cb15-614" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-615"><a href="#cb15-615" aria-hidden="true" tabindex="-1"></a><span class="fu"># 5</span></span>
-<span id="cb15-616"><a href="#cb15-616" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-617"><a href="#cb15-617" aria-hidden="true" tabindex="-1"></a>Calcule o coeficiente de correlação de pearson das variáveis "Número de aparições Zendaya em filmes por ano" e "Número de pessoas afogadas em piscinas no Brasil ao ano". Em base nos seus resultados, considera que a variável "Número de aparições Zendaya em filmes por ano" é um bom preditor do número de pessoas afogadas no Brasil? Justifique a sua resposta.</span>
-<span id="cb15-618"><a href="#cb15-618" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-619"><a href="#cb15-619" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb15-620"><a href="#cb15-620" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb15-621"><a href="#cb15-621" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb15-611"><a href="#cb15-611" aria-hidden="true" tabindex="-1"></a>O segundo pressuposto pode ser avaliado pelo **teste de Levene**, em que as hipóteses são:</span>
+<span id="cb15-612"><a href="#cb15-612" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-613"><a href="#cb15-613" aria-hidden="true" tabindex="-1"></a>$H_{0}$ : Os grupos apresentam variâncias homogêneas;</span>
+<span id="cb15-614"><a href="#cb15-614" aria-hidden="true" tabindex="-1"></a>$H_{1}$ : Os grupos não apresentam variâncias homogêneas;</span>
+<span id="cb15-615"><a href="#cb15-615" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-618"><a href="#cb15-618" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-619"><a href="#cb15-619" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb15-620"><a href="#cb15-620" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-621"><a href="#cb15-621" aria-hidden="true" tabindex="-1"></a>teste_levene <span class="ot">&lt;-</span> car<span class="sc">::</span><span class="fu">leveneTest</span>(nota <span class="sc">~</span> grupo, <span class="at">data =</span> tabela_estudantes, <span class="at">center =</span> mean)</span>
 <span id="cb15-622"><a href="#cb15-622" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-623"><a href="#cb15-623" aria-hidden="true" tabindex="-1"></a><span class="fu"># 6</span></span>
-<span id="cb15-624"><a href="#cb15-624" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-625"><a href="#cb15-625" aria-hidden="true" tabindex="-1"></a>Explique a diferença entre amostragem estratificada e amostragem randômica ou aleatória. Discuta quais são as vantagens e desvantagens de cada uma e dê exemplos de casos onde uma abordagem é mais adequada que a outra.</span>
-<span id="cb15-626"><a href="#cb15-626" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-627"><a href="#cb15-627" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb15-628"><a href="#cb15-628" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb15-629"><a href="#cb15-629" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb15-630"><a href="#cb15-630" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-631"><a href="#cb15-631" aria-hidden="true" tabindex="-1"></a><span class="fu"># 7</span></span>
-<span id="cb15-632"><a href="#cb15-632" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-633"><a href="#cb15-633" aria-hidden="true" tabindex="-1"></a>Se você treina um modelo de Machine Learning (ou estadístico), como você identificaria se seu modelo tem uma alta variância (overfitting) ou um alto viés (bias, ou underfitting). Caso seu modelo apresenta alta variância, como você resolveria esse problema?</span>
+<span id="cb15-623"><a href="#cb15-623" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(teste_levene)</span>
+<span id="cb15-624"><a href="#cb15-624" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-625"><a href="#cb15-625" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-626"><a href="#cb15-626" aria-hidden="true" tabindex="-1"></a>Logo, ao nível de 95% de significância, **não rejeitamos a hipótese nula**, ou seja, os grupos apresentam variâncias homogêneas e assim podemos seguir com o teste t independente.</span>
+<span id="cb15-627"><a href="#cb15-627" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-628"><a href="#cb15-628" aria-hidden="true" tabindex="-1"></a>Seguindo os passos para elaboração de um teste de hipótese:</span>
+<span id="cb15-629"><a href="#cb15-629" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-630"><a href="#cb15-630" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Enunciar as Hipóteses:</span>
+<span id="cb15-631"><a href="#cb15-631" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-632"><a href="#cb15-632" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$H_{0}$ : Não há diferença média entre os grupos; </span>
+<span id="cb15-633"><a href="#cb15-633" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$H_{1}$ : Há diferença média entre os grupos;</span>
 <span id="cb15-634"><a href="#cb15-634" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-635"><a href="#cb15-635" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb15-636"><a href="#cb15-636" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb15-637"><a href="#cb15-637" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb15-635"><a href="#cb15-635" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Fixar o nı́vel de significância $\alpha$) do teste:</span>
+<span id="cb15-636"><a href="#cb15-636" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-637"><a href="#cb15-637" aria-hidden="true" tabindex="-1"></a>**No nosso caso, o nível de significância será 95%.**</span>
 <span id="cb15-638"><a href="#cb15-638" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-639"><a href="#cb15-639" aria-hidden="true" tabindex="-1"></a><span class="fu"># 8</span></span>
+<span id="cb15-639"><a href="#cb15-639" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\alpha$ : Erro tipo I: Rejeitar $H_{0}$  quando é verdadeira.</span>
 <span id="cb15-640"><a href="#cb15-640" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-641"><a href="#cb15-641" aria-hidden="true" tabindex="-1"></a>Considere o seguinte modelo de regressão:</span>
-<span id="cb15-642"><a href="#cb15-642" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-643"><a href="#cb15-643" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Salário = 1200+ 500.Idade + 600. Têm Faculdade + 50.Têm Linkedin</span>
-<span id="cb15-644"><a href="#cb15-644" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-645"><a href="#cb15-645" aria-hidden="true" tabindex="-1"></a>Interprete o efeito da Idade na variável salário. Que acontece com as pessoas que não tem faculdade? Considere agora que o desvio padrão do coeficiente da variável "Têm Linkedin" é de 47, por tanto o seu p-valor é \~0.92 (como visto na equação abaixo). O que isso implica para o modelo em questão? Essa variável é relevante?</span>
-<span id="cb15-646"><a href="#cb15-646" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-647"><a href="#cb15-647" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb15-648"><a href="#cb15-648" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb15-649"><a href="#cb15-649" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb15-650"><a href="#cb15-650" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb15-641"><a href="#cb15-641" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-642"><a href="#cb15-642" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Escolha da Estatı́stica teste adequada:</span>
+<span id="cb15-643"><a href="#cb15-643" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-644"><a href="#cb15-644" aria-hidden="true" tabindex="-1"></a>Para responder a essa pergunta, usaremos o teste-t independente. Note que queremos comparar as notas (variáveis numéricas) de dois grupos independentes de alunos (A x B).</span>
+<span id="cb15-645"><a href="#cb15-645" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-646"><a href="#cb15-646" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Obtenção dos valores crı́ticos e Obtenção da Estatı́stica calculada:</span>
+<span id="cb15-647"><a href="#cb15-647" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-650"><a href="#cb15-650" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-651"><a href="#cb15-651" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb15-652"><a href="#cb15-652" aria-hidden="true" tabindex="-1"></a>teste_t <span class="ot">&lt;-</span> stats<span class="sc">::</span><span class="fu">t.test</span>(nota <span class="sc">~</span> grupo, tabela_estudantes, <span class="at">var.equal=</span><span class="cn">TRUE</span>)</span>
+<span id="cb15-653"><a href="#cb15-653" aria-hidden="true" tabindex="-1"></a>teste_t</span>
+<span id="cb15-654"><a href="#cb15-654" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-655"><a href="#cb15-655" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-656"><a href="#cb15-656" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Conclusão e tomada de decisão</span>
+<span id="cb15-657"><a href="#cb15-657" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-658"><a href="#cb15-658" aria-hidden="true" tabindex="-1"></a>O teste resulta em um valor de t (no caso, t = -0.3935) e um valor de p (p-value) que é calculado com base nesse valor de t e nos graus de liberdade (df, do inglês degrees of freedom). Nesse caso, o valor de p é: 0.7008, um valor superior ao nível de significância 0.05. Como p &gt; 0.05, não vamos rejeitar a $H_{0}$ e considerar que os dois grupos que apresentam notas, em média, não são estatisticamente diferentes. Veja que o IC 95% para a diferença entre médias inclui o zero: <span class="co">[</span><span class="ot">-10.27; 7.12</span><span class="co">]</span>.</span>
+<span id="cb15-659"><a href="#cb15-659" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-660"><a href="#cb15-660" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-661"><a href="#cb15-661" aria-hidden="true" tabindex="-1"></a><span class="fu"># 4</span></span>
+<span id="cb15-662"><a href="#cb15-662" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-663"><a href="#cb15-663" aria-hidden="true" tabindex="-1"></a>Determine a hipótese nula (Ho) e hipótese alternativa (Ha) do seguinte cenário: Uma empresa afirma que o tempo médio dos seus produtos é menos de 4 dias. Você, conta com uma amostra dessas entregas para validar estadísticamente essa afirmação.</span>
+<span id="cb15-664"><a href="#cb15-664" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-665"><a href="#cb15-665" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb15-666"><a href="#cb15-666" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb15-667"><a href="#cb15-667" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb15-668"><a href="#cb15-668" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-669"><a href="#cb15-669" aria-hidden="true" tabindex="-1"></a>Não é possível avaliar os pressupostos dessa amostra, mas considerando que esse tempo médio seja em dias (inteiros), o teste paramétrico sobre uma média populacional, a hipótese nula utilizada seria:</span>
+<span id="cb15-670"><a href="#cb15-670" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-671"><a href="#cb15-671" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-672"><a href="#cb15-672" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$H_{0}$ : $\mu$ = 4;</span>
+<span id="cb15-673"><a href="#cb15-673" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$H_{1}$ : $\mu$ $\neq$ 4;</span>
+<span id="cb15-674"><a href="#cb15-674" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-675"><a href="#cb15-675" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-676"><a href="#cb15-676" aria-hidden="true" tabindex="-1"></a><span class="fu"># 5</span></span>
+<span id="cb15-677"><a href="#cb15-677" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-678"><a href="#cb15-678" aria-hidden="true" tabindex="-1"></a>Calcule o coeficiente de correlação de pearson das variáveis "Número de aparições Zendaya em filmes por ano" e "Número de pessoas afogadas em piscinas no Brasil ao ano". Em base nos seus resultados, considera que a variável "Número de aparições Zendaya em filmes por ano" é um bom preditor do número de pessoas afogadas no Brasil? Justifique a sua resposta.</span>
+<span id="cb15-679"><a href="#cb15-679" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-680"><a href="#cb15-680" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb15-681"><a href="#cb15-681" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb15-682"><a href="#cb15-682" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb15-683"><a href="#cb15-683" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-684"><a href="#cb15-684" aria-hidden="true" tabindex="-1"></a><span class="fu"># 6</span></span>
+<span id="cb15-685"><a href="#cb15-685" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-686"><a href="#cb15-686" aria-hidden="true" tabindex="-1"></a>Explique a diferença entre amostragem estratificada e amostragem randômica ou aleatória. Discuta quais são as vantagens e desvantagens de cada uma e dê exemplos de casos onde uma abordagem é mais adequada que a outra.</span>
+<span id="cb15-687"><a href="#cb15-687" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-688"><a href="#cb15-688" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb15-689"><a href="#cb15-689" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb15-690"><a href="#cb15-690" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb15-691"><a href="#cb15-691" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-692"><a href="#cb15-692" aria-hidden="true" tabindex="-1"></a><span class="fu"># 7</span></span>
+<span id="cb15-693"><a href="#cb15-693" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-694"><a href="#cb15-694" aria-hidden="true" tabindex="-1"></a>Se você treina um modelo de Machine Learning (ou estadístico), como você identificaria se seu modelo tem uma alta variância (overfitting) ou um alto viés (bias, ou underfitting). Caso seu modelo apresenta alta variância, como você resolveria esse problema?</span>
+<span id="cb15-695"><a href="#cb15-695" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-696"><a href="#cb15-696" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb15-697"><a href="#cb15-697" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb15-698"><a href="#cb15-698" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb15-699"><a href="#cb15-699" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-700"><a href="#cb15-700" aria-hidden="true" tabindex="-1"></a><span class="fu"># 8</span></span>
+<span id="cb15-701"><a href="#cb15-701" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-702"><a href="#cb15-702" aria-hidden="true" tabindex="-1"></a>Considere o seguinte modelo de regressão:</span>
+<span id="cb15-703"><a href="#cb15-703" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-704"><a href="#cb15-704" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Salário = 1200+ 500.Idade + 600. Têm Faculdade + 50.Têm Linkedin</span>
+<span id="cb15-705"><a href="#cb15-705" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-706"><a href="#cb15-706" aria-hidden="true" tabindex="-1"></a>Interprete o efeito da Idade na variável salário. Que acontece com as pessoas que não tem faculdade? Considere agora que o desvio padrão do coeficiente da variável "Têm Linkedin" é de 47, por tanto o seu p-valor é \~0.92 (como visto na equação abaixo). O que isso implica para o modelo em questão? Essa variável é relevante?</span>
+<span id="cb15-707"><a href="#cb15-707" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-708"><a href="#cb15-708" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb15-709"><a href="#cb15-709" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb15-710"><a href="#cb15-710" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb15-711"><a href="#cb15-711" aria-hidden="true" tabindex="-1"></a>:::</span>
 </code><button title="Copiar para a área de transferência" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

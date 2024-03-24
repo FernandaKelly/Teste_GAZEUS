@@ -631,6 +631,52 @@ Calcule o coeficiente de correlação de pearson das variáveis "Número de apar
 # Resposta
 :::
 
+```{r}
+#| echo: false
+tabela_5 <- tibble::tribble(
+                         ~ano, ~zendaya, ~piscina, 
+                         "2015", "4", "107",
+                         "2016", "7", "146",
+                         "2017", "16", "178",
+                         "2018", "21", "199",
+                         "2019", "26", "221",
+                         "2020", "2", "114",
+                         "2021", "6", "133",
+                         "2022", "12", "159",
+                         "2023", "16", "183",
+                         "2024", "32", "215",
+                         ) %>% dplyr::mutate(zendaya = base::as.numeric(zendaya),
+                                            piscina = base::as.numeric(piscina),
+                                            ano = as.factor(ano))
+```
+
+A correlação entre duas variáveis pode ser verificada utilizando o teste de Pearson, caso há a suposição de normalidade nos dados. No caso em que a suposição de normalidade não é considerada ou a caracterı́stica dos próprio dados pressupõe isto (escala no mı́nimo ordinal), então pode-se fazer uso de estatı́sticas alternativas como: Teste de correlação por postos de Spearman ou de Kendall.
+
+Veja que de acordo com o gráfico abaixo que o "Número de aparições Zendaya em filmes por ano" e o "Número de pessoas afogadas em piscinas no Brasil ao ano" estão altamente correlacionados, mas faz senido essa correlçao?
+
+Na estaística, o nome que damos a essa correlação é **correlação espúria**. Uma correlação espúria é uma relação aparente entre duas variáveis que não possuem uma conexão causal real entre si. Essa relação ilusória pode surgir devido a fatores externos ou coincidências estatísticas, levando a conclusões equivocadas se não forem adequadamente analisadas.
+
+```{r}
+library(GGally)
+ggpairs(tabela_5[,2:3], lower = list(continuous = "smooth"))
+```
+
+A hipótese levantada é:
+
+- $H_{0}$ : $\rho$ = 0;
+- $H_{1}$ : $\rho$ $\neq$ 0;
+
+Vamos considerar o nível de significância a 95%. O teste de correção de Pearson é dados por,
+
+```{r}
+stats::cor.test(tabela_5$zendaya, tabela_5$piscina,
+                method = "pearson")
+```
+
+Ou seja, ao nível de 95% de significância, há correlação entre as variáveis analisadas, como explicado acima, essa correlação é denominada por correlação espúria.
+
+
+
 # 6
 
 Explique a diferença entre amostragem estratificada e amostragem randômica ou aleatória. Discuta quais são as vantagens e desvantagens de cada uma e dê exemplos de casos onde uma abordagem é mais adequada que a outra.
