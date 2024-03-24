@@ -566,7 +566,7 @@ Resposta
 <section id="tarefa-03-estatística-e-machine-learning" class="level1">
 <h1>Tarefa 03: Estatística e Machine Learning</h1>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true" href="">1</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false" href="">2</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-3" role="tab" aria-controls="tabset-3-3" aria-selected="false" href="">3</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-4" role="tab" aria-controls="tabset-3-4" aria-selected="false" href="">4</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-5" role="tab" aria-controls="tabset-3-5" aria-selected="false" href="">5</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-6-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-6" role="tab" aria-controls="tabset-3-6" aria-selected="false" href="">6</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-7-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-7" role="tab" aria-controls="tabset-3-7" aria-selected="false" href="">7</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-8-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-8" role="tab" aria-controls="tabset-3-8" aria-selected="false" href="">8</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true" href="">1</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false" href="">2</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-3" role="tab" aria-controls="tabset-3-3" aria-selected="false" href="">3</a></li></ul>
 <div class="tab-content">
 <div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
 <p>Dado um dataset das estaturas (em centímetros) de 13 indivíduos:</p>
@@ -617,7 +617,7 @@ Resposta
 </table>
 </div>
 </div>
-<p>De acordo com o gráfico abaixo, a distribuição da variável <strong>altura</strong> pode ser descrita por uma normal, mas para fins de decisão, deve-se munir de testes paramétricos ou não paramétricos.</p>
+<p>De acordo com o gráfico abaixo, a distribuição da variável <strong>altura</strong> pode ser descrita por uma normal, mas para fins de decisão, deve-se munir de testes paramétricos ou não paramétricos. Veja que sua variabilidade indica que os valores observados tendem a estar distantes da média – ou seja, a distribuição é mais “espalhada”.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -643,7 +643,7 @@ Resposta
 
 </div>
 </div>
-<div class="sourceCode" id="cb13"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="al">![Teorema do Limite Central](img/img213.png)</span>{fig-align="center" width="300"}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>O Teorema do limite central (TLC) basicamente demonstra a <strong>tendência</strong> de aproximação das variáveis aleatórias com a distribuição normal, em que a aproximação da distribuição Normal melhora na medida que se fizesse a média do lançamento de mais dados. Esse comportamento pode ser visualizado na imagem abaixo.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="img/img213.png" class="img-fluid figure-img" width="300"></p>
@@ -653,7 +653,10 @@ Resposta
 </div>
 <div id="tabset-3-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-3-tab">
 <p>Suponha que numa escola, 2 grupos diferentes de estudantes (Grupo A e Grupo B) fazem o mesmo teste de matemáticas. As pontuações para cada grupo são dados pelos seguintes datasets:</p>
-<p>Grupo A: {80, 85, 88, 90, 92, 75, 78} Grupo B: {75, 78, 82, 85, 87, 93, 99}</p>
+<ul>
+<li>Grupo A: {80, 85, 88, 90, 92, 75, 78}</li>
+<li>Grupo B: {75, 78, 82, 85, 87, 93, 99}</li>
+</ul>
 <p>Elabore um teste de hipótese para determinar se existe uma diferença estatisticamente significativa entre a média das pontuações dos dois grupos com uma confiança de 95%.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -668,8 +671,19 @@ Resposta
 
 </div>
 </div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>H_{0} :Não há evidências de associação entre Fator de Risco (Tabagismo) e Doença (Câncer pulmonar);</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>H_{1} :Há evidências de associação entre Fator de Risco e Doença;</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="tabset-3-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-4-tab">
+</div>
+</div>
+<p>$$</p>
+<p>H_{0} :Não há evidências de associação entre Fator de Risco (Tabagismo) e Doença (Câncer pulmonar);</p>
+<p>H_{1} :Há evidências de associação entre Fator de Risco e Doença;</p>
+<p>$$</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true" href="">4</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false" href="">5</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-3" role="tab" aria-controls="tabset-4-3" aria-selected="false" href="">6</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-4" role="tab" aria-controls="tabset-4-4" aria-selected="false" href="">7</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-5" role="tab" aria-controls="tabset-4-5" aria-selected="false" href="">8</a></li></ul>
+<div class="tab-content">
+<div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
 <p>Determine a hipótese nula (Ho) e hipótese alternativa (Ha) do seguinte cenário: Uma empresa afirma que o tempo médio dos seus produtos é menos de 4 dias. Você, conta com uma amostra dessas entregas para validar estadísticamente essa afirmação.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -685,7 +699,7 @@ Resposta
 </div>
 </div>
 </div>
-<div id="tabset-3-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-5-tab">
+<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
 <p>Calcule o coeficiente de correlação de pearson das variáveis “Número de aparições Zendaya em filmes por ano” e “Número de pessoas afogadas em piscinas no Brasil ao ano”. Em base nos seus resultados, considera que a variável “Número de aparições Zendaya em filmes por ano” é um bom preditor do número de pessoas afogadas no Brasil?Justifique a sua resposta.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -701,7 +715,7 @@ Resposta
 </div>
 </div>
 </div>
-<div id="tabset-3-6" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-6-tab">
+<div id="tabset-4-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-3-tab">
 <p>Explique a diferença entre amostragem estratificada e amostragem randômica ou aleatória. Discuta quais são as vantagens e desvantagens de cada uma e de exemplos de casos onde uma abordagem é mais adequada que a outra.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -717,7 +731,7 @@ Resposta
 </div>
 </div>
 </div>
-<div id="tabset-3-7" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-7-tab">
+<div id="tabset-4-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-4-tab">
 <p>Se você treina um modelo de Machine Learning (ou estadístico), como você identificaria se seu modelo tem uma alta variância (overfitting) ou um alto viés (bias, ou underfitting). Caso seu modelo apresenta alta variância, como você resolveria esse problema?</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -733,7 +747,7 @@ Resposta
 </div>
 </div>
 </div>
-<div id="tabset-3-8" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-8-tab">
+<div id="tabset-4-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-5-tab">
 <p>Considere o seguinte modelo de regressão:</p>
 <ul>
 <li>Salário = 1200+ 500.Idade + 600. Têm Faculdade + 50.Têm Linkedin</li>
@@ -1849,7 +1863,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb14-466"><a href="#cb14-466" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(summarise_dataset)</span>
 <span id="cb14-467"><a href="#cb14-467" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb14-468"><a href="#cb14-468" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-469"><a href="#cb14-469" aria-hidden="true" tabindex="-1"></a>De acordo com o gráfico abaixo, a distribuição da variável **altura** pode ser descrita por uma normal, mas para fins de decisão, deve-se munir de testes paramétricos ou não paramétricos.</span>
+<span id="cb14-469"><a href="#cb14-469" aria-hidden="true" tabindex="-1"></a>De acordo com o gráfico abaixo, a distribuição da variável **altura** pode ser descrita por uma normal, mas para fins de decisão, deve-se munir de testes paramétricos ou não paramétricos. Veja que sua variabilidade indica que os valores observados tendem a estar distantes da média – ou seja, a distribuição é mais “espalhada”.</span>
 <span id="cb14-470"><a href="#cb14-470" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-473"><a href="#cb14-473" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb14-474"><a href="#cb14-474" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
@@ -1877,16 +1891,16 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb14-496"><a href="#cb14-496" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
 <span id="cb14-497"><a href="#cb14-497" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb14-498"><a href="#cb14-498" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-499"><a href="#cb14-499" aria-hidden="true" tabindex="-1"></a><span class="in">``` md</span></span>
-<span id="cb14-500"><a href="#cb14-500" aria-hidden="true" tabindex="-1"></a><span class="al">![Teorema do Limite Central](img/img213.png)</span>{fig-align="center" width="300"}</span>
-<span id="cb14-501"><a href="#cb14-501" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb14-502"><a href="#cb14-502" aria-hidden="true" tabindex="-1"></a><span class="al">![Teorema do Limite Central](img/img213.png)</span>{fig-align="center" width="300"}</span>
-<span id="cb14-503"><a href="#cb14-503" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-504"><a href="#cb14-504" aria-hidden="true" tabindex="-1"></a><span class="fu"># 3</span></span>
-<span id="cb14-505"><a href="#cb14-505" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-506"><a href="#cb14-506" aria-hidden="true" tabindex="-1"></a>Suponha que numa escola, 2 grupos diferentes de estudantes (Grupo A e Grupo B) fazem o mesmo teste de matemáticas. As pontuações para cada grupo são dados pelos seguintes datasets:</span>
-<span id="cb14-507"><a href="#cb14-507" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-508"><a href="#cb14-508" aria-hidden="true" tabindex="-1"></a>Grupo A: {80, 85, 88, 90, 92, 75, 78} Grupo B: {75, 78, 82, 85, 87, 93, 99}</span>
+<span id="cb14-499"><a href="#cb14-499" aria-hidden="true" tabindex="-1"></a>O Teorema do limite central (TLC) basicamente demonstra a **tendência** de aproximação das variáveis aleatórias com a distribuição normal, em que a aproximação da distribuição Normal melhora na medida que se fizesse a média do lançamento de mais dados. Esse comportamento pode ser visualizado na imagem abaixo.</span>
+<span id="cb14-500"><a href="#cb14-500" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-501"><a href="#cb14-501" aria-hidden="true" tabindex="-1"></a><span class="al">![Teorema do Limite Central](img/img213.png)</span>{fig-align="center" width="300"}</span>
+<span id="cb14-502"><a href="#cb14-502" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-503"><a href="#cb14-503" aria-hidden="true" tabindex="-1"></a><span class="fu"># 3</span></span>
+<span id="cb14-504"><a href="#cb14-504" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-505"><a href="#cb14-505" aria-hidden="true" tabindex="-1"></a>Suponha que numa escola, 2 grupos diferentes de estudantes (Grupo A e Grupo B) fazem o mesmo teste de matemáticas. As pontuações para cada grupo são dados pelos seguintes datasets:</span>
+<span id="cb14-506"><a href="#cb14-506" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-507"><a href="#cb14-507" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Grupo A: {80, 85, 88, 90, 92, 75, 78}</span>
+<span id="cb14-508"><a href="#cb14-508" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Grupo B: {75, 78, 82, 85, 87, 93, 99}</span>
 <span id="cb14-509"><a href="#cb14-509" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-510"><a href="#cb14-510" aria-hidden="true" tabindex="-1"></a>Elabore um teste de hipótese para determinar se existe uma diferença estatisticamente significativa entre a média das pontuações dos dois grupos com uma confiança de 95%.</span>
 <span id="cb14-511"><a href="#cb14-511" aria-hidden="true" tabindex="-1"></a></span>
@@ -1894,50 +1908,79 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb14-513"><a href="#cb14-513" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
 <span id="cb14-514"><a href="#cb14-514" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb14-515"><a href="#cb14-515" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-516"><a href="#cb14-516" aria-hidden="true" tabindex="-1"></a><span class="fu"># 4</span></span>
-<span id="cb14-517"><a href="#cb14-517" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-518"><a href="#cb14-518" aria-hidden="true" tabindex="-1"></a>Determine a hipótese nula (Ho) e hipótese alternativa (Ha) do seguinte cenário: Uma empresa afirma que o tempo médio dos seus produtos é menos de 4 dias. Você, conta com uma amostra dessas entregas para validar estadísticamente essa afirmação.</span>
-<span id="cb14-519"><a href="#cb14-519" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-520"><a href="#cb14-520" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb14-521"><a href="#cb14-521" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb14-522"><a href="#cb14-522" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb14-523"><a href="#cb14-523" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-524"><a href="#cb14-524" aria-hidden="true" tabindex="-1"></a><span class="fu"># 5</span></span>
-<span id="cb14-525"><a href="#cb14-525" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-526"><a href="#cb14-526" aria-hidden="true" tabindex="-1"></a>Calcule o coeficiente de correlação de pearson das variáveis "Número de aparições Zendaya em filmes por ano" e "Número de pessoas afogadas em piscinas no Brasil ao ano". Em base nos seus resultados, considera que a variável "Número de aparições Zendaya em filmes por ano" é um bom preditor do número de pessoas afogadas no Brasil?Justifique a sua resposta.</span>
-<span id="cb14-527"><a href="#cb14-527" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-528"><a href="#cb14-528" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb14-529"><a href="#cb14-529" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb14-530"><a href="#cb14-530" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb14-518"><a href="#cb14-518" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb14-519"><a href="#cb14-519" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb14-520"><a href="#cb14-520" aria-hidden="true" tabindex="-1"></a>tabela_estudantes <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
+<span id="cb14-521"><a href="#cb14-521" aria-hidden="true" tabindex="-1"></a>                         <span class="sc">~</span>grupo_A, <span class="sc">~</span>grupo_B, </span>
+<span id="cb14-522"><a href="#cb14-522" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">80</span>, <span class="dv">75</span>, </span>
+<span id="cb14-523"><a href="#cb14-523" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">85</span>, <span class="dv">78</span>,</span>
+<span id="cb14-524"><a href="#cb14-524" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">88</span>, <span class="dv">82</span>,</span>
+<span id="cb14-525"><a href="#cb14-525" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">90</span>, <span class="dv">85</span>,</span>
+<span id="cb14-526"><a href="#cb14-526" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">92</span>, <span class="dv">87</span>,</span>
+<span id="cb14-527"><a href="#cb14-527" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">75</span>, <span class="dv">93</span>,</span>
+<span id="cb14-528"><a href="#cb14-528" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">78</span>, <span class="dv">99</span>,</span>
+<span id="cb14-529"><a href="#cb14-529" aria-hidden="true" tabindex="-1"></a>                         ) </span>
+<span id="cb14-530"><a href="#cb14-530" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb14-531"><a href="#cb14-531" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-532"><a href="#cb14-532" aria-hidden="true" tabindex="-1"></a><span class="fu"># 6</span></span>
-<span id="cb14-533"><a href="#cb14-533" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-534"><a href="#cb14-534" aria-hidden="true" tabindex="-1"></a>Explique a diferença entre amostragem estratificada e amostragem randômica ou aleatória. Discuta quais são as vantagens e desvantagens de cada uma e de exemplos de casos onde uma abordagem é mais adequada que a outra.</span>
-<span id="cb14-535"><a href="#cb14-535" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-536"><a href="#cb14-536" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb14-537"><a href="#cb14-537" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb14-538"><a href="#cb14-538" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb14-532"><a href="#cb14-532" aria-hidden="true" tabindex="-1"></a><span class="in">``` md</span></span>
+<span id="cb14-533"><a href="#cb14-533" aria-hidden="true" tabindex="-1"></a>H_{0} :Não há evidências de associação entre Fator de Risco (Tabagismo) e Doença (Câncer pulmonar);</span>
+<span id="cb14-534"><a href="#cb14-534" aria-hidden="true" tabindex="-1"></a>H_{1} :Há evidências de associação entre Fator de Risco e Doença;</span>
+<span id="cb14-535"><a href="#cb14-535" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-536"><a href="#cb14-536" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb14-537"><a href="#cb14-537" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-538"><a href="#cb14-538" aria-hidden="true" tabindex="-1"></a>\$\$</span>
 <span id="cb14-539"><a href="#cb14-539" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-540"><a href="#cb14-540" aria-hidden="true" tabindex="-1"></a><span class="fu"># 7</span></span>
+<span id="cb14-540"><a href="#cb14-540" aria-hidden="true" tabindex="-1"></a>H<span class="sc">\_</span>{0} :Não há evidências de associação entre Fator de Risco (Tabagismo) e Doença (Câncer pulmonar);</span>
 <span id="cb14-541"><a href="#cb14-541" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-542"><a href="#cb14-542" aria-hidden="true" tabindex="-1"></a>Se você treina um modelo de Machine Learning (ou estadístico), como você identificaria se seu modelo tem uma alta variância (overfitting) ou um alto viés (bias, ou underfitting). Caso seu modelo apresenta alta variância, como você resolveria esse problema?</span>
+<span id="cb14-542"><a href="#cb14-542" aria-hidden="true" tabindex="-1"></a>H<span class="sc">\_</span>{1} :Há evidências de associação entre Fator de Risco e Doença;</span>
 <span id="cb14-543"><a href="#cb14-543" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-544"><a href="#cb14-544" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb14-545"><a href="#cb14-545" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb14-546"><a href="#cb14-546" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb14-547"><a href="#cb14-547" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-548"><a href="#cb14-548" aria-hidden="true" tabindex="-1"></a><span class="fu"># 8</span></span>
-<span id="cb14-549"><a href="#cb14-549" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-550"><a href="#cb14-550" aria-hidden="true" tabindex="-1"></a>Considere o seguinte modelo de regressão:</span>
-<span id="cb14-551"><a href="#cb14-551" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-552"><a href="#cb14-552" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Salário = 1200+ 500.Idade + 600. Têm Faculdade + 50.Têm Linkedin</span>
-<span id="cb14-553"><a href="#cb14-553" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-554"><a href="#cb14-554" aria-hidden="true" tabindex="-1"></a>Interprete o efeito da Idade na variável salário. Que acontece com as pessoas que não tem faculdade? Considere agora que o desvio padrão do coeficiente da variável "Têm Linkedin" é de 47, por tanto o seu p-valor é \~0.92 (como visto na equação abaixo). O que isso implica para o modelo em questão? Essa variável é relevante?</span>
-<span id="cb14-555"><a href="#cb14-555" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-556"><a href="#cb14-556" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
-<span id="cb14-557"><a href="#cb14-557" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
-<span id="cb14-558"><a href="#cb14-558" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb14-559"><a href="#cb14-559" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb14-544"><a href="#cb14-544" aria-hidden="true" tabindex="-1"></a>\$\$</span>
+<span id="cb14-545"><a href="#cb14-545" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-546"><a href="#cb14-546" aria-hidden="true" tabindex="-1"></a>::: panel-tabset</span>
+<span id="cb14-547"><a href="#cb14-547" aria-hidden="true" tabindex="-1"></a><span class="fu"># 4</span></span>
+<span id="cb14-548"><a href="#cb14-548" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-549"><a href="#cb14-549" aria-hidden="true" tabindex="-1"></a>Determine a hipótese nula (Ho) e hipótese alternativa (Ha) do seguinte cenário: Uma empresa afirma que o tempo médio dos seus produtos é menos de 4 dias. Você, conta com uma amostra dessas entregas para validar estadísticamente essa afirmação.</span>
+<span id="cb14-550"><a href="#cb14-550" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-551"><a href="#cb14-551" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb14-552"><a href="#cb14-552" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb14-553"><a href="#cb14-553" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb14-554"><a href="#cb14-554" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-555"><a href="#cb14-555" aria-hidden="true" tabindex="-1"></a><span class="fu"># 5</span></span>
+<span id="cb14-556"><a href="#cb14-556" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-557"><a href="#cb14-557" aria-hidden="true" tabindex="-1"></a>Calcule o coeficiente de correlação de pearson das variáveis "Número de aparições Zendaya em filmes por ano" e "Número de pessoas afogadas em piscinas no Brasil ao ano". Em base nos seus resultados, considera que a variável "Número de aparições Zendaya em filmes por ano" é um bom preditor do número de pessoas afogadas no Brasil?Justifique a sua resposta.</span>
+<span id="cb14-558"><a href="#cb14-558" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-559"><a href="#cb14-559" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb14-560"><a href="#cb14-560" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb14-561"><a href="#cb14-561" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb14-562"><a href="#cb14-562" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-563"><a href="#cb14-563" aria-hidden="true" tabindex="-1"></a><span class="fu"># 6</span></span>
+<span id="cb14-564"><a href="#cb14-564" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-565"><a href="#cb14-565" aria-hidden="true" tabindex="-1"></a>Explique a diferença entre amostragem estratificada e amostragem randômica ou aleatória. Discuta quais são as vantagens e desvantagens de cada uma e de exemplos de casos onde uma abordagem é mais adequada que a outra.</span>
+<span id="cb14-566"><a href="#cb14-566" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-567"><a href="#cb14-567" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb14-568"><a href="#cb14-568" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb14-569"><a href="#cb14-569" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb14-570"><a href="#cb14-570" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-571"><a href="#cb14-571" aria-hidden="true" tabindex="-1"></a><span class="fu"># 7</span></span>
+<span id="cb14-572"><a href="#cb14-572" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-573"><a href="#cb14-573" aria-hidden="true" tabindex="-1"></a>Se você treina um modelo de Machine Learning (ou estadístico), como você identificaria se seu modelo tem uma alta variância (overfitting) ou um alto viés (bias, ou underfitting). Caso seu modelo apresenta alta variância, como você resolveria esse problema?</span>
+<span id="cb14-574"><a href="#cb14-574" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-575"><a href="#cb14-575" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb14-576"><a href="#cb14-576" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb14-577"><a href="#cb14-577" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb14-578"><a href="#cb14-578" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-579"><a href="#cb14-579" aria-hidden="true" tabindex="-1"></a><span class="fu"># 8</span></span>
+<span id="cb14-580"><a href="#cb14-580" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-581"><a href="#cb14-581" aria-hidden="true" tabindex="-1"></a>Considere o seguinte modelo de regressão:</span>
+<span id="cb14-582"><a href="#cb14-582" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-583"><a href="#cb14-583" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Salário = 1200+ 500.Idade + 600. Têm Faculdade + 50.Têm Linkedin</span>
+<span id="cb14-584"><a href="#cb14-584" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-585"><a href="#cb14-585" aria-hidden="true" tabindex="-1"></a>Interprete o efeito da Idade na variável salário. Que acontece com as pessoas que não tem faculdade? Considere agora que o desvio padrão do coeficiente da variável "Têm Linkedin" é de 47, por tanto o seu p-valor é \~0.92 (como visto na equação abaixo). O que isso implica para o modelo em questão? Essa variável é relevante?</span>
+<span id="cb14-586"><a href="#cb14-586" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-587"><a href="#cb14-587" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb14-588"><a href="#cb14-588" aria-hidden="true" tabindex="-1"></a><span class="fu"># Resposta</span></span>
+<span id="cb14-589"><a href="#cb14-589" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb14-590"><a href="#cb14-590" aria-hidden="true" tabindex="-1"></a>:::</span>
 </code><button title="Copiar para a área de transferência" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

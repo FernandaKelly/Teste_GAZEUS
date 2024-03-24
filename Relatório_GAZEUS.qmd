@@ -431,7 +431,8 @@ summarise_dataset <- dataset %>%
 
 knitr::kable(summarise_dataset)
 ```
-De acordo com o gráfico abaixo, a distribuição da variável **altura** pode ser descrita por uma normal, mas para fins de decisão, deve-se munir de testes paramétricos ou não paramétricos. Veja que sua variabilidade indica que os valores observados tendem a estar distantes da média – ou seja, a distribuição é mais “espalhada”. 
+
+De acordo com o gráfico abaixo, a distribuição da variável **altura** pode ser descrita por uma normal, mas para fins de decisão, deve-se munir de testes paramétricos ou não paramétricos. Veja que sua variabilidade indica que os valores observados tendem a estar distantes da média – ou seja, a distribuição é mais “espalhada”.
 
 ```{r}
 #| echo: false
@@ -451,6 +452,11 @@ library(ggplot2)
   ggplot2::theme_gray()
 ```
 
+```{r}
+qqnorm(dataset$altura)
+qqline(dataset$altura, col=2)
+```
+
 # 2
 
 Com suas próprias palavras, explique em que consiste o teorema central do limite, e se possível, mencione a sua importância no campo da inferência estatística.
@@ -467,13 +473,83 @@ O Teorema do limite central (TLC) basicamente demonstra a **tendência** de apro
 
 Suponha que numa escola, 2 grupos diferentes de estudantes (Grupo A e Grupo B) fazem o mesmo teste de matemáticas. As pontuações para cada grupo são dados pelos seguintes datasets:
 
-Grupo A: {80, 85, 88, 90, 92, 75, 78} Grupo B: {75, 78, 82, 85, 87, 93, 99}
+-   Grupo A: {80, 85, 88, 90, 92, 75, 78}
+-   Grupo B: {75, 78, 82, 85, 87, 93, 99}
 
 Elabore um teste de hipótese para determinar se existe uma diferença estatisticamente significativa entre a média das pontuações dos dois grupos com uma confiança de 95%.
 
 ::: callout-tip
 # Resposta
 :::
+
+```{r}
+#| echo: false
+tabela_estudantes <- tibble::tribble(
+                         ~nota, ~grupo, 
+                         80, "A", 
+                         85, "A",
+                         88, "A",
+                         90, "A",
+                         92, "A",
+                         75, "A",
+                         78, "A",
+                         75, "B",
+                         78, "B",
+                         82, "B",
+                         85, "B",
+                         87, "B",
+                         93, "B",
+                         99, "B",
+                         ) 
+```
+
+Antes de qualquer levantamento de hipótese, é bom analisar as medidas de tendência central de cada grupo e também graficamente. De acordo com a tabela abaixo, não há muitas evidências de que essa média entre os grupos seja diferente, mas vamos para o teste.
+
+```{r}
+#| echo: false
+
+summarise_estudantes <- tabela_estudantes %>% 
+  dplyr::group_by(grupo) %>% 
+  dplyr::summarise(vinte_percentil = quantile(nota, probs = 0.20, na.rm = TRUE),
+                   mean = mean(nota, na.rm = TRUE),
+                   median = median(nota, na.rm = TRUE),
+                   oitenta_percentil = quantile(nota, probs = 0.80, na.rm = TRUE),
+                   desvio_padrao = sd(nota, na.rm = TRUE)
+                   ) 
+
+knitr::kable(summarise_dataset)
+```
+```{r}
+library(esquisse)
+esquisse::esquisser(viwer = "browser")
+```
+
+
+
+Seguindo os passo para elaboração de um teste de hipótese:
+
+1.  Enunciar as Hipóteses:
+
+$H_{0}$ : Há diferença média entre os grupos; 
+$H_{1}$ : Não há diferença média entre os grupos;
+
+2. Fixar o nı́vel de significância $\alpha$) do teste:
+
+$\alpha$ : Erro tipo I: Rejeitar $H_{0}$  quando é verdadeira;
+
+**No nosso caso, o nível de significância será 95%.**
+
+3. Escolha da Estatı́stica teste adequada:
+
+4. Obtenção dos valores crı́ticos:
+
+5. Obtenção da Estatı́stica calculad:
+
+6. Conclusão e tomada de decisão
+
+
+
+
 
 # 4
 
