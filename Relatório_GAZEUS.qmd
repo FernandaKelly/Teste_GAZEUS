@@ -520,18 +520,25 @@ summarise_estudantes <- tabela_estudantes %>%
 knitr::kable(summarise_dataset)
 ```
 ```{r}
-library(esquisse)
-esquisse::esquisser(viwer = "browser")
+library(ggplot2)
+
+ggplot(tabela_estudantes) +
+ aes(x = nota, y = grupo, fill = grupo) +
+ geom_boxplot() +
+ scale_fill_manual(values = c(A = "#FFF5EB", 
+B = "#E56B0D")) +
+ labs(x = "Nota", y = "Grupo") +
+ theme_gray() +
+ theme(legend.position = "top", axis.title.y = element_text(face = "bold", 
+ hjust = 0))
 ```
-
-
 
 Seguindo os passo para elaboração de um teste de hipótese:
 
 1.  Enunciar as Hipóteses:
 
-$H_{0}$ : Há diferença média entre os grupos; 
-$H_{1}$ : Não há diferença média entre os grupos;
+$H_{0}$ : Não há diferença média entre os grupos; 
+$H_{1}$ : Há diferença média entre os grupos;
 
 2. Fixar o nı́vel de significância $\alpha$) do teste:
 
@@ -540,6 +547,8 @@ $\alpha$ : Erro tipo I: Rejeitar $H_{0}$  quando é verdadeira;
 **No nosso caso, o nível de significância será 95%.**
 
 3. Escolha da Estatı́stica teste adequada:
+
+A estatística de teste adequada para este caso (amostras independentes) é o teste de médias
 
 4. Obtenção dos valores crı́ticos:
 
@@ -561,7 +570,7 @@ Determine a hipótese nula (Ho) e hipótese alternativa (Ha) do seguinte cenári
 
 # 5
 
-Calcule o coeficiente de correlação de pearson das variáveis "Número de aparições Zendaya em filmes por ano" e "Número de pessoas afogadas em piscinas no Brasil ao ano". Em base nos seus resultados, considera que a variável "Número de aparições Zendaya em filmes por ano" é um bom preditor do número de pessoas afogadas no Brasil?Justifique a sua resposta.
+Calcule o coeficiente de correlação de pearson das variáveis "Número de aparições Zendaya em filmes por ano" e "Número de pessoas afogadas em piscinas no Brasil ao ano". Em base nos seus resultados, considera que a variável "Número de aparições Zendaya em filmes por ano" é um bom preditor do número de pessoas afogadas no Brasil? Justifique a sua resposta.
 
 ::: callout-tip
 # Resposta
@@ -569,7 +578,7 @@ Calcule o coeficiente de correlação de pearson das variáveis "Número de apar
 
 # 6
 
-Explique a diferença entre amostragem estratificada e amostragem randômica ou aleatória. Discuta quais são as vantagens e desvantagens de cada uma e de exemplos de casos onde uma abordagem é mais adequada que a outra.
+Explique a diferença entre amostragem estratificada e amostragem randômica ou aleatória. Discuta quais são as vantagens e desvantagens de cada uma e dê exemplos de casos onde uma abordagem é mais adequada que a outra.
 
 ::: callout-tip
 # Resposta
